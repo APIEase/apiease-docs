@@ -87,6 +87,7 @@ const sidebars = {
                 'requests/request-parameters/dynamic-embedded-parameters/flow-parameters',
               ],
             },
+            'requests/request-parameters/form-urlencoded-bodies',
             'requests/request-parameters/path-variables',
           ],
         },
