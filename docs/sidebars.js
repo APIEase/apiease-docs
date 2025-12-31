@@ -183,6 +183,7 @@ const sidebars = {
           items: [
             'general/shopify-api/shopify-api-calls-and-access-tokens',
             'general/shopify-api/automatic-vs-overridden-shopify-access-tokens',
+            'general/shopify-api/shopify-admin-graphql-address-preset',
             'general/shopify-api/shop-access-token',
             'general/shopify-api/custom-access-token',
             'general/shopify-api/manage-shop-access-token-permissions',
