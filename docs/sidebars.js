@@ -181,7 +181,11 @@ const sidebars = {
           type: 'category',
           label: 'Shopify API',
           items: [
-            'general/shopify-api/shopify-access-token',
+            'general/shopify-api/shopify-api-calls-and-access-tokens',
+            'general/shopify-api/automatic-vs-overridden-shopify-access-tokens',
+            'general/shopify-api/shop-access-token',
+            'general/shopify-api/custom-access-token',
+            'general/shopify-api/manage-shop-access-token-permissions',
             'general/shopify-api/shopify-graphql-product-count',
             'general/shopify-api/shopify-rest-product-count',
           ],

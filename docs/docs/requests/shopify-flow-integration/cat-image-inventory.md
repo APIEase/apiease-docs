@@ -82,6 +82,8 @@ This demo shows how a storefront button triggers APIEase, Shopify Flow, and a ch
      }
      ```
 
+This example uses an explicit `X-Shopify-Access-Token` header for the Shopify Admin API call. For automatic shop access token usage and overrides, see [Automatic vs overridden Shopify access tokens](../../general/shopify-api/automatic-vs-overridden-shopify-access-tokens.md).
+
 3. **Request #3: Shopify GraphQL**  
    - Name: `Flow - Cat Images - Increment Inventory`  
    - Type: `http`  
