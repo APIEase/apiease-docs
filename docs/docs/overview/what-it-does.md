@@ -6,6 +6,8 @@ description: Functional overview of what APIEase executes and manages.
 
 APIEase defines and runs three types of requests: [HTTP Requests](../requests/request-types/http-requests.md), [Flow Requests](../requests/request-types/flow-requests.md), and [Liquid Requests](../requests/request-types/liquid-requests.md). Each request type is executed inside APIEase's managed environment, keeping credentials secure and ensuring logic is processed server-side.
 
+APIEase also lets you build storefront widgets that render Liquid and JavaScript through a theme app block. Widgets are managed alongside requests but are designed for storefront UI instead of API execution.
+
 ## [HTTP Requests](../requests/request-types/http-requests.md)
 
 HTTP Requests let you call external APIs using any method (GET, POST, PUT, PATCH, DELETE). You define the URL, headers, body, and parameters. APIEase executes the call on the server and returns the response to the system that triggered it.
@@ -17,6 +19,10 @@ Flow Requests allow Shopify Flow to trigger logic that APIEase runs. APIEase rec
 ## [Liquid Requests](../requests/request-types/liquid-requests.md)
 
 Liquid Requests run custom logic written in Liquid. They let you transform data, extract fields, perform simple conditionals, or construct dynamic request bodies. The Liquid code executes within APIEase and can use inputs from any trigger source.
+
+## [Widgets](../widgets/widgets-page.md)
+
+Widgets are reusable storefront components that render Liquid templates with optional JavaScript. They are added to your theme through the APIEase app block and can be updated centrally in the APIEase admin.
 
 ## [Secure Parameter Storage](./why-you-need-it.md#why-secure-parameter-handling-matters)
 

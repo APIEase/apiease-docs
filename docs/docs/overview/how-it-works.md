@@ -8,6 +8,8 @@ APIEase runs the requests and logic you define. Each request ([HTTP](../requests
 
 This page describes how requests are configured, how they are triggered, and how these elements combine to create custom functionality.
 
+APIEase also includes storefront widgets. Widgets render Liquid and JavaScript through a theme app block and are managed in the same admin.
+
 ---
 
 ## Configuring Requests
@@ -21,6 +23,16 @@ When you create a request, you choose the type ([HTTP Request](../requests/reque
 Each request is saved as a reusable and callable unit of logic.
 
 For setup steps, see [How to Add Requests](../requests/how-to-add-requests.md).
+
+---
+
+## Configuring Widgets
+
+Create widgets in the APIEase admin by defining a name, handle, and Liquid template. You can add optional inline or external JavaScript that loads when the widget renders. See [Widgets page](../widgets/widgets-page.md) and [Widget edit page](../widgets/widget-edit-page.md) for the full workflow.
+
+## Displaying Widgets
+
+Add the **APIEase App Block (v2)** block to your theme and set the widget handle. The block loads the widget content and scripts automatically. See [Storefront block extension](../widgets/storefront-block-extension.md).
 
 ---
 

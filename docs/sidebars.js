@@ -28,6 +28,15 @@ const sidebars = {
     },
     {
       type: 'category',
+      label: 'Widgets',
+      items: [
+        'widgets/widgets-page',
+        'widgets/widget-edit-page',
+        'widgets/storefront-block-extension',
+      ],
+    },
+    {
+      type: 'category',
       label: 'Requests',
       items: [
         'requests/requests-overview',

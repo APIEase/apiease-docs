@@ -10,6 +10,8 @@ APIEase provides a central place for all API calls, logic, and automation to run
 
 APIEase also handles the related operational concerns that a backend normally carries, such as concurrency control, safe parameter handling, execution tracking, and request chaining. As a result, you can create fully functional integrations that behave like a custom app without actually building and operating the app itself.
 
+Widgets extend that same model to storefront UI. You can build reusable Liquid and JavaScript components in APIEase and place them in a theme through the app block, without maintaining a separate widget service or front-end app.
+
 ---
 
 ## Why Secure Parameter Handling Matters

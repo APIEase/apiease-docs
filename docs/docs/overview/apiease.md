@@ -22,3 +22,5 @@ logic and automation without having to build, maintain, or host the backend.
 It securely supplies confidential credentials to any request, allowing them 
 to be triggered from your storefront or from external systems without exposing 
 those credentials publicly. [Learn more...](./why-you-need-it.md)
+
+**Widgets** - Build reusable storefront widgets with Liquid and JavaScript, then render them using a theme app block. [Learn more...](../widgets/widgets-page.md)
