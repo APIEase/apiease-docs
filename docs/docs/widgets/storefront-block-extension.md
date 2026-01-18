@@ -10,15 +10,17 @@ Widgets render in your storefront through the APIEase theme app block. The block
 
 - Create and save a widget in APIEase.
 - Copy the widget handle from the widget editor.
+- In Shopify Theme Editor, enable the **APIEase Widget App Embed** (you typically only need to do this once per theme).
 
 ## Add the widget to your theme
 
 1. Open Shopify admin and go to **Online Store** -> **Themes**.
 2. Select **Customize** on the theme you want to update.
-3. Navigate to the page or template where the widget should appear.
-4. Add the **APIEase App Block (v2)** block to the section.
-5. Paste the widget handle into the **Widget handle** setting.
-6. Save the theme changes.
+3. Open **App embeds** and enable **APIEase Widget App Embed**, then save.
+4. Navigate to the page or template where the widget should appear.
+5. Add the **APIEase App Block** block to the section.
+6. Paste the widget handle into the **Widget handle** setting.
+7. Save the theme changes.
 
 ## Update or move a widget
 
@@ -28,4 +30,4 @@ Widgets render in your storefront through the APIEase theme app block. The block
 ## Troubleshooting
 
 - If the block shows "Widget handle not configured", confirm the handle value is set and saved.
-- If the widget does not render, ensure the widget is enabled and that the handle matches exactly.
+- If the widget does not render, confirm **APIEase Widget App Embed** is enabled and that the handle matches exactly.

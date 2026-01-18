@@ -32,7 +32,7 @@ Create widgets in the APIEase admin by defining a name, handle, and Liquid templ
 
 ## Displaying Widgets
 
-Add the **APIEase App Block (v2)** block to your theme and set the widget handle. The block loads the widget content and scripts automatically. See [Storefront block extension](../widgets/storefront-block-extension.md).
+Add the **APIEase App Block** block to your theme and set the widget handle. The block loads the widget content and scripts automatically. See [Storefront block extension](../widgets/storefront-block-extension.md).
 
 ---
 

@@ -35,7 +35,7 @@ When checked, the widget renders its Liquid template but does not load any JavaS
 ## Save and delete
 
 - The save bar appears when you make changes.
-- **Create widget** or **Save widget** applies your edits.
+- **Save** applies your edits.
 - **Discard** reverts to the last saved version.
 - Delete widgets from the Widgets page (deletions are staged and saved there).
 
