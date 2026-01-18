@@ -28,6 +28,11 @@ Every APIEase request uses the same configuration but can be invoked in differen
 - Great for customer-facing interactions that need server-side execution.
 - Works with [Customer authenticated requests](../customer-authenticated-requests.md) to access customer context securely.
 
+## [Widget Calls](./widget-calls.md)
+- Trigger requests from APIEase widgets on the storefront.
+- A reusable alternative to pasting request snippets into theme code.
+- See [Using Requests in Widgets](../../widgets/using-requests-in-widgets.md) for the widget-side configuration.
+
 ## [Remote HTTP Client](./calling-requests-remotely.md)
 - Invoke a request from any HTTP client outside Shopify using APIEase's remote caller API.
 - Use when automation or third-party systems must trigger requests directly.

@@ -131,6 +131,11 @@ const sidebars = {
             },
             {
               type: 'doc',
+              id: 'requests/triggers/widget-calls',
+              label: 'Widget Calls',
+            },
+            {
+              type: 'doc',
               id: 'requests/triggers/calling-requests-remotely',
               label: 'Remote HTTP Client',
             },
@@ -172,6 +177,7 @@ const sidebars = {
         'widgets/widgets-page',
         'widgets/widget-edit-page',
         'widgets/storefront-block-extension',
+        'widgets/using-requests-in-widgets',
       ],
     },
     {
