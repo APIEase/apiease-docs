@@ -4,7 +4,7 @@ description: How to generate and use a custom Shopify access token with APIEase 
 ---
 # Custom access token
 
-Follow these instructions to get a custom Shopify access token.
+If you decide that you need a custom access token rather than using the [shop access token](./shop-access-token.md) that can be [used automatically](./automatic-vs-overridden-shopify-access-tokens.md#automatic-shop-access-token-usage) follow these instructions to get a custom Shopify access token.
 
 For how APIEase uses custom tokens in requests, see [Overridden custom access token usage](./automatic-vs-overridden-shopify-access-tokens.md#overridden-custom-access-token-usage).
 

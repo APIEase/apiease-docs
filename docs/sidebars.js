@@ -184,6 +184,7 @@ const sidebars = {
       type: 'category',
       label: 'General',
       items: [
+        'general/faq/faq',
         {
           type: 'category',
           label: 'APIEase details',

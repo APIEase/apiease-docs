@@ -4,7 +4,7 @@ description: Overview of how APIEase uses shop access tokens and how permissions
 ---
 # Shopify API calls and access tokens
 
-APIEase can call the Shopify Admin API on your behalf. It uses the [shop access token](./shop-access-token.md) that was issued during Shopify OAuth and stored for the shop. You can also provide a [custom access token](./custom-access-token.md) override in request headers when you need a different token for a specific call.
+APIEase can call the Shopify Admin API on your behalf. It uses the [shop access token](./shop-access-token.md) that was issued during Shopify OAuth and stored for the shop. If for some reason you need to use a [custom access token](./custom-access-token.md) you can override the system injected shop access token.
 
 [Manage shop access token permissions](./manage-shop-access-token-permissions.md) controls which scopes are granted to the shop access token. When you request new scopes, Shopify reauthorizes the app and issues an updated shop access token with the new permissions.
 

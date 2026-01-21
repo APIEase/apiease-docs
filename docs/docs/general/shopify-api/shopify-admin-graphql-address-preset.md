@@ -7,7 +7,7 @@ description: Select the prepopulated Shopify Admin GraphQL address to enable aut
 You can take advantage of [automatic shop access token usage](./automatic-vs-overridden-shopify-access-tokens.md#automatic-shop-access-token-usage) by selecting the prepopulated Shopify Admin GraphQL option in the request address dropdown for HTTP requests.
 
 ## Why this helps
-The preset fills in a Shopify Admin API address that matches your shop domain and `/admin/api/.../graphql.json` path. That address pattern triggers APIEase to inject the shop access token automatically, so you do not need to add an `X-Shopify-Access-Token` header manually.
+The preset fills in a Shopify Admin API address that matches your shop domain and api path like this: `https://yourstore.myshopify.com/admin/api/2025-10/graphql.json`. That address pattern triggers APIEase to inject the shop access token automatically, so you do not need to add an `X-Shopify-Access-Token` header manually.
 
 ## How to use it
 1. Open your HTTP request in the request editor.

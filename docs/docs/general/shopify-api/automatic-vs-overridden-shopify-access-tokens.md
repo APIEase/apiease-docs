@@ -10,7 +10,7 @@ APIEase determines how to authenticate Shopify Admin API requests based on the r
 APIEase injects the [shop access token](./shop-access-token.md) when a request targets the Shopify Admin API and no override token is provided. This is useful because you do not need to generate a token manually, you do not need to configure a token header in each request, and you can update its permissions quickly on [Manage shop access token permissions](./manage-shop-access-token-permissions.md). For the fastest setup, select the [Shopify Admin GraphQL address preset](./shopify-admin-graphql-address-preset.md) in the request address dropdown to ensure the request qualifies for automatic token usage.
 
 ## Overridden custom access token usage
-APIEase uses an explicit `X-Shopify-Access-Token` header instead of the shop access token when you provide a [custom access token](./custom-access-token.md). This is useful when a call must run under a different Shopify token, such as testing a separate app, using a token from another shop, or matching permissions that differ from the stored shop access token.
+APIEase overrides your shop access token when you provide a [custom access token](./custom-access-token.md) in an explicitly set `X-Shopify-Access-Token` header. This is useful when a call must run under a different Shopify token, such as testing a separate app, using a token from another shop, or matching permissions that differ from the stored shop access token.
 
 ## Decision rules
 1. If the request targets a Shopify Admin API endpoint and no explicit override token is provided, APIEase injects the shop access token automatically.
