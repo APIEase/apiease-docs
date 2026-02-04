@@ -60,9 +60,9 @@ Invoke any request directly from the APIEase admin for testing or on demand exec
 
 Trigger a request from your storefront using Shopify's app proxy. The storefront sends only non confidential data and APIEase performs the execution on the server side.
 
-### [Remote HTTP Client](../requests/triggers/calling-requests-remotely.md)
+### [Remote Calls](../requests/triggers/calling-requests-remotely.md)
 
-Send an HTTP call from any external system to APIEase to initiate a request, with optional authentication.
+ Send an HTTP call from any external system to APIEase to initiate a request with authentication.
 
 ### [Chained Request](../requests/request-parameters/chained-requests.md)
 

@@ -137,7 +137,7 @@ const sidebars = {
             {
               type: 'doc',
               id: 'requests/triggers/calling-requests-remotely',
-              label: 'Remote HTTP Client',
+              label: 'Remote Calls',
             },
             {
               type: 'doc',

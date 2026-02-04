@@ -33,8 +33,8 @@ Every APIEase request uses the same configuration but can be invoked in differen
 - A reusable alternative to pasting request snippets into theme code.
 - See [Using Requests in Widgets](../../widgets/using-requests-in-widgets.md) for the widget-side configuration.
 
-## [Remote HTTP Client](./calling-requests-remotely.md)
-- Invoke a request from any HTTP client outside Shopify using APIEase's remote caller API.
+## [Remote Calls](./calling-requests-remotely.md)
+- Invoke a request from outside Shopify using APIEase's remote caller API.
 - Use when automation or third-party systems must trigger requests directly.
 
 ## [Chained Request](../request-parameters/chained-requests.md)

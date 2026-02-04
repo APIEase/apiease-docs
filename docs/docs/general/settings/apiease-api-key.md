@@ -10,9 +10,9 @@ It is not a Shopify access token and cannot be used to call Shopify APIs directl
 
 ## When to use it
 
-Use this key when calling APIEase Requests remotely from an external HTTP client.
+Use this key for Remote Calls (calling APIEase Requests remotely from an external system).
 
-See: [Calling Requests remotely](../../requests/triggers/calling-requests-remotely.md)
+See: [Remote Calls](../../requests/triggers/calling-requests-remotely.md)
 
 ## Add an API key
 
