@@ -187,6 +187,11 @@ const sidebars = {
         'general/faq/faq',
         {
           type: 'category',
+          label: 'Settings',
+          items: ['general/settings/apiease-api-key'],
+        },
+        {
+          type: 'category',
           label: 'APIEase details',
           items: [
             'general/apiease-details/ip-address-whitelisting',
