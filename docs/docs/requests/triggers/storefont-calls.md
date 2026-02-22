@@ -9,18 +9,19 @@ Run any APIEase request directly from your Shopify storefront using Shopify's ap
 If you want a more convenient and reusable way to make storefront calls, use [Widget Calls](./widget-calls.md) and trigger the request from an APIEase widget instead of pasting snippets into theme Liquid.
 
 ## Caution
-Use caution with Storefront App Proxy requests. Anyone from anywhere can call Storefront App Proxy requests. APIEase verifies that Storefront App Proxy requests have been routed through the Shopify App Proxy. However, anyone can call this request via the Shopify App Proxy just as you can from your storefront.
+Use caution with Storefront App Proxy requests. Anyone from anywhere can call Storefront App Proxy requests. APIEase verifies that Storefront App Proxy requests have been routed through the Shopify App Proxy and that a Storefront App Proxy trigger has been added to your request. However, anyone can call this request via the Shopify App Proxy just as you can from your storefront.
 
 ## How it works
 - Your theme calls the APIEase app proxy path (for example `/apps/apiease/integration/caller/call`) and includes the `requestId` for the request to run.
 - Shopify forwards the call through the app proxy. If the customer is logged in, Shopify passes the customer id to APIEase.
 - APIEase executes the request on the server, injects any sensitive parameters you saved in the admin, and returns the request's final response to the storefront.
 
-## Configure a storefront call
-1. In the APIEase admin, open the request you want to run from the storefront.
-2. In the **Actions** column, click the **Copy and Execute** icon to open the manual call screen.
-3. In the manual call dialog, click **Copy** to grab the storefront snippet shown there. It contains the request's `requestId` and the correct app proxy path.
-4. Paste the snippet into your custom Liquid or theme code where you want the request to run.
+## Add Storefront Request
+1. Go to the Requests page.
+2. Click the plus icon at the top left of the page.
+3. At a minimum, set your Address and Method.
+4. If you want to call this request from your storefront, you must add the `Storefront App Proxy` trigger.
+5. Click **Save** at the top of the screen.
 
 ## Call from your theme
 Use the copied snippet as-is to verify the integration, then extend it with any [dynamic embedded parameters](../request-parameters/dynamic-embedded-parameters/dynamic-embedded-parameters-overview.md) you need for runtime data.
