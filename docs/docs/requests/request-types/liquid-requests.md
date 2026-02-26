@@ -23,6 +23,27 @@ Liquid requests let you run a Liquid template that can call any APIEase request 
 - **Liquid**: Key value pairs you want available to the template as variables.
 - **System**: System parameters used by APIEase in special cases such as Customer Authentication.
 
+**How Liquid parameters replace variables in Liquid requests**
+
+Liquid parameters define variables for the Liquid template. Reference a Liquid parameter in request values using `{parameterName}` and APIEase replaces it at runtime.
+
+Example:
+
+- Liquid parameter name: `segment`
+- Liquid parameter value: `vip`
+
+```liquid
+{% call {
+  "requestId": "segment-offers",
+  "queryParamsEmbedded": {
+    "segment": "{segment}"
+  }
+} as response %}
+{{ response.status }}
+```
+
+In this example, `{segment}` is replaced by the Liquid parameter value before the request is executed.
+
 If your request includes confidential values such as API keys or credentials, check the Sensitive checkbox. These values are stored on the server and are never exposed to the storefront or even the admin screen. Once they have been submitted they are encrypted in our database and only decrypted for use at runtime.
 
 **Supported Embedded Parameters**

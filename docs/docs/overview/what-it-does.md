@@ -4,7 +4,7 @@ description: Functional overview of what APIEase executes and manages.
 ---
 # What It Does
 
-APIEase defines and runs three types of requests: [HTTP Requests](../requests/request-types/http-requests.md), [Flow Requests](../requests/request-types/flow-requests.md), and [Liquid Requests](../requests/request-types/liquid-requests.md). Each request type is executed inside APIEase's managed environment, keeping credentials secure and ensuring logic is processed server-side.
+APIEase defines and runs four types of requests: [HTTP Requests](../requests/request-types/http-requests.md), [Flow Requests](../requests/request-types/flow-requests.md), [Liquid Requests](../requests/request-types/liquid-requests.md), and [System Requests](../requests/request-types/system-requests.md). Each request type is executed inside APIEase's managed environment, keeping credentials secure and ensuring logic is processed server-side.
 
 APIEase also lets you build storefront widgets that render Liquid and JavaScript through a theme app block. Widgets are managed alongside requests but are designed for storefront UI instead of API execution.
 
@@ -19,6 +19,10 @@ Flow Requests allow Shopify Flow to trigger logic that APIEase runs. APIEase rec
 ## [Liquid Requests](../requests/request-types/liquid-requests.md)
 
 Liquid Requests run custom logic written in Liquid. They let you transform data, extract fields, perform simple conditionals, or construct dynamic request bodies. The Liquid code executes within APIEase and can use inputs from any trigger source.
+
+## [System Requests](../requests/request-types/system-requests.md)
+
+System Requests run internal APIEase functions (they do not call an external URL). This is useful for app-managed actions such as setting, getting, or deleting persisted variables.
 
 ## [Widgets](../widgets/widgets-page.md)
 

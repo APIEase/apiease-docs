@@ -11,9 +11,9 @@ APIEase is a managed system where your API requests, workflows, and custom logic
 run, so you don’t have to build or maintain that infrastructure yourself.
 
 **What It Does** - APIEase executes secure HTTP requests, triggers Shopify Flow 
-actions, and runs custom logic defined through Liquid Requests. [Learn more...](./what-it-does.md)
+actions, runs custom logic defined through Liquid Requests, and runs internal system functions through System Requests. [Learn more...](./what-it-does.md)
 
-**How It Works** - Add fully configurable HTTP, Shopify Flow, or Liquid Requests 
+**How It Works** - Add fully configurable HTTP, Shopify Flow, Liquid, or System Requests 
 to APIEase, and trigger them manually, from your storefront, through webhooks, 
 on a cron schedule, from an external HTTP client, or via a Proxy Endpoint. [Learn more...](./how-it-works.md)
 

@@ -4,7 +4,7 @@ description: Outline the core flow for configuring and running APIEase in a Shop
 ---
 # How It Works
 
-APIEase runs the requests and logic you define. Each request ([HTTP](../requests/request-types/http-requests.md), [Flow](../requests/request-types/flow-requests.md), or [Liquid](../requests/request-types/liquid-requests.md)) is configured in the APIEase admin and executed inside the APIEase runtime, where confidential parameters remain secure.
+APIEase runs the requests and logic you define. Each request ([HTTP](../requests/request-types/http-requests.md), [Flow](../requests/request-types/flow-requests.md), [Liquid](../requests/request-types/liquid-requests.md), or [System](../requests/request-types/system-requests.md)) is configured in the APIEase admin and executed inside the APIEase runtime, where confidential parameters remain secure.
 
 This page describes how requests are configured, how they are triggered, and how these elements combine to create custom functionality.
 
@@ -14,7 +14,7 @@ APIEase also includes storefront widgets. Widgets render Liquid and JavaScript t
 
 ## Configuring Requests
 
-When you create a request, you choose the type ([HTTP Request](../requests/request-types/http-requests.md), [Flow Request](../requests/request-types/flow-requests.md), or [Liquid Request](../requests/request-types/liquid-requests.md)) and define the parameters it needs. These parameters can include:
+When you create a request, you choose the type ([HTTP Request](../requests/request-types/http-requests.md), [Flow Request](../requests/request-types/flow-requests.md), [Liquid Request](../requests/request-types/liquid-requests.md), or [System Request](../requests/request-types/system-requests.md)) and define the parameters it needs. These parameters can include:
 - values passed in at trigger time
 - values extracted from earlier requests
 - Liquid based transformations
@@ -73,7 +73,7 @@ Run a request from within another request. A request can call additional request
 ## Combining Request Types and Triggers
 
 Because each request is modular and can be triggered in any of these ways, users can create custom functionality by combining:
-- the request type (HTTP, Flow, or Liquid)
+- the request type (HTTP, Flow, Liquid, or System)
 - the trigger source
 - any number of chained steps
 

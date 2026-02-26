@@ -8,6 +8,12 @@ You can authenticate request calls from your storefront.
 
 Http calls from your storefront to APIEase are made using the [Shopify App Proxy](https://shopify.dev/docs/apps/online-store/app-proxies). If the customer is logged into your store then the customer id is sent to APIEase.
 
+## Automatic customer ID injection
+
+Need to inject the logged-in customer ID into request values? See [Automatic Shopify Customer ID Injection](../general/apiease-details/automatic-shopify-customer-id-injection.md).
+
+## Customer Validation Options
+
 You can restrict api calls to a particular request in APIEase by logged in customer in one of 2 ways:
 
 1. Automatically validate all logged in customers.

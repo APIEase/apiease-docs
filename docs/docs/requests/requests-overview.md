@@ -6,7 +6,7 @@ description: Explain what requests are and how they behave inside APIEase.
 
 Everything that you can accomplish with APIEase starts with a request.
 
-A request is a configuration that defines how APIEase should securely call an external API or trigger a Shopify Flow workflow. Each request contains the destination, any necessary parameters, and optional logic to determine when and how it should run.
+A request is a configuration that defines how APIEase should securely call an external API, trigger a Shopify Flow workflow, run Liquid logic, or execute internal system functions. Each request contains the destination (when applicable), any necessary parameters, and optional logic to determine when and how it should run.
 
 Requests can be used for a wide variety of purposes, including:
 
@@ -16,7 +16,7 @@ Requests can be used for a wide variety of purposes, including:
 - Triggering Shopify Flow automations
 - Executing multiple requests in sequence based on API responses
 
-There are three [Request types](./request-types/request-types-overview.md) in APIEase: [HTTP requests](./request-types/http-requests.md), [Flow requests](./request-types/flow-requests.md), and [Liquid requests](./request-types/liquid-requests.md).
+There are four [Request types](./request-types/request-types-overview.md) in APIEase: [HTTP requests](./request-types/http-requests.md), [Flow requests](./request-types/flow-requests.md), [Liquid requests](./request-types/liquid-requests.md), and [System requests](./request-types/system-requests.md).
 
 Every request you create can include embedded parameters, dynamic storefront values, or confidential credentials stored securely on the server.
 

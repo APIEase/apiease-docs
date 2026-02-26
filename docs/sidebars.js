@@ -54,6 +54,11 @@ const sidebars = {
               id: 'requests/request-types/liquid-requests',
               label: 'Liquid Requests',
             },
+            {
+              type: 'doc',
+              id: 'requests/request-types/system-requests',
+              label: 'System Requests',
+            },
           ],
         },
         {
@@ -196,6 +201,7 @@ const sidebars = {
           items: [
             'general/apiease-details/ip-address-whitelisting',
             'general/apiease-details/importing-third-party-products',
+            'general/apiease-details/automatic-shopify-customer-id-injection',
             'general/apiease-details/authentication-example',
           ],
         },
