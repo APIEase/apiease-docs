@@ -6,6 +6,8 @@ description: Use internal system functions to set, get, and delete APIEase varia
 
 System requests run internal APIEase functions. Unlike HTTP requests, System requests do not call an external URL.
 
+If you want to manage the same persisted values manually in the admin, see the [Variables page](../../variables/variables-page.md).
+
 ## When to use System requests
 
 Use a System request when you need an internal, app-managed action (for example, managing shop variables) instead of calling an external service.

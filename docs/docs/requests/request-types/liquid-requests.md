@@ -16,6 +16,7 @@ Liquid requests let you run a Liquid template that can call any APIEase request 
 
 - Use standard Liquid tags like assign, if, elsif, else, for, and capture.
 - Call other APIEase requests using the custom call tag shown below.
+- Call saved APIEase Functions using the custom function tag shown below.
 - Read parameters passed in from the storefront or other triggers.
 
 **Parameters**: You can provide in app parameters directly in the request configuration. If you need values that depend on customer activity or storefront context, you can pass dynamic embedded parameters from the storefront.
@@ -99,6 +100,40 @@ Response fields:
 
 - `response.status`: The numeric status returned by the request.
 - `response.data`: The response payload. Use the json filter to print full objects.
+
+**The function tag**
+
+Use the function tag to call a saved [Function](../../functions/functions-page.md) from inside a Liquid Request. Functions are reusable Liquid helpers that run inside the current Liquid Request and do not create a separate request execution.
+
+Inline syntax:
+
+```liquid
+{% function build_summary(customer.firstName, customer.lastName) as summary %}
+{{ summary.message }}
+```
+
+Object syntax:
+
+```liquid
+{% function {
+  "functionName": "build_summary",
+  "args": {
+    "firstName": "{{ customer.firstName }}",
+    "lastName": "{{ customer.lastName }}"
+  }
+} as summary %}
+{{ summary.message }}
+```
+
+Important behavior:
+
+- `as <name>` is required.
+- Inline arguments are mapped to the Function's declared parameters in order.
+- Object syntax supports `functionName` or `functionId`.
+- Missing arguments resolve to `null`.
+- Extra positional arguments are rejected.
+
+For full details and more examples, see [Using Functions in Liquid Requests](../../functions/using-functions-in-liquid-requests.md).
 
 **Using values from a previous response**
 

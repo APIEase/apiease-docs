@@ -176,6 +176,21 @@ const sidebars = {
     },
     {
       type: 'category',
+      label: 'Functions',
+      items: [
+        'functions/functions-page',
+        'functions/using-functions-in-liquid-requests',
+      ],
+    },
+    {
+      type: 'category',
+      label: 'Variables',
+      items: [
+        'variables/variables-page',
+      ],
+    },
+    {
+      type: 'category',
       label: 'Widgets',
       items: [
         'widgets/widgets-overview',
