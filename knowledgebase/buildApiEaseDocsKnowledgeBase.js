@@ -2,9 +2,10 @@ const fs = require('fs/promises');
 const path = require('path');
 const vm = require('vm');
 
-const PROJECT_ROOT = __dirname;
+const REPO_ROOT = path.resolve(__dirname, '..');
+const DOCS_PROJECT_ROOT = path.join(REPO_ROOT, 'docs');
 const DEFAULT_DOCS_HOST = 'https://docs.apiease.com';
-const OUTPUT_PATH = path.join(PROJECT_ROOT, 'apiEaseDocsConsolidated.md');
+const OUTPUT_PATH = path.join(__dirname, 'apiEaseDocsConsolidated.md');
 
 function normalizeUrlPath(...parts) {
   const cleaned = parts
@@ -171,7 +172,7 @@ function collectDocIds(items, docMap, bucket) {
 }
 
 async function loadDocsConfig() {
-  const configPath = path.join(PROJECT_ROOT, 'docusaurus.config.js');
+  const configPath = path.join(DOCS_PROJECT_ROOT, 'docusaurus.config.js');
   const raw = await fs.readFile(configPath, 'utf8');
   const docsBlockMatch = raw.match(/docs:\s*{([\s\S]*?)},\s*blog:/);
   const docsBlock = docsBlockMatch ? docsBlockMatch[1] : raw;
@@ -207,8 +208,8 @@ async function loadSidebars(sidebarPath) {
 
 async function generateKnowledgeBaseText() {
   const config = await loadDocsConfig();
-  const docsRoot = path.resolve(PROJECT_ROOT, config.docsPath);
-  const sidebarPath = path.resolve(PROJECT_ROOT, config.sidebarPath);
+  const docsRoot = path.resolve(DOCS_PROJECT_ROOT, config.docsPath);
+  const sidebarPath = path.resolve(DOCS_PROJECT_ROOT, config.sidebarPath);
   const sidebars = await loadSidebars(sidebarPath);
   const docFiles = await listDocFiles(docsRoot);
   const docMap = new Map();
