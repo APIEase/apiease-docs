@@ -28,6 +28,19 @@ const sidebars = {
     },
     {
       type: 'category',
+      label: 'Developers',
+      items: [
+        'developers/developer-overview',
+        'developers/why-use-the-template',
+        'developers/quickstart-with-apiease-template',
+        'developers/using-apiease-with-ai-agents',
+        'developers/apiease-public-api',
+        'developers/apiease-cli',
+        'developers/apiease-template',
+      ],
+    },
+    {
+      type: 'category',
       label: 'Requests',
       items: [
         'requests/requests-overview',
