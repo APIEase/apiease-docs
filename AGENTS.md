@@ -28,6 +28,7 @@ Run all commands from `docs/` unless noted.
 - Execute `npm run build` before changes to ensure no build errors.
 - Execute `npm run build` after changes to ensure no build errors.
 - For new sidebar entries, confirm the page appears in the left nav and links resolve.
+- For documentation-only changes, do not create new unit tests or test fixtures. Verification should focus on the docs project functioning correctly, primarily by running `npm run build`.
 
 ## Commit & Pull Request Guidelines
 - Commits: concise, imperative subject (e.g., `Add manual trigger doc`, `Link request types`). Group related doc edits together.
@@ -39,4 +40,7 @@ Run all commands from `docs/` unless noted.
 
 ## Agent-Specific Instructions
 - When adding a new doc, update `docs/sidebars.js` so navigation renders.
-- Keep cross-links current by preferring dedicated pages over in-page anchors.***
+- Keep cross-links current by preferring dedicated pages over in-page anchors.
+- codex-dev-bot does not need to create unit tests for documentation changes in this repository.
+- codex-dev-bot should still verify documentation changes in a TDD-style workflow by using the project test runner and confirming the Docusaurus build passes.
+- For documentation-only tasks, treat running `npm run build` from `docs/` as the primary verification step rather than adding new automated tests.
