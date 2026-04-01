@@ -39,7 +39,7 @@ CONTENT
 
 APIEase defines and runs four types of requests: [HTTP Requests](../requests/request-types/http-requests.md), [Flow Requests](../requests/request-types/flow-requests.md), [Liquid Requests](../requests/request-types/liquid-requests.md), and [System Requests](../requests/request-types/system-requests.md). Each request type is executed inside APIEase's managed environment, keeping credentials secure and ensuring logic is processed server-side.
 
-APIEase also lets you build storefront widgets that render Liquid and JavaScript through a theme app block. Widgets are managed alongside requests but are designed for storefront UI instead of API execution.
+APIEase also includes [Functions](../functions/functions-page.md) and [Widgets](../widgets/widgets-page.md). Functions are reusable Liquid helpers for Liquid Requests, while Widgets are designed for storefront UI instead of API execution.
 
 ## [HTTP Requests](../requests/request-types/http-requests.md)
 
@@ -51,7 +51,7 @@ Flow Requests allow Shopify Flow to trigger logic that APIEase runs. APIEase rec
 
 ## [Liquid Requests](../requests/request-types/liquid-requests.md)
 
-Liquid Requests run custom logic written in Liquid. They let you transform data, extract fields, perform simple conditionals, or construct dynamic request bodies. The Liquid code executes within APIEase and can use inputs from any trigger source.
+Liquid Requests run custom logic written in Liquid. They let you transform data, extract fields, perform simple conditionals, construct dynamic request bodies, and call reusable [Functions](../functions/using-functions-in-liquid-requests.md). The Liquid code executes within APIEase and can use inputs from any trigger source.
 
 ## [System Requests](../requests/request-types/system-requests.md)
 
@@ -60,6 +60,10 @@ System Requests run internal APIEase functions (they do not call an external URL
 ## [Widgets](../widgets/widgets-page.md)
 
 Widgets are reusable storefront components that render Liquid templates with optional JavaScript. They are added to your theme through the APIEase app block and can be updated centrally in the APIEase admin.
+
+## [Functions](../functions/functions-page.md)
+
+Functions are reusable Liquid helpers that run inside a parent Liquid Request. Use them to keep shared formatting, transformation, and response-shaping logic in one place instead of repeating the same Liquid across multiple requests.
 
 ## [Secure Parameter Storage](./why-you-need-it.md#why-secure-parameter-handling-matters)
 
@@ -78,7 +82,7 @@ APIEase runs the requests and logic you define. Each request ([HTTP](../requests
 
 This page describes how requests are configured, how they are triggered, and how these elements combine to create custom functionality.
 
-APIEase also includes storefront widgets. Widgets render Liquid and JavaScript through a theme app block and are managed in the same admin.
+APIEase also includes reusable [Functions](../functions/functions-page.md), persisted [Variables](../variables/variables-page.md), and storefront widgets. Widgets render Liquid and JavaScript through a theme app block and are managed in the same admin.
 
 ---
 
@@ -92,7 +96,11 @@ When you create a request, you choose the type ([HTTP Request](../requests/reque
 
 Each request is saved as a reusable and callable unit of logic.
 
+If you need reusable helper logic inside a Liquid Request, create a [Function](../functions/functions-page.md) and call it from Liquid instead of repeating the same template code.
+
 For setup steps, see [How to Add Requests](../requests/how-to-add-requests.md).
+
+If you need to manage persisted values outside of a request, use the [Variables page](../variables/variables-page.md).
 
 ---
 
@@ -392,6 +400,7 @@ Liquid requests let you run a Liquid template that can call any APIEase request 
 
 - Use standard Liquid tags like assign, if, elsif, else, for, and capture.
 - Call other APIEase requests using the custom call tag shown below.
+- Call saved APIEase Functions using the custom function tag shown below.
 - Read parameters passed in from the storefront or other triggers.
 
 **Parameters**: You can provide in app parameters directly in the request configuration. If you need values that depend on customer activity or storefront context, you can pass dynamic embedded parameters from the storefront.
@@ -475,6 +484,40 @@ Response fields:
 
 - `response.status`: The numeric status returned by the request.
 - `response.data`: The response payload. Use the json filter to print full objects.
+
+**The function tag**
+
+Use the function tag to call a saved [Function](../../functions/functions-page.md) from inside a Liquid Request. Functions are reusable Liquid helpers that run inside the current Liquid Request and do not create a separate request execution.
+
+Inline syntax:
+
+```liquid
+{% function build_summary(customer.firstName, customer.lastName) as summary %}
+{{ summary.message }}
+```
+
+Object syntax:
+
+```liquid
+{% function {
+  "functionName": "build_summary",
+  "args": {
+    "firstName": "{{ customer.firstName }}",
+    "lastName": "{{ customer.lastName }}"
+  }
+} as summary %}
+{{ summary.message }}
+```
+
+Important behavior:
+
+- `as <name>` is required.
+- Inline arguments are mapped to the Function's declared parameters in order.
+- Object syntax supports `functionName` or `functionId`.
+- Missing arguments resolve to `null`.
+- Extra positional arguments are rejected.
+
+For full details and more examples, see [Using Functions in Liquid Requests](../../functions/using-functions-in-liquid-requests.md).
 
 **Using values from a previous response**
 
@@ -597,6 +640,8 @@ CONTENT
 # System Requests
 
 System requests run internal APIEase functions. Unlike HTTP requests, System requests do not call an external URL.
+
+If you want to manage the same persisted values manually in the admin, see the [Variables page](../../variables/variables-page.md).
 
 ## When to use System requests
 
@@ -2502,6 +2547,397 @@ Include customer id as System parameter with name: "customerId" and value: "indi
 If request parameters are owned by individual customer you will need to add a separate request with each particular customer's parameters and customer id as a System parameter.
 
 If you add customer id to a request that customer must be logged into the store in order for the api call to pass validation and return a response to your storefront.
+
+SOURCE
+https://docs.apiease.com/docs/functions/functions-page
+
+TITLE
+Functions page
+
+CONTENT
+# Functions page
+
+The Functions page lets you create reusable Liquid helpers that can be called from [Liquid Requests](../requests/request-types/liquid-requests.md).
+
+Functions run inside the parent Liquid request execution. They are not standalone requests, do not have their own triggers, and do not count as separate request executions.
+
+## Open the Functions page
+
+In the APIEase admin, select **Functions** from the main navigation.
+
+## What you can do
+
+- View all saved functions for the current shop
+- Create a new function
+- Open an existing function and update it
+- Duplicate a function as a starting point for a variation
+- Delete functions you no longer need
+
+## Functions list
+
+The Functions page shows a table with five columns:
+
+- **Name**: The function name. Select the name or the edit action to open the function.
+- **Type**: Currently `liquid`.
+- **Description**: The saved description. If no description is set, APIEase shows a short Liquid preview instead.
+- **Last updated**: The last saved date.
+- **Actions**: Edit, duplicate, or delete the function.
+
+Additional list behavior:
+
+- Use the **Add function** button to create a new function.
+- If a delete is in progress, the row is dimmed and marked **Will be deleted**.
+- If no functions exist yet, the page shows `No functions yet.`
+
+## Create or edit a function
+
+Each function includes these fields:
+
+- **Name**: Required. This is the function name you call from Liquid.
+- **Description**: Optional. Use it to explain what the function returns or when to use it.
+- **Type**: Currently fixed to `liquid`.
+- **Parameters**: Optional parameter definitions for the function.
+- **Liquid**: Required. The Liquid code that runs when the function is called.
+
+The editor supports the same save bar behavior used elsewhere in APIEase:
+
+- The save bar appears when you make changes.
+- Use **Save** to persist the function.
+- Use **Discard** to return to the last saved version.
+
+## Function parameters
+
+Each parameter row includes:
+
+- **Name**: Required
+- **Description**: Optional
+- **Type**: Required metadata
+
+Supported parameter types:
+
+- `string`
+- `number`
+- `boolean`
+- `object`
+- `array`
+
+Important behavior:
+
+- Parameter types are descriptive metadata for this version of Functions. They help document expected inputs, but APIEase does not strictly enforce them at runtime.
+- Parameter names must be unique within a function.
+- Only declared parameters are exposed inside the function body.
+
+## How Functions behave
+
+Functions are intended to reduce repetition inside Liquid request logic.
+
+Use a Function when you want to:
+
+- Reuse the same Liquid transformation in multiple places
+- Standardize formatting or response shaping
+- Keep Liquid requests shorter and easier to maintain
+
+Do not use a Function when you need:
+
+- An external API call
+- A webhook, schedule, or manual trigger
+- A standalone execution target
+
+For invocation syntax and runtime examples, see [Using Functions in Liquid Requests](./using-functions-in-liquid-requests.md).
+
+SOURCE
+https://docs.apiease.com/docs/functions/using-functions-in-liquid-requests
+
+TITLE
+Using Functions in Liquid Requests
+
+CONTENT
+# Using Functions in Liquid Requests
+
+APIEase Functions are reusable Liquid helpers that run inside a parent [Liquid Request](../requests/request-types/liquid-requests.md).
+
+When a Liquid request calls a Function:
+
+- The Function runs in process as part of the parent Liquid request
+- The Function does not create a separate request execution
+- The Function does not add separate request charges
+
+## The function tag
+
+Use the `function` tag to call a saved Function and assign its result to a variable.
+
+Basic syntax:
+
+```liquid
+{% function build_summary(customer.firstName) as summary %}
+{{ summary }}
+```
+
+`as <name>` is required. APIEase assigns the Function result to that alias and you can use it later in the template.
+
+## Inline positional syntax
+
+The simplest syntax is an inline function call by name:
+
+```liquid
+{% function format_price(product.price, cart.currency.iso_code) as formattedPrice %}
+{{ formattedPrice }}
+```
+
+Arguments are matched to the saved parameter definitions in order.
+
+If your Function defines these parameters:
+
+1. `amount`
+2. `currency`
+
+Then the example above maps:
+
+- `product.price` to `amount`
+- `cart.currency.iso_code` to `currency`
+
+Supported inline argument styles include:
+
+- String literals
+- Number literals
+- Boolean literals
+- `null`
+- Liquid variables and simple Liquid expressions
+
+Example:
+
+```liquid
+{% function build_summary("Kevin, Jr.", 42, true, null, customer.firstName | append: " Smith") as summary %}
+{{ summary.message }}
+```
+
+## Object syntax
+
+You can also call a Function with a JSON object. This is useful when you want named arguments or want to resolve the Function dynamically.
+
+Example using `functionName`:
+
+```liquid
+{% function {
+  "functionName": "build_summary",
+  "args": {
+    "firstName": "{{ customer.firstName }}",
+    "lastName": "{{ customer.lastName }}"
+  }
+} as summary %}
+{{ summary.message }}
+```
+
+Example using `functionId`:
+
+```liquid
+{% function {
+  "functionId": "function-123",
+  "args": {
+    "amount": "{{ product.price }}",
+    "currency": "{{ cart.currency.iso_code }}"
+  }
+} as result %}
+{{ result }}
+```
+
+You can also pass a variable that already contains the invocation object:
+
+```liquid
+{% function functionInput as summary %}
+{{ summary.message }}
+```
+
+This form is useful when your Liquid context already includes a prebuilt function input object.
+
+## Accessing parameters inside the Function
+
+Inside the saved Function body, each declared parameter is available as a Liquid variable by its parameter name.
+
+If your Function declares:
+
+- `firstName`
+- `lastName`
+
+Then the Function body can use:
+
+```liquid
+{{ firstName }}
+{{ lastName }}
+```
+
+Important behavior:
+
+- Only declared parameters are exposed inside the Function body.
+- Missing arguments resolve to `null`.
+- Extra positional arguments are rejected with an error.
+
+## Return behavior
+
+A Function returns whatever its Liquid body renders.
+
+If the rendered output is valid JSON, APIEase parses it before assigning the alias. This lets a Function return:
+
+- Objects
+- Arrays
+- Numbers
+- Booleans
+- `null`
+
+If the rendered output is not valid JSON, APIEase returns trimmed text.
+
+String example:
+
+```liquid
+Hello {{ firstName }}
+```
+
+Object example:
+
+```liquid
+{
+  "message": "Hello {{ firstName }}",
+  "name": "{{ firstName }}"
+}
+```
+
+Then call it like this:
+
+```liquid
+{% function build_summary(customer.firstName, customer.lastName) as summary %}
+{{ summary.message }}
+```
+
+## Example: reusable title builder
+
+Saved Function:
+
+```liquid
+{{ prefix }} {{ title | strip }}
+```
+
+Declared parameters:
+
+- `prefix`
+- `title`
+
+Liquid Request:
+
+```liquid
+{% function build_title("Sale:", product.title) as computedTitle %}
+
+{% call {
+  "requestId": "create-tagline",
+  "bodyEmbedded": {
+    "title": computedTitle
+  }
+} as response %}
+
+{{ response.status }}
+```
+
+## Guardrails and errors
+
+APIEase includes a few protections for Functions:
+
+- Recursive Function calls are not allowed.
+- Nested Function calls are limited to a maximum depth of 10.
+- Calling a missing Function raises an error.
+- Malformed inline invocation syntax raises an error.
+- Omitting `as <name>` raises an error.
+
+## When to use Functions vs. Requests
+
+Use a Function when you need reusable Liquid logic.
+
+Use a [Liquid Request](../requests/request-types/liquid-requests.md) when you need the overall executable workflow.
+
+Use an [HTTP Request](../requests/request-types/http-requests.md), [Flow Request](../requests/request-types/flow-requests.md), or [System Request](../requests/request-types/system-requests.md) when you need to call an external or app-managed operation.
+
+SOURCE
+https://docs.apiease.com/docs/variables/variables-page
+
+TITLE
+Variables page
+
+CONTENT
+# Variables page
+
+The Variables page lets you manage persisted shop variables for the current store directly from the APIEase admin.
+
+These are the same variables used by [System Requests](../requests/request-types/system-requests.md), so you can manage values manually in the admin or read and write them programmatically in request flows.
+
+## Open the Variables page
+
+In the APIEase admin, select **Variables** from the main navigation.
+
+## What you can do
+
+- View all saved variables for the current shop
+- Create a new variable
+- Open an existing variable and update its value
+- Mark a variable as sensitive so its value stays masked in the UI
+- Delete variables you no longer need
+
+## Variables list
+
+The Variables page shows a table with four columns:
+
+- **Name**: The variable name. Select the name or the edit action to open the variable.
+- **Value**: The current value summary. Non-sensitive values are shown directly. Sensitive values are masked.
+- **Sensitive**: Shows `Yes` or `No`.
+- **Actions**: Edit or delete the variable.
+
+Additional list behavior:
+
+- Use the **Add variable** button to create a new variable.
+- If a value is long, the list truncates it for display.
+- If a delete is in progress, the row is dimmed and marked **Will be deleted**.
+- If no variables exist yet, the page shows `No variables yet.`
+
+## Create a variable
+
+To create a variable:
+
+1. Open the **Variables** page.
+2. Select **Add variable**.
+3. Enter a **Name**.
+4. Enter a **Value**.
+5. Turn on **Sensitive** if the value should stay hidden after it is saved.
+6. Use the save bar to save the variable.
+
+Notes:
+
+- `Name` is required when creating a variable.
+- The save bar appears when you make changes.
+- You can use **Discard** in the save bar to abandon unsaved edits.
+
+## Edit a variable
+
+To edit a variable:
+
+1. Open the variable from the list.
+2. Update the **Value** and, if needed, the **Sensitive** checkbox.
+3. Save from the save bar.
+
+Important behavior:
+
+- After a variable is created, its **Name** is read-only.
+- Existing sensitive values stay masked in the editor. If you leave the masked value as-is and save, APIEase keeps the stored value.
+- If you want to replace a sensitive value, type a new value before saving.
+- If you turn off **Sensitive** for an existing masked variable, enter the replacement plain-text value before saving because APIEase does not reveal the stored secret back into the form.
+
+## Delete a variable
+
+Use the delete action in the list to remove a variable.
+
+Delete applies immediately. Unlike staged changes on some other pages, there is no separate bulk save step for deletions on the Variables page.
+
+## When to use the Variables page vs. System Requests
+
+Use the Variables page when you want to manage values manually in the admin.
+
+Use [System Requests](../requests/request-types/system-requests.md) when you want to set, get, or delete variables as part of an automated flow.
 
 SOURCE
 https://docs.apiease.com/docs/widgets/widgets-overview

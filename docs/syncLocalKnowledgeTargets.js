@@ -5,7 +5,7 @@ const {OUTPUT_PATH} = require('./buildApiEaseDocsKnowledgeBase');
 
 const SOURCE_PATH = OUTPUT_PATH;
 const TARGET_PATHS = [
-  path.resolve(__dirname, '../../apiease-template/knowledge/apiEaseDocsConsolidated.md'),
+  path.resolve(__dirname, '../../apiease-template/docs/knowledge/apiEaseDocsConsolidated.md'),
 ];
 
 async function syncLocalKnowledgeTargets({check = false} = {}) {
