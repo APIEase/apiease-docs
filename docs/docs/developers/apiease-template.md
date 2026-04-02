@@ -6,6 +6,8 @@ description: Use apiease-template as the recommended repository foundation for v
 
 `apiease-template` is the starter repository that `apiease-cli` uses when you run `apiease init`.
 
+GitHub repository: [kevinstl-org/apiease-template](https://github.com/kevinstl-org/apiease-template)
+
 It is the recommended foundation for APIEase development because it gives you:
 
 - a predictable repository layout for requests, widgets, variables, and functions

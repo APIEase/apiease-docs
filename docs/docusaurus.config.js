@@ -133,6 +133,14 @@ const config = {
             title: 'More',
             items: [
               {
+                label: 'APIEase CLI',
+                href: 'https://github.com/kevinstl-org/apiease-cli',
+              },
+              {
+                label: 'APIEase Template',
+                href: 'https://github.com/kevinstl-org/apiease-template',
+              },
+              {
                 label: 'Support',
                 href: 'mailto:support@apiease.com',
               },
