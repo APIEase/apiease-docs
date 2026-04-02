@@ -21,7 +21,7 @@ You need:
 
 - Node.js 20 or newer
 - a working `apiease` command from [apiease-cli](./apiease-cli.md)
-- an APIEase base URL
+- the APIEase base URL `https://app-admin.apiease.com`
 - an APIEase API key
 - a Shopify shop domain such as `yourstore.myshopify.com`
 
@@ -81,7 +81,7 @@ printf 'local\n' > ~/.apiease/environment
 Create the matching env file:
 
 ```bash
-printf 'APIEASE_API_KEY=your-local-api-key\nAPIEASE_BASE_URL=https://your-local-apiease-host.example.com\nAPIEASE_SHOP_DOMAIN=yourstore.myshopify.com\n' > ~/.apiease/.env.local
+printf 'APIEASE_API_KEY=your-local-api-key\nAPIEASE_BASE_URL=https://app-admin.apiease.com\nAPIEASE_SHOP_DOMAIN=yourstore.myshopify.com\n' > ~/.apiease/.env.local
 ```
 
 Supported environment names are:

@@ -75,7 +75,7 @@ Typical local setup:
 ```bash
 mkdir -p ~/.apiease
 printf 'local\n' > ~/.apiease/environment
-printf 'APIEASE_API_KEY=your-local-api-key\nAPIEASE_BASE_URL=https://your-local-apiease-host.example.com\nAPIEASE_SHOP_DOMAIN=yourstore.myshopify.com\n' > ~/.apiease/.env.local
+printf 'APIEASE_API_KEY=your-local-api-key\nAPIEASE_BASE_URL=https://app-admin.apiease.com\nAPIEASE_SHOP_DOMAIN=yourstore.myshopify.com\n' > ~/.apiease/.env.local
 ```
 
 This matters for agent work because:
@@ -128,7 +128,7 @@ Use direct HTTP calls only when you need lower-level automation that the CLI doe
 For direct remote execution of an existing saved request, the current route is:
 
 ```bash
-curl -X POST 'https://your-apiease-host.example.com/api/remote/caller/call?requestId=product-details-proxy' \
+curl -X POST 'https://app-admin.apiease.com/api/remote/caller/call?requestId=product-details-proxy' \
   -H 'x-apiease-api-key: your-apiease-api-key' \
   -H 'x-shop-myshopify-domain: yourstore.myshopify.com'
 ```

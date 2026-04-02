@@ -51,7 +51,7 @@ If you are working directly inside the CLI repository without linking it globall
 
 Every CRUD command needs three values:
 
-- an APIEase base URL
+- an APIEase base URL, which normally should be `https://app-admin.apiease.com`
 - an APIEase API key
 - a Shopify shop domain
 
@@ -60,7 +60,7 @@ You can pass all three values explicitly on each command:
 ```bash
 apiease create request \
   --file ./request-definition.json \
-  --base-url https://your-apiease-host.example.com \
+  --base-url https://app-admin.apiease.com \
   --shop-domain yourstore.myshopify.com \
   --api-key your-apiease-api-key
 ```
@@ -83,7 +83,7 @@ Example local setup:
 
 ```bash
 printf 'local\n' > ~/.apiease/environment
-printf 'APIEASE_API_KEY=your-local-api-key\nAPIEASE_BASE_URL=https://your-local-apiease-host.example.com\nAPIEASE_SHOP_DOMAIN=yourstore.myshopify.com\n' > ~/.apiease/.env.local
+printf 'APIEASE_API_KEY=your-local-api-key\nAPIEASE_BASE_URL=https://app-admin.apiease.com\nAPIEASE_SHOP_DOMAIN=yourstore.myshopify.com\n' > ~/.apiease/.env.local
 ```
 
 Configuration precedence is:

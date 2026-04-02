@@ -37,7 +37,7 @@ When you send JSON bodies, also include:
 Example:
 
 ```bash
-curl -X GET 'https://your-apiease-host.example.com/api/v1/resources/requests' \
+curl -X GET 'https://app-admin.apiease.com/api/v1/resources/requests' \
   -H 'x-apiease-api-key: your-apiease-api-key' \
   -H 'x-shop-myshopify-domain: yourstore.myshopify.com'
 ```
@@ -93,7 +93,7 @@ The public API accepts the same request concepts already documented in the Reque
 This example matches the request shape used by the template examples and the current public request contract:
 
 ```bash
-curl -X POST 'https://your-apiease-host.example.com/api/v1/resources/requests' \
+curl -X POST 'https://app-admin.apiease.com/api/v1/resources/requests' \
   -H 'content-type: application/json' \
   -H 'x-apiease-api-key: your-apiease-api-key' \
   -H 'x-shop-myshopify-domain: yourstore.myshopify.com' \
@@ -145,7 +145,7 @@ When creating or updating a request:
 Use the collection route to list resources:
 
 ```bash
-curl -X GET 'https://your-apiease-host.example.com/api/v1/resources/requests' \
+curl -X GET 'https://app-admin.apiease.com/api/v1/resources/requests' \
   -H 'x-apiease-api-key: your-apiease-api-key' \
   -H 'x-shop-myshopify-domain: yourstore.myshopify.com'
 ```
@@ -153,13 +153,13 @@ curl -X GET 'https://your-apiease-host.example.com/api/v1/resources/requests' \
 Use the item route to read, update, or delete one resource:
 
 ```bash
-curl -X GET 'https://your-apiease-host.example.com/api/v1/resources/requests/product-details-proxy' \
+curl -X GET 'https://app-admin.apiease.com/api/v1/resources/requests/product-details-proxy' \
   -H 'x-apiease-api-key: your-apiease-api-key' \
   -H 'x-shop-myshopify-domain: yourstore.myshopify.com'
 ```
 
 ```bash
-curl -X PUT 'https://your-apiease-host.example.com/api/v1/resources/requests/product-details-proxy' \
+curl -X PUT 'https://app-admin.apiease.com/api/v1/resources/requests/product-details-proxy' \
   -H 'content-type: application/json' \
   -H 'x-apiease-api-key: your-apiease-api-key' \
   -H 'x-shop-myshopify-domain: yourstore.myshopify.com' \
@@ -172,7 +172,7 @@ curl -X PUT 'https://your-apiease-host.example.com/api/v1/resources/requests/pro
 ```
 
 ```bash
-curl -X DELETE 'https://your-apiease-host.example.com/api/v1/resources/requests/product-details-proxy' \
+curl -X DELETE 'https://app-admin.apiease.com/api/v1/resources/requests/product-details-proxy' \
   -H 'x-apiease-api-key: your-apiease-api-key' \
   -H 'x-shop-myshopify-domain: yourstore.myshopify.com'
 ```
@@ -184,7 +184,7 @@ The same CRUD pattern also applies to functions, variables, and widgets with the
 The public API also exposes a remote execution route for saved requests:
 
 ```bash
-curl -X POST 'https://your-apiease-host.example.com/api/remote/caller/call?requestId=product-details-proxy' \
+curl -X POST 'https://app-admin.apiease.com/api/remote/caller/call?requestId=product-details-proxy' \
   -H 'x-apiease-api-key: your-apiease-api-key' \
   -H 'x-shop-myshopify-domain: yourstore.myshopify.com'
 ```
@@ -226,6 +226,7 @@ For most teams, the practical workflow is:
 1. keep resource definitions in a repository
 2. manage them through `apiease-cli`
 3. let the CLI call the public API using your configured base URL, API key, and shop domain
+   In most cases, that base URL should be `https://app-admin.apiease.com`.
 4. use direct HTTP calls only when you need custom automation outside the CLI
 
 That keeps your APIEase resources versioned in git while still using the same public API contract that powers the CLI.
