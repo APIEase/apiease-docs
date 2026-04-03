@@ -15,6 +15,20 @@ Use this quickstart when you want to:
 
 If you are new to the developer workflow, start here before the deeper pages for [apiease-template](./apiease-template.md), [apiease-cli](./apiease-cli.md), and the [APIEase Public API](./apiease-public-api.md).
 
+## Install the APIEase CLI
+
+Install the `apiease` command globally before you start the template workflow:
+
+```bash
+npm install -g apiease
+```
+
+After installation, confirm the command is available:
+
+```bash
+apiease
+```
+
 ## Before you start
 
 You need:
@@ -24,8 +38,6 @@ You need:
 - the APIEase base URL `https://app-admin.apiease.com`
 - an APIEase API key
 - a Shopify shop domain such as `yourstore.myshopify.com`
-
-If you have not installed the CLI yet, use the install steps in [apiease-cli](./apiease-cli.md).
 
 ## Initialize the project from the template
 
