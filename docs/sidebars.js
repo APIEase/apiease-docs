@@ -191,7 +191,7 @@ const sidebars = {
       type: 'category',
       label: 'Functions',
       items: [
-        'functions/functions-page',
+        'functions/functions-overview',
         'functions/using-functions-in-liquid-requests',
       ],
     },
@@ -199,7 +199,7 @@ const sidebars = {
       type: 'category',
       label: 'Variables',
       items: [
-        'variables/variables-page',
+        'variables/variables-overview',
       ],
     },
     {

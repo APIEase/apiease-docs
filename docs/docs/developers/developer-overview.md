@@ -43,8 +43,8 @@ For request behavior, request contracts, and other platform concepts, use the ex
 - [Request Parameters Overview](../requests/request-parameters/request-parameters-overview.md)
 - [Triggers Overview](../requests/triggers/triggers-overview.md)
 - [Widgets Overview](../widgets/widgets-overview.md)
-- [Functions](../functions/functions-page.md)
-- [Variables](../variables/variables-page.md)
+- [Functions](../functions/functions-overview.md)
+- [Variables](../variables/variables-overview.md)
 
 ## Practical workflow summary
 

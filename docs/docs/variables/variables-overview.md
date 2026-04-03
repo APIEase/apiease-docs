@@ -1,8 +1,8 @@
 ---
-title: Variables page
+title: Variables Overview
 description: Manage persisted shop variables from the APIEase admin.
 ---
-# Variables page
+# Variables Overview
 
 The Variables page lets you manage persisted shop variables for the current store directly from the APIEase admin.
 

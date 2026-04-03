@@ -6,7 +6,7 @@ description: Functional overview of what APIEase executes and manages.
 
 APIEase defines and runs four types of requests: [HTTP Requests](../requests/request-types/http-requests.md), [Flow Requests](../requests/request-types/flow-requests.md), [Liquid Requests](../requests/request-types/liquid-requests.md), and [System Requests](../requests/request-types/system-requests.md). Each request type is executed inside APIEase's managed environment, keeping credentials secure and ensuring logic is processed server-side.
 
-APIEase also includes [Functions](../functions/functions-page.md) and [Widgets](../widgets/widgets-page.md). Functions are reusable Liquid helpers for Liquid Requests, while Widgets are designed for storefront UI instead of API execution.
+APIEase also includes [Functions](../functions/functions-overview.md) and [Widgets](../widgets/widgets-page.md). Functions are reusable Liquid helpers for Liquid Requests, while Widgets are designed for storefront UI instead of API execution.
 
 ## [HTTP Requests](../requests/request-types/http-requests.md)
 
@@ -28,7 +28,7 @@ System Requests run internal APIEase functions (they do not call an external URL
 
 Widgets are reusable storefront components that render Liquid templates with optional JavaScript. They are added to your theme through the APIEase app block and can be updated centrally in the APIEase admin.
 
-## [Functions](../functions/functions-page.md)
+## [Functions](../functions/functions-overview.md)
 
 Functions are reusable Liquid helpers that run inside a parent Liquid Request. Use them to keep shared formatting, transformation, and response-shaping logic in one place instead of repeating the same Liquid across multiple requests.
 

@@ -1,8 +1,8 @@
 ---
-title: Functions page
+title: Functions Overview
 description: Create and manage reusable Liquid helper functions in APIEase.
 ---
-# Functions page
+# Functions Overview
 
 The Functions page lets you create reusable Liquid helpers that can be called from [Liquid Requests](../requests/request-types/liquid-requests.md).
 

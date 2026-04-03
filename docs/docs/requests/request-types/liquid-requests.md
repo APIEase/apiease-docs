@@ -103,7 +103,7 @@ Response fields:
 
 **The function tag**
 
-Use the function tag to call a saved [Function](../../functions/functions-page.md) from inside a Liquid Request. Functions are reusable Liquid helpers that run inside the current Liquid Request and do not create a separate request execution.
+Use the function tag to call a saved [Function](../../functions/functions-overview.md) from inside a Liquid Request. Functions are reusable Liquid helpers that run inside the current Liquid Request and do not create a separate request execution.
 
 Inline syntax:
 

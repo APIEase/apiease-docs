@@ -8,7 +8,7 @@ APIEase runs the requests and logic you define. Each request ([HTTP](../requests
 
 This page describes how requests are configured, how they are triggered, and how these elements combine to create custom functionality.
 
-APIEase also includes reusable [Functions](../functions/functions-page.md), persisted [Variables](../variables/variables-page.md), and storefront widgets. Widgets render Liquid and JavaScript through a theme app block and are managed in the same admin.
+APIEase also includes reusable [Functions](../functions/functions-overview.md), persisted [Variables](../variables/variables-overview.md), and storefront widgets. Widgets render Liquid and JavaScript through a theme app block and are managed in the same admin.
 
 ---
 
@@ -22,11 +22,11 @@ When you create a request, you choose the type ([HTTP Request](../requests/reque
 
 Each request is saved as a reusable and callable unit of logic.
 
-If you need reusable helper logic inside a Liquid Request, create a [Function](../functions/functions-page.md) and call it from Liquid instead of repeating the same template code.
+If you need reusable helper logic inside a Liquid Request, create a [Function](../functions/functions-overview.md) and call it from Liquid instead of repeating the same template code.
 
 For setup steps, see [How to Add Requests](../requests/how-to-add-requests.md).
 
-If you need to manage persisted values outside of a request, use the [Variables page](../variables/variables-page.md).
+If you need to manage persisted values outside of a request, use [Variables Overview](../variables/variables-overview.md).
 
 ---
 

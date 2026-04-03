@@ -217,8 +217,8 @@ When you manage request resources through the CLI, the JSON file uses the same r
 - [Request Parameters Overview](../requests/request-parameters/request-parameters-overview.md)
 - [Triggers Overview](../requests/triggers/triggers-overview.md)
 - [Widgets Overview](../widgets/widgets-overview.md)
-- [Functions](../functions/functions-page.md)
-- [Variables](../variables/variables-page.md)
+- [Functions](../functions/functions-overview.md)
+- [Variables](../variables/variables-overview.md)
 
 For the underlying HTTP routes and authentication headers, see [APIEase Public API](./apiease-public-api.md).
 

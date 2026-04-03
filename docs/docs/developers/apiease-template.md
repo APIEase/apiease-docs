@@ -114,8 +114,8 @@ The template does not replace the core APIEase documentation. It gives you a rep
 - [Request Parameters Overview](../requests/request-parameters/request-parameters-overview.md)
 - [Triggers Overview](../requests/triggers/triggers-overview.md)
 - [Widgets Overview](../widgets/widgets-overview.md)
-- [Functions](../functions/functions-page.md)
-- [Variables](../variables/variables-page.md)
+- [Functions](../functions/functions-overview.md)
+- [Variables](../variables/variables-overview.md)
 
 ## Why the template is the recommended start
 
