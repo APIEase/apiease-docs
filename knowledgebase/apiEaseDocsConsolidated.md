@@ -2596,7 +2596,11 @@ Webhooks overview
 CONTENT
 # Webhooks overview
 
-Use Shopify webhooks to start APIEase requests automatically when store events occur. This is ideal for reacting in real time to orders, carts, customers, and other updates without polling. You can add a webhook trigger to any request. See the [Shopify webhook topics](https://shopify.dev/docs/api/admin-graphql/2023-10/enums/WebhookSubscriptionTopic) for available events.
+Use Shopify webhooks to start APIEase requests automatically when store events occur. This is ideal for reacting in real time to orders, carts, customers, and other updates without polling.
+
+In APIEase, use uppercase webhook event constants such as `ORDERS_CREATE`, `CARTS_UPDATE`, and `CUSTOMERS_UPDATE`. These correspond to Shopify topic names such as `orders/create`, `carts/update`, and `customers/update`.
+
+You can add a webhook trigger to any request. See the [Shopify webhook topics](https://shopify.dev/docs/api/admin-graphql/2023-10/enums/WebhookSubscriptionTopic) for the underlying Shopify event list.
 
 ## [Trigger requests from a webhook](./trigger-requests-from-a-webhook.md)
 - Configure how to start requests from webhook events.
@@ -2613,7 +2617,7 @@ Trigger requests from a webhook
 CONTENT
 # Trigger requests from a webhook
 
-This guide shows how to configure a webhook trigger in APIEase. Shopify maintains the full list of [webhook topics](https://shopify.dev/docs/api/admin-graphql/2023-10/enums/WebhookSubscriptionTopic).
+This guide shows how to configure a webhook trigger in APIEase. In APIEase, use uppercase webhook event constants such as `ORDERS_CREATE` and `CARTS_UPDATE`. These correspond to Shopify webhook topics such as `orders/create` and `carts/update`. Shopify maintains the full list of [webhook topics](https://shopify.dev/docs/api/admin-graphql/2023-10/enums/WebhookSubscriptionTopic).
 
 ![Webhook trigger selection](https://cdn.shopify.com/s/files/1/0733/1820/3680/files/trigger-webhook-http.png?v=1744409941)
 
@@ -2621,7 +2625,7 @@ This guide shows how to configure a webhook trigger in APIEase. Shopify maintain
 1. In the APIEase admin, open the request (click the edit icon if needed).
 2. In the **Trigger** column, click the plus icon.
 3. Select **Webhook**.
-4. Choose the Shopify webhook event (for example `orders/create`, `customers/update`, or `carts/update`).
+4. Choose the APIEase webhook event constant (for example `ORDERS_CREATE`, `CUSTOMERS_UPDATE`, or `CARTS_UPDATE`).
 
 After saving, APIEase will execute the request every time that event is received from Shopify.
 
@@ -2631,14 +2635,14 @@ After saving, APIEase will execute the request every time that event is received
 If you want to start a Shopify Flow automation whenever a cart updates:
 1. Create a new request and select **Flow** as the request type.
 2. Choose your Flow template and fill required parameters.
-3. Add a webhook trigger and select `carts/update`.
+3. Add a webhook trigger and select `CARTS_UPDATE`.
 
 Each cart update triggers the request and starts the Flow. Any webhook fields you need can also be mapped into Flow input parameters.
 
 ## Webhook payload as body
 When the request is triggered, the webhook payload is passed as the body.
 
-- Base body (example from `discounts/create`):
+- Base body (example for the Shopify topic `discounts/create`, which APIEase represents as `DISCOUNTS_CREATE`):
 ```json
 {
   "admin_graphql_api_id": "gid://shopify/DiscountAutomaticNode/1",
@@ -2684,6 +2688,8 @@ CONTENT
 
 When a Shopify webhook triggers a request in APIEase, the full webhook payload is forwarded as the request body. You can map any field from that payload into query parameters, headers, or body fields that your endpoint expects.
 
+When you choose the webhook trigger in APIEase, use the uppercase webhook event constant, such as `PRODUCTS_DELETE`. Shopify documentation refers to the same event by its topic name, such as `products/delete`.
+
 **How mapping works**
 
 Add a parameter to your request with:
@@ -2692,7 +2698,7 @@ Add a parameter to your request with:
 - **Value**: A reference to the webhook payload field, wrapped in curly braces
 
 ## Example: simple payload value
-For the `products/delete` webhook, the payload includes:
+For the APIEase event constant `PRODUCTS_DELETE` (Shopify topic `products/delete`), the payload includes:
 
 ```json
 {
@@ -2710,7 +2716,7 @@ This pulls the `id` field from the webhook and renders an address like `https://
 ![Mapping a webhook payload field to a query parameter](https://cdn.shopify.com/s/files/1/0733/1820/3680/files/mapping-webhook-parameter-query.png?v=1744666126)
 
 ## Example: nested payload value
-If the value you need is nested, use dot notation. For the `product_listings/remove` webhook, the payload includes:
+If the value you need is nested, use dot notation. For the APIEase event constant `PRODUCT_LISTINGS_REMOVE` (Shopify topic `product_listings/remove`), the payload includes:
 
 ```json
 {
