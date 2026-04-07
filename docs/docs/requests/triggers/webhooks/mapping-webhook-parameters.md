@@ -6,6 +6,8 @@ description: Use values from a Shopify webhook payload inside your request.
 
 When a Shopify webhook triggers a request in APIEase, the full webhook payload is forwarded as the request body. You can map any field from that payload into query parameters, headers, or body fields that your endpoint expects.
 
+When you choose the webhook trigger in APIEase, use the uppercase webhook event constant, such as `PRODUCTS_DELETE`. Shopify documentation refers to the same event by its topic name, such as `products/delete`.
+
 **How mapping works**
 
 Add a parameter to your request with:
@@ -14,7 +16,7 @@ Add a parameter to your request with:
 - **Value**: A reference to the webhook payload field, wrapped in curly braces
 
 ## Example: simple payload value
-For the `products/delete` webhook, the payload includes:
+For the APIEase event constant `PRODUCTS_DELETE` (Shopify topic `products/delete`), the payload includes:
 
 ```json
 {
@@ -32,7 +34,7 @@ This pulls the `id` field from the webhook and renders an address like `https://
 ![Mapping a webhook payload field to a query parameter](https://cdn.shopify.com/s/files/1/0733/1820/3680/files/mapping-webhook-parameter-query.png?v=1744666126)
 
 ## Example: nested payload value
-If the value you need is nested, use dot notation. For the `product_listings/remove` webhook, the payload includes:
+If the value you need is nested, use dot notation. For the APIEase event constant `PRODUCT_LISTINGS_REMOVE` (Shopify topic `product_listings/remove`), the payload includes:
 
 ```json
 {
@@ -47,4 +49,3 @@ To pass the nested `product_id` value to your endpoint, set the parameter value 
 ## Tips
 - The webhook payload is already the request body; additional body parameters you add are merged into that body.
 - Use descriptive parameter names so the rendered request matches what your downstream API expects.
-
