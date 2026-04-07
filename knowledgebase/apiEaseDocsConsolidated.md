@@ -39,7 +39,7 @@ CONTENT
 
 APIEase defines and runs four types of requests: [HTTP Requests](../requests/request-types/http-requests.md), [Flow Requests](../requests/request-types/flow-requests.md), [Liquid Requests](../requests/request-types/liquid-requests.md), and [System Requests](../requests/request-types/system-requests.md). Each request type is executed inside APIEase's managed environment, keeping credentials secure and ensuring logic is processed server-side.
 
-APIEase also includes [Functions](../functions/functions-page.md) and [Widgets](../widgets/widgets-page.md). Functions are reusable Liquid helpers for Liquid Requests, while Widgets are designed for storefront UI instead of API execution.
+APIEase also includes [Functions](../functions/functions-overview.md) and [Widgets](../widgets/widgets-page.md). Functions are reusable Liquid helpers for Liquid Requests, while Widgets are designed for storefront UI instead of API execution.
 
 ## [HTTP Requests](../requests/request-types/http-requests.md)
 
@@ -61,7 +61,7 @@ System Requests run internal APIEase functions (they do not call an external URL
 
 Widgets are reusable storefront components that render Liquid templates with optional JavaScript. They are added to your theme through the APIEase app block and can be updated centrally in the APIEase admin.
 
-## [Functions](../functions/functions-page.md)
+## [Functions](../functions/functions-overview.md)
 
 Functions are reusable Liquid helpers that run inside a parent Liquid Request. Use them to keep shared formatting, transformation, and response-shaping logic in one place instead of repeating the same Liquid across multiple requests.
 
@@ -82,7 +82,7 @@ APIEase runs the requests and logic you define. Each request ([HTTP](../requests
 
 This page describes how requests are configured, how they are triggered, and how these elements combine to create custom functionality.
 
-APIEase also includes reusable [Functions](../functions/functions-page.md), persisted [Variables](../variables/variables-page.md), and storefront widgets. Widgets render Liquid and JavaScript through a theme app block and are managed in the same admin.
+APIEase also includes reusable [Functions](../functions/functions-overview.md), persisted [Variables](../variables/variables-overview.md), and storefront widgets. Widgets render Liquid and JavaScript through a theme app block and are managed in the same admin.
 
 ---
 
@@ -96,11 +96,11 @@ When you create a request, you choose the type ([HTTP Request](../requests/reque
 
 Each request is saved as a reusable and callable unit of logic.
 
-If you need reusable helper logic inside a Liquid Request, create a [Function](../functions/functions-page.md) and call it from Liquid instead of repeating the same template code.
+If you need reusable helper logic inside a Liquid Request, create a [Function](../functions/functions-overview.md) and call it from Liquid instead of repeating the same template code.
 
 For setup steps, see [How to Add Requests](../requests/how-to-add-requests.md).
 
-If you need to manage persisted values outside of a request, use the [Variables page](../variables/variables-page.md).
+If you need to manage persisted values outside of a request, use [Variables Overview](../variables/variables-overview.md).
 
 ---
 
@@ -234,8 +234,8 @@ For request behavior, request contracts, and other platform concepts, use the ex
 - [Request Parameters Overview](../requests/request-parameters/request-parameters-overview.md)
 - [Triggers Overview](../requests/triggers/triggers-overview.md)
 - [Widgets Overview](../widgets/widgets-overview.md)
-- [Functions](../functions/functions-page.md)
-- [Variables](../variables/variables-page.md)
+- [Functions](../functions/functions-overview.md)
+- [Variables](../variables/variables-overview.md)
 
 ## Practical workflow summary
 
@@ -366,6 +366,20 @@ Use this quickstart when you want to:
 
 If you are new to the developer workflow, start here before the deeper pages for [apiease-template](./apiease-template.md), [apiease-cli](./apiease-cli.md), and the [APIEase Public API](./apiease-public-api.md).
 
+## Install the APIEase CLI
+
+Install the `apiease` command globally before you start the template workflow:
+
+```bash
+npm install -g apiease
+```
+
+After installation, confirm the command is available:
+
+```bash
+apiease
+```
+
 ## Before you start
 
 You need:
@@ -375,8 +389,6 @@ You need:
 - the APIEase base URL `https://app-admin.apiease.com`
 - an APIEase API key
 - a Shopify shop domain such as `yourstore.myshopify.com`
-
-If you have not installed the CLI yet, use the install steps in [apiease-cli](./apiease-cli.md).
 
 ## Initialize the project from the template
 
@@ -1192,8 +1204,8 @@ When you manage request resources through the CLI, the JSON file uses the same r
 - [Request Parameters Overview](../requests/request-parameters/request-parameters-overview.md)
 - [Triggers Overview](../requests/triggers/triggers-overview.md)
 - [Widgets Overview](../widgets/widgets-overview.md)
-- [Functions](../functions/functions-page.md)
-- [Variables](../variables/variables-page.md)
+- [Functions](../functions/functions-overview.md)
+- [Variables](../variables/variables-overview.md)
 
 For the underlying HTTP routes and authentication headers, see [APIEase Public API](./apiease-public-api.md).
 
@@ -1328,8 +1340,8 @@ The template does not replace the core APIEase documentation. It gives you a rep
 - [Request Parameters Overview](../requests/request-parameters/request-parameters-overview.md)
 - [Triggers Overview](../requests/triggers/triggers-overview.md)
 - [Widgets Overview](../widgets/widgets-overview.md)
-- [Functions](../functions/functions-page.md)
-- [Variables](../variables/variables-page.md)
+- [Functions](../functions/functions-overview.md)
+- [Variables](../variables/variables-overview.md)
 
 ## Why the template is the recommended start
 
@@ -1643,7 +1655,7 @@ Response fields:
 
 **The function tag**
 
-Use the function tag to call a saved [Function](../../functions/functions-page.md) from inside a Liquid Request. Functions are reusable Liquid helpers that run inside the current Liquid Request and do not create a separate request execution.
+Use the function tag to call a saved [Function](../../functions/functions-overview.md) from inside a Liquid Request. Functions are reusable Liquid helpers that run inside the current Liquid Request and do not create a separate request execution.
 
 Inline syntax:
 
@@ -1797,7 +1809,7 @@ CONTENT
 
 System requests run internal APIEase functions. Unlike HTTP requests, System requests do not call an external URL.
 
-If you want to manage the same persisted values manually in the admin, see the [Variables page](../../variables/variables-page.md).
+If you want to manage the same persisted values manually in the admin, see [Variables Overview](../../variables/variables-overview.md).
 
 ## When to use System requests
 
@@ -3705,13 +3717,13 @@ If request parameters are owned by individual customer you will need to add a se
 If you add customer id to a request that customer must be logged into the store in order for the api call to pass validation and return a response to your storefront.
 
 SOURCE
-https://docs.apiease.com/docs/functions/functions-page
+https://docs.apiease.com/docs/functions/functions-overview
 
 TITLE
-Functions page
+Functions Overview
 
 CONTENT
-# Functions page
+# Functions Overview
 
 The Functions page lets you create reusable Liquid helpers that can be called from [Liquid Requests](../requests/request-types/liquid-requests.md).
 
@@ -4011,13 +4023,13 @@ Use a [Liquid Request](../requests/request-types/liquid-requests.md) when you ne
 Use an [HTTP Request](../requests/request-types/http-requests.md), [Flow Request](../requests/request-types/flow-requests.md), or [System Request](../requests/request-types/system-requests.md) when you need to call an external or app-managed operation.
 
 SOURCE
-https://docs.apiease.com/docs/variables/variables-page
+https://docs.apiease.com/docs/variables/variables-overview
 
 TITLE
-Variables page
+Variables Overview
 
 CONTENT
-# Variables page
+# Variables Overview
 
 The Variables page lets you manage persisted shop variables for the current store directly from the APIEase admin.
 
