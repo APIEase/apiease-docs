@@ -4,7 +4,7 @@ description: Run an APIEase request whenever Shopify sends a webhook event.
 ---
 # Trigger requests from a webhook
 
-This guide shows how to configure a webhook trigger in APIEase. Shopify maintains the full list of [webhook topics](https://shopify.dev/docs/api/admin-graphql/2023-10/enums/WebhookSubscriptionTopic).
+This guide shows how to configure a webhook trigger in APIEase. In APIEase, use uppercase webhook event constants such as `ORDERS_CREATE` and `CARTS_UPDATE`. These correspond to Shopify webhook topics such as `orders/create` and `carts/update`. Shopify maintains the full list of [webhook topics](https://shopify.dev/docs/api/admin-graphql/2023-10/enums/WebhookSubscriptionTopic).
 
 ![Webhook trigger selection](https://cdn.shopify.com/s/files/1/0733/1820/3680/files/trigger-webhook-http.png?v=1744409941)
 
@@ -12,7 +12,7 @@ This guide shows how to configure a webhook trigger in APIEase. Shopify maintain
 1. In the APIEase admin, open the request (click the edit icon if needed).
 2. In the **Trigger** column, click the plus icon.
 3. Select **Webhook**.
-4. Choose the Shopify webhook event (for example `orders/create`, `customers/update`, or `carts/update`).
+4. Choose the APIEase webhook event constant (for example `ORDERS_CREATE`, `CUSTOMERS_UPDATE`, or `CARTS_UPDATE`).
 
 After saving, APIEase will execute the request every time that event is received from Shopify.
 
@@ -22,14 +22,14 @@ After saving, APIEase will execute the request every time that event is received
 If you want to start a Shopify Flow automation whenever a cart updates:
 1. Create a new request and select **Flow** as the request type.
 2. Choose your Flow template and fill required parameters.
-3. Add a webhook trigger and select `carts/update`.
+3. Add a webhook trigger and select `CARTS_UPDATE`.
 
 Each cart update triggers the request and starts the Flow. Any webhook fields you need can also be mapped into Flow input parameters.
 
 ## Webhook payload as body
 When the request is triggered, the webhook payload is passed as the body.
 
-- Base body (example from `discounts/create`):
+- Base body (example for the Shopify topic `discounts/create`, which APIEase represents as `DISCOUNTS_CREATE`):
 ```json
 {
   "admin_graphql_api_id": "gid://shopify/DiscountAutomaticNode/1",
