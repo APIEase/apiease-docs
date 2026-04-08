@@ -7,7 +7,7 @@ APIEase
 CONTENT
 # APIEase
 
-The API Integration And Automation Platform
+The API Integration And Automation Runtime
 ===========================================
 
 APIEase is a managed system where your API requests, workflows, and custom logic 
