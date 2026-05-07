@@ -32,6 +32,14 @@ Globally registered widgets should be designed for site-wide use. They can be no
 
 Do not register ordinary section or content widgets globally unless you intentionally want them to load on every storefront page.
 
+## Choosing between App Block and App Embed
+
+Use the **Widget App Block** for the normal placement-specific path. Choose it when a widget belongs in one theme section, page, or template.
+
+Use the **Widget App Embed** only for site-wide widgets that should load on every storefront page. Good fits include non-visual background widgets, tracking, floating widgets, popups, and banners that position themselves.
+
+If a widget is ordinary page content, use the Widget App Block. Do not add ordinary section or content widgets to **Global widget handles** unless you intentionally want them to load across the entire storefront.
+
 ## Update or move a widget
 
 - If you change the widget handle, update the block setting to match.
