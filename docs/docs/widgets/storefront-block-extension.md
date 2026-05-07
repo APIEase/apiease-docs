@@ -1,10 +1,10 @@
 ---
 title: Storefront block extension
-description: Add a widget to your Shopify theme using the APIEase app block.
+description: Add widgets to your Shopify theme using the APIEase app block or app embed.
 ---
 # Storefront block extension
 
-Widgets render in your storefront through the APIEase Widget App Block. The block loads the widget by handle and injects its Liquid and JavaScript into the selected page or template.
+Widgets can render in your storefront through the APIEase Widget App Block or the APIEase Widget App Embed. Use the Widget App Block when a widget belongs on a specific page or template.
 
 ## Before you start
 
@@ -19,6 +19,18 @@ Widgets render in your storefront through the APIEase Widget App Block. The bloc
 4. Add the **APIEase Widget App Block** block to the section.
 5. Paste the widget handle into the **Widget handle** setting.
 6. Save the theme changes.
+
+## Run widgets globally with the App embed
+
+The **APIEase Widget App Embed** is optional. Enable it only for widgets that should run on every storefront page.
+
+Use the **Global widget handles** setting to register one or more widget handles. Separate multiple handles with new lines or commas.
+
+When the App embed is enabled, APIEase loads the registered widgets on every storefront page. Their Liquid can render globally, and their JavaScript can run globally.
+
+Globally registered widgets should be designed for site-wide use. They can be non-visual background widgets or self-positioned visual widgets, such as floating widgets, popups, or banners.
+
+Do not register ordinary section or content widgets globally unless you intentionally want them to load on every storefront page.
 
 ## Update or move a widget
 
