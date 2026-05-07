@@ -36,7 +36,7 @@ Create widgets in the APIEase admin by defining a name, handle, and Liquid templ
 
 ## Displaying Widgets
 
-Use the **APIEase Widget App Block** for widgets on a specific page or template, or the **APIEase Widget App Embed** for widgets that should run across the storefront. See [Storefront block extension](../widgets/storefront-block-extension.md).
+Use the **APIEase Widget App Block** for widgets on a specific page or template, or the **APIEase Widget App Embed** for widgets that should run across the storefront. See [Widget App Extensions](../widgets/widget-app-extensions.md).
 
 ---
 
