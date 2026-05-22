@@ -72,7 +72,7 @@ The template bundles more than empty directories. It also includes:
 - `CUSTOM_README.md` for project-specific human documentation
 - `CUSTOM_AGENT_GUIDANCE.md` for project-specific agent instructions
 
-This is one of the biggest reasons to start from the template. Humans, Codex-style agents, and the CLI all work from the same repository instead of relying on hidden conventions or repeated prompt context.
+This is one of the biggest reasons to start from the template. Humans, Codex/Claude Code style agents, and the CLI all work from the same repository instead of relying on hidden conventions or repeated prompt context.
 
 For more on that workflow, see [Using APIEase with AI agents](./using-apiease-with-ai-agents.md).
 

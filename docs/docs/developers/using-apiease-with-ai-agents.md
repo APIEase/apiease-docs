@@ -4,7 +4,7 @@ description: Use apiease-template, apiease-cli, and the APIEase public API in a 
 ---
 # Using APIEase with AI agents
 
-This page is for coding agents such as Codex working in an `apiease-template` project repository.
+This page is for coding agents such as Codex or Claude Code working in an `apiease-template` project repository.
 
 Most agent-driven APIEase work should follow this path:
 
