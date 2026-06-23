@@ -82,7 +82,7 @@ APIEase runs the requests and logic you define. Each request ([HTTP](../requests
 
 This page describes how requests are configured, how they are triggered, and how these elements combine to create custom functionality.
 
-APIEase also includes reusable [Functions](../functions/functions-overview.md), persisted [Variables](../variables/variables-overview.md), and storefront widgets. Widgets render Liquid and JavaScript through a theme app block and are managed in the same admin.
+APIEase also includes reusable [Functions](../functions/functions-overview.md), persisted [Variables](../variables/variables-overview.md), and storefront widgets. Widgets render Liquid and JavaScript through the Widget App Block or Widget App Embed and are managed in the same admin.
 
 ---
 
@@ -110,7 +110,7 @@ Create widgets in the APIEase admin by defining a name, handle, and Liquid templ
 
 ## Displaying Widgets
 
-Add the **APIEase App Block** block to your theme and set the widget handle. The block loads the widget content and scripts automatically. See [Storefront block extension](../widgets/storefront-block-extension.md).
+Use the **APIEase Widget App Block** for widgets on a specific page or template, or the **APIEase Widget App Embed** for widgets that should run across the storefront. See [Widget App Extensions](../widgets/widget-app-extensions.md).
 
 ---
 
@@ -318,7 +318,7 @@ The template bundles more than empty directories. It also includes:
 - `CUSTOM_README.md` for project-specific human documentation
 - `CUSTOM_AGENT_GUIDANCE.md` for project-specific agent instructions
 
-This is one of the biggest reasons to start from the template. Humans, Codex-style agents, and the CLI all work from the same repository instead of relying on hidden conventions or repeated prompt context.
+This is one of the biggest reasons to start from the template. Humans, Codex/Claude Code style agents, and the CLI all work from the same repository instead of relying on hidden conventions or repeated prompt context.
 
 For more on that workflow, see [Using APIEase with AI agents](./using-apiease-with-ai-agents.md).
 
@@ -581,7 +581,7 @@ Using APIEase with AI agents
 CONTENT
 # Using APIEase with AI agents
 
-This page is for coding agents such as Codex working in an `apiease-template` project repository.
+This page is for coding agents such as Codex or Claude Code working in an `apiease-template` project repository.
 
 Most agent-driven APIEase work should follow this path:
 
@@ -4122,17 +4122,17 @@ Widgets overview
 CONTENT
 # Widgets overview
 
-APIEase widgets are reusable storefront UI components that you build and manage in APIEase, then render in your Shopify theme through the APIEase theme app block. A widget can output Liquid (markup) and optionally run JavaScript, which makes it a good fit for UI that needs to stay flexible but still integrate with your backend logic.
+APIEase widgets are reusable storefront UI components that you build and manage in APIEase, then render in your Shopify theme through the APIEase Widget App Block or Widget App Embed. A widget can output Liquid (markup) and optionally run JavaScript, which makes it a good fit for UI that needs to stay flexible but still integrate with your backend logic.
 
 ## Why widgets are useful
 
 - **UI + secure API requests, together:** Widgets help you connect storefront UI components to secure API requests powered by APIEase, without moving secrets or request logic into the theme.
 - **Rich UI with Liquid + JavaScript:** Liquid plus inline JavaScript and external JavaScript libraries lets you build interactive, dynamic widgets while still relying on APIEase for secure request execution.
-- **Easy placement anywhere:** The Storefront block extension makes it straightforward to inject simple or complex API-integrated UI components anywhere in your store using the Theme Editor.
+- **Easy placement anywhere:** Widget App Extensions make it straightforward to add widgets to a specific page or template, or run selected widgets across the storefront.
 
 ## Learn more
 
-Learn more about the [Widgets page](./widgets-page.md) to manage and organize your widgets, the [Widget edit page](./widget-edit-page.md) to configure a widget's Liquid, JavaScript, and handle, and the [Storefront block extension](./storefront-block-extension.md) to add a widget to your theme and control where it renders.
+Learn more about the [Widgets page](./widgets-page.md) to manage and organize your widgets, the [Widget edit page](./widget-edit-page.md) to configure a widget's Liquid, JavaScript, and handle, and [Widget App Extensions](./widget-app-extensions.md) to choose between placement-specific and global widget rendering.
 
 SOURCE
 https://docs.apiease.com/docs/widgets/widgets-page
@@ -4223,31 +4223,60 @@ When checked, the widget renders its Liquid template but does not load any JavaS
 Use the assistant panel to generate or refine a widget draft. When you accept a draft, the editor updates the Liquid and JavaScript fields so you can review and save.
 
 SOURCE
-https://docs.apiease.com/docs/widgets/storefront-block-extension
+https://docs.apiease.com/docs/widgets/widget-app-extensions
 
 TITLE
-Storefront block extension
+Widget App Extensions
 
 CONTENT
-# Storefront block extension
+# Widget App Extensions
 
-Widgets render in your storefront through the APIEase theme app block. The block loads the widget by handle and injects its Liquid and JavaScript into the page.
+Widgets can render in your Shopify storefront through the APIEase Widget App Block or the APIEase Widget App Embed.
+
+Use the App Block when a widget belongs in a specific theme section, page, or template. Use the App Embed when a widget should load across the storefront.
 
 ## Before you start
 
 - Create and save a widget in APIEase.
 - Copy the widget handle from the widget editor.
-- In Shopify Theme Editor, enable the **APIEase Widget App Embed** (you typically only need to do this once per theme).
+
+## Choosing between App Block and App Embed
+
+Use the **Widget App Block** for the normal placement-specific path. Choose it when a widget belongs in one theme section, page, or template.
+
+Use the **Widget App Embed** only for site-wide widgets that should load on every storefront page. Good fits include non-visual background widgets, tracking, floating widgets, popups, and banners that position themselves.
+
+If a widget is ordinary page content, use the Widget App Block. Do not add ordinary section or content widgets to **Global widget handles** unless you intentionally want them to load across the entire storefront.
+
+## Next steps
+
+- Add a widget to a specific page or template with the [Widget App Block](./widget-app-block.md).
+- Run selected widgets globally with the [Widget App Embed](./widget-app-embed.md).
+
+SOURCE
+https://docs.apiease.com/docs/widgets/widget-app-block
+
+TITLE
+Widget App Block
+
+CONTENT
+# Widget App Block
+
+The APIEase Widget App Block renders a widget in a specific Shopify theme section, page, or template. This is the normal path for page content widgets and other widgets that need a specific placement in the storefront.
+
+## Before you start
+
+- Create and save a widget in APIEase.
+- Copy the widget handle from the widget editor.
 
 ## Add the widget to your theme
 
 1. Open Shopify admin and go to **Online Store** -> **Themes**.
 2. Select **Customize** on the theme you want to update.
-3. Open **App embeds** and enable **APIEase Widget App Embed**, then save.
-4. Navigate to the page or template where the widget should appear.
-5. Add the **APIEase App Block** block to the section.
-6. Paste the widget handle into the **Widget handle** setting.
-7. Save the theme changes.
+3. Navigate to the page or template where the widget should appear.
+4. Add the **APIEase Widget App Block** block to the section.
+5. Paste the widget handle into the **Widget handle** setting.
+6. Save the theme changes.
 
 ## Update or move a widget
 
@@ -4257,7 +4286,56 @@ Widgets render in your storefront through the APIEase theme app block. The block
 ## Troubleshooting
 
 - If the block shows "Widget handle not configured", confirm the handle value is set and saved.
-- If the widget does not render, confirm **APIEase Widget App Embed** is enabled and that the handle matches exactly.
+- If the widget does not render, confirm the handle matches exactly and the widget is saved in APIEase.
+
+## Related pages
+
+- Compare the App Block with the App Embed in [Widget App Extensions](./widget-app-extensions.md).
+- Use the [Widget App Embed](./widget-app-embed.md) for widgets that should run across the storefront.
+
+SOURCE
+https://docs.apiease.com/docs/widgets/widget-app-embed
+
+TITLE
+Widget App Embed
+
+CONTENT
+# Widget App Embed
+
+The APIEase Widget App Embed is optional. Enable it only for widgets that should run on every storefront page.
+
+When the App Embed is enabled, APIEase loads the registered widgets on every storefront page. Their Liquid can render globally, and their JavaScript can run globally.
+
+Globally registered widgets should be designed for site-wide use. They can be non-visual background widgets or self-positioned visual widgets, such as floating widgets, popups, or banners.
+
+Do not register ordinary section or content widgets globally unless you intentionally want them to load on every storefront page.
+
+## Before you start
+
+- Create and save a widget in APIEase.
+- Copy the widget handle from the widget editor.
+
+## Register global widgets
+
+1. Open Shopify admin and go to **Online Store** -> **Themes**.
+2. Select **Customize** on the theme you want to update.
+3. Open **App embeds**.
+4. Enable the **APIEase Widget App Embed**.
+5. Add one or more widget handles to **Global widget handles**.
+6. Save the theme changes.
+
+Use the **Global widget handles** setting to register one or more widget handles. Separate multiple handles with new lines or commas.
+
+## Troubleshooting
+
+- If a global widget does not run, confirm the App Embed is enabled and the theme changes are saved.
+- If a widget does not render, confirm the handle matches exactly and the widget is saved in APIEase.
+- If a visual widget appears on pages where it should not appear, remove it from **Global widget handles** and add it with the [Widget App Block](./widget-app-block.md) instead.
+
+## Related pages
+
+- Compare the App Embed with the App Block in [Widget App Extensions](./widget-app-extensions.md).
+- Use the [Widget App Block](./widget-app-block.md) for ordinary page content or section-specific widgets.
 
 SOURCE
 https://docs.apiease.com/docs/widgets/using-requests-in-widgets
