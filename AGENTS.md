@@ -41,6 +41,9 @@ Run all commands from `docs/` unless noted.
 ## Agent-Specific Instructions
 - When adding a new doc, update `docs/sidebars.js` so navigation renders.
 - Keep cross-links current by preferring dedicated pages over in-page anchors.
+- Write public docs from the APIEase user's point of view. APIEase is a technical product, so user-facing docs can and should use technical terms when those terms are part of using the admin UI, public API, storefront calls, other request execution options, `apiease-template`, or `apiease-cli`.
+- Distinguish user-facing technical explanations from internal implementation details. Prefer product and UI language on help pages (for example, "choose Liquid as the request type") unless the page is specifically documenting a public API field or CLI/template contract.
+- Do not expose internal APIEase runtime objects, private implementation paths, supporting-project internals, or codebase-only field names in public docs unless they are documented public API, template, or CLI surface area. Put agent-only or developer-internal guidance in `AGENTS.md` or internal docs in the APIEase implementation project instead.
 - codex-dev-bot does not need to create unit tests for documentation changes in this repository.
 - codex-dev-bot should still verify documentation changes in a TDD-style workflow by using the project test runner and confirming the Docusaurus build passes.
 - For documentation-only tasks, treat running `npm run build` from `docs/` as the primary verification step rather than adding new automated tests.
