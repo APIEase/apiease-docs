@@ -6,6 +6,8 @@ description: Use Liquid to transform data before or between API calls.
 
 Liquid requests let you run a Liquid template that can call any APIEase request and shape the output. This is useful when you want logic, variable substitution, or to combine multiple requests into one response without building a custom app.
 
+To create a Liquid request, choose **Liquid** as the request type and enter the Liquid template. Add saved parameters only for values you want to store on the request, and add triggers only for the ways this request should run.
+
 **Liquid Request Fields**
 
 **Name**: You can optionally give your request a name for your reference. If you plan to call this request from another request using a chained request, the name will be used by the calling request.
@@ -17,16 +19,16 @@ Liquid requests let you run a Liquid template that can call any APIEase request 
 - Use standard Liquid tags like assign, if, elsif, else, for, and capture.
 - Call other APIEase requests using the custom call tag shown below.
 - Call saved APIEase Functions using the custom function tag shown below.
-- Read parameters passed in from the storefront or other triggers.
+- Read saved Liquid parameters and values passed in when the request runs.
 
-**Parameters**: You can provide in app parameters directly in the request configuration. If you need values that depend on customer activity or storefront context, you can pass dynamic embedded parameters from the storefront.
+**Parameters**: Parameters are optional for Liquid requests. Add a saved parameter when a value should be stored on the request, reused as a default, marked sensitive, or inserted with `{parameterName}` before execution.
 
-- **Liquid**: Key value pairs you want available to the template as variables.
+- **Liquid**: Saved key value pairs you want available for `{parameterName}` substitution.
 - **System**: System parameters used by APIEase in special cases such as Customer Authentication.
 
-**How Liquid parameters replace variables in Liquid requests**
+**Saved Liquid parameters**
 
-Liquid parameters define variables for the Liquid template. Reference a Liquid parameter in request values using `{parameterName}` and APIEase replaces it at runtime.
+Saved Liquid parameters let you insert a stored value with `{parameterName}`. APIEase replaces `{parameterName}` with the saved value when the request runs.
 
 Example:
 
@@ -194,6 +196,8 @@ Assign and capture:
 - Use `assign` to store values you will reuse across calls.
 
 **Triggers**
+
+Triggers are optional. Add a trigger only for the entry point that should run this request. Do not add the Storefront App Proxy trigger just because the request is a Liquid request; add that trigger only when storefront theme code calls this request directly through Shopify's app proxy. A Liquid request invoked by another APIEase request with the `call` tag does not need its own Storefront App Proxy trigger.
 
 Choose how the request should be triggered:
   - Automatically via [webhook](../triggers/webhooks/trigger-requests-from-a-webhook.md)

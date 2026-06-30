@@ -13,8 +13,8 @@ You can use this placeholder in any value context where variable replacement is 
 - Body parameter values
 - Address values via path parameters
 - System parameter values
-- Liquid parameter values
-- Liquid request values via Liquid parameters
+- Liquid parameter values used for `{parameterName}` substitution
+- Liquid request values that reference saved Liquid parameters
 - Flow parameter values
 
 ## Examples
@@ -76,9 +76,9 @@ You can also use the placeholder as a system parameter value. Example:
 
 This is useful when downstream request logic expects customer ID as a system value.
 
-### Liquid request values via Liquid parameters
+### Liquid request values
 
-Liquid request variables are always defined through Liquid parameters, then referenced in the template.
+Use a saved Liquid parameter when you want the customer-id placeholder resolved before the template renders, then reference that saved value in the template with `{customerId}`.
 
 Set a Liquid parameter:
 
@@ -96,6 +96,8 @@ Then use it in the Liquid request:
 } as response %}
 {{ response.status }}
 ```
+
+This example only applies when you choose to use a saved Liquid parameter. Do not trust a storefront-supplied customer id for authentication; use the validation options below when customer identity matters.
 
 ### Flow parameter value
 

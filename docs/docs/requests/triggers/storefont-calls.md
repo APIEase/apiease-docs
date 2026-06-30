@@ -9,7 +9,7 @@ Run any APIEase request directly from your Shopify storefront using Shopify's ap
 If you want a more convenient and reusable way to make storefront calls, use [Widget Calls](./widget-calls.md) and trigger the request from an APIEase widget instead of pasting snippets into theme Liquid.
 
 ## Caution
-Use caution with Storefront App Proxy requests. Anyone from anywhere can call Storefront App Proxy requests. APIEase verifies that Storefront App Proxy requests have been routed through the Shopify App Proxy and that a Storefront App Proxy trigger has been added to your request. However, anyone can call this request via the Shopify App Proxy just as you can from your storefront.
+Use caution with Storefront App Proxy requests. Anyone from anywhere can call Storefront App Proxy requests. APIEase verifies that Storefront App Proxy requests have been routed through the Shopify App Proxy and that a Storefront App Proxy trigger has been added to the directly called request. However, anyone can call this request via the Shopify App Proxy just as you can from your storefront.
 
 ## How it works
 - Your theme calls the APIEase app proxy path (for example `/apps/apiease/integration/caller/call`) and includes the `requestId` for the request to run.
@@ -20,7 +20,7 @@ Use caution with Storefront App Proxy requests. Anyone from anywhere can call St
 1. Go to the Requests page.
 2. Click the plus icon at the top left of the page.
 3. At a minimum, set your Address and Method.
-4. If you want to call this request from your storefront, you must add the `Storefront App Proxy` trigger.
+4. If this exact request should be called directly from your storefront through Shopify's app proxy, add the `Storefront App Proxy` trigger.
 5. Click **Save** at the top of the screen.
 
 ## Call from your theme
@@ -40,6 +40,8 @@ Use the copied snippet as-is to verify the integration, then extend it with any 
 - `requestId` tells APIEase which request to run; this value is filled in when you click **Copy**.
 - Add `pathParamsEmbedded`, `queryParamsEmbedded`, `headersEmbedded`, `bodyEmbedded`, or `flowParamsEmbedded` as needed to pass dynamic embedded parameters from the storefront.
 - Keep confidential values stored in the APIEase request configuration; do not place secrets in storefront code.
+
+Do not add a Storefront App Proxy trigger to helper requests that are only invoked by another APIEase request or by a Liquid `call` tag.
 
 ## Customer validation options
 If the customer is logged in when the app proxy runs, Shopify includes their customer id in the call.

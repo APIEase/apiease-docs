@@ -77,6 +77,8 @@ If you are working with request resources, keep these conventions in mind:
 - `liquid` is required for `liquid` requests
 - `parameters` are optional for many requests but required for `system` requests
 - `triggers` are optional and describe how a saved request can run later
+- For `liquid` requests, include saved Liquid `parameters` only for saved values, sensitive values, or `{parameterName}` substitution.
+- Add a `storefrontAppProxy` trigger only to requests that should be called directly through Shopify's app proxy. Do not add it to Liquid helper requests that are only called by other APIEase requests.
 
 The public API accepts the same request concepts already documented in the Requests section. Use those pages as the source of truth for detailed behavior instead of duplicating that material here:
 
