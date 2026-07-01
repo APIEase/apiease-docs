@@ -34,7 +34,7 @@ Use the identifier field that belongs to the resource's public JSON shape:
 | Resource | Stable source identifier | Display field | Notes |
 | --- | --- | --- | --- |
 | Request | `handle` | `name` | Use the handle as the request identifier in CLI and public API calls. |
-| Widget | `widgetHandle` | `widgetName` | Widget JSON still uses widget-specific field names. |
+| Widget | `handle` | `widgetName` | Use the handle as the widget identifier in CLI, public API, and theme extension settings. |
 | Variable | `handle` | `name` | Use `handle` in System Request arguments whenever possible. |
 | Function | `handle` | `name` | The saved resource has a handle; the Liquid function tag still calls Functions by `functionName` or legacy `functionId`. |
 
@@ -74,7 +74,7 @@ curl -X GET 'https://app-admin.apiease.com/api/v1/resources/requests/product-det
   -H 'x-shop-myshopify-domain: yourstore.myshopify.com'
 ```
 
-Some older route parameters, UI internals, and examples may still use names like `requestId`, `widgetId`, `variableName`, or `functionId`. For public CRUD workflows, treat those as legacy parameter names and pass the resource handle as the value.
+Some older route parameters, UI internals, and examples may still use names like `requestId`, `widgetId`, `widgetHandle`, `widgetName`, `variableName`, or `functionId`. For public CRUD workflows, treat those as legacy parameter names and pass the resource handle as the value.
 
 ## Runtime request calls
 
@@ -105,4 +105,4 @@ apiease create request --file ./resources/requests/product-details-proxy.json --
 
 That updates only the local request identifier metadata. It does not change request behavior such as `type`, `method`, `address`, `parameters`, `triggers`, `liquid`, or `nextRequest`.
 
-For widgets, variables, and functions, update the JSON source manually so it contains the stable handle field for that resource and no server-owned id.
+For widgets, variables, and functions, update the JSON source manually so it contains `handle`, the stable source identifier, and no server-owned id. Older widget files that use `widgetHandle` should be migrated to `handle`; keep `widgetName` as widget display text.

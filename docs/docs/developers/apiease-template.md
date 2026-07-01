@@ -30,7 +30,7 @@ The current template includes:
 
 The example resources are intentionally lightweight. Use them as reference material or copy them into your working resource directories as you start defining your project.
 
-Those examples use handles as stable source-controlled identifiers. Requests, variables, and functions use `handle`; widgets use `widgetHandle`. Server-owned `id` values should not be stored in template resource files. See [Resource handles](./resource-handles.md) for the full identifier pattern.
+Those examples use `handle` as the stable source-controlled identifier across requests, widgets, variables, and functions. Server-owned `id` values should not be stored in template resource files. See [Resource handles](./resource-handles.md) for the full identifier pattern.
 
 ## Expected repository layout
 

@@ -59,7 +59,7 @@ Use `apiease.config.js` as the source of truth for resource directory names. In 
 
 Use `docs/examples/resources/*` as copyable examples, not as the long-term home for project resources.
 
-Resource files should use handles as stable identifiers. Requests, variables, and functions use `handle`; widgets use `widgetHandle`. Do not copy server-owned `id` values into source files. For the full convention, see [Resource handles](./resource-handles.md).
+Resource files should use `handle` as the stable identifier across requests, widgets, variables, and functions. Do not copy server-owned `id` values into source files. For the full convention, see [Resource handles](./resource-handles.md).
 
 When the task involves request behavior, do not re-invent request concepts from memory. Reuse the existing Requests documentation for detailed semantics:
 

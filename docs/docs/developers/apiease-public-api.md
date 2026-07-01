@@ -75,9 +75,9 @@ Use handles as the public identifiers for saved resources:
 - request resources use `handle`
 - function resources use `handle`
 - variable resources use `handle`
-- widget resources use `widgetHandle`
+- widget resources use `handle`
 
-APIEase still returns server-owned ids in some responses, such as `id` or `widgetId`. Treat those values as APIEase metadata. Do not store them in source-controlled resource definition files, and do not use them for new public API automation.
+APIEase still returns server-owned ids in some responses, such as `id` or legacy `widgetId`. Treat those values as APIEase metadata. Do not store them in source-controlled resource definition files, and do not use them for new public API automation.
 
 Handles must be lowercase slug values using letters, numbers, and single hyphens between words, such as `product-details-proxy` or `support-api-key`.
 
@@ -193,7 +193,7 @@ Widget example:
 
 ```json
 {
-  "widgetHandle": "promo-banner",
+  "handle": "promo-banner",
   "widgetName": "Promo Banner",
   "liquid": "<section>Sale now live</section>",
   "javascript": "",
@@ -202,7 +202,7 @@ Widget example:
 }
 ```
 
-For widgets, `widgetHandle` is the handle and `widgetName` is display text.
+For widgets, `handle` is the stable public identifier and `widgetName` is display text. Older widget payloads or examples may use `widgetHandle`; use `handle` for new public API automation.
 
 ## Read, update, and delete
 
