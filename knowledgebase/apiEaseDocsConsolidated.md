@@ -615,7 +615,7 @@ Use the identifier field that belongs to the resource's public JSON shape:
 | Resource | Stable source identifier | Display field | Notes |
 | --- | --- | --- | --- |
 | Request | `handle` | `name` | Use the handle as the request identifier in CLI and public API calls. |
-| Widget | `handle` | `widgetName` | Use the handle as the widget identifier in CLI, public API, and theme extension settings. |
+| Widget | `handle` | `name` | Use the handle as the widget identifier in CLI, public API, and theme extension settings. |
 | Variable | `handle` | `name` | Use `handle` in System Request arguments whenever possible. |
 | Function | `handle` | `name` | The saved resource has a handle; the Liquid function tag still calls Functions by `functionName` or legacy `functionId`. |
 
@@ -686,7 +686,7 @@ apiease create request --file ./resources/requests/product-details-proxy.json --
 
 That updates only the local request identifier metadata. It does not change request behavior such as `type`, `method`, `address`, `parameters`, `triggers`, `liquid`, or `nextRequest`.
 
-For widgets, variables, and functions, update the JSON source manually so it contains `handle`, the stable source identifier, and no server-owned id. Older widget files that use `widgetHandle` should be migrated to `handle`; keep `widgetName` as widget display text.
+For widgets, variables, and functions, update the JSON source manually so it contains `handle`, the stable source identifier, and no server-owned id. Older widget files that use `widgetHandle` and `widgetName` should be migrated to `handle` and `name`.
 
 SOURCE
 https://docs.apiease.com/docs/developers/using-apiease-with-ai-agents
@@ -948,7 +948,7 @@ Use handles as the public identifiers for saved resources:
 - variable resources use `handle`
 - widget resources use `handle`
 
-APIEase still returns server-owned ids in some responses, such as `id` or legacy `widgetId`. Treat those values as APIEase metadata. Do not store them in source-controlled resource definition files, and do not use them for new public API automation.
+APIEase still returns server-owned ids in some responses, such as `id`. Treat those values as APIEase metadata. Do not store them in source-controlled resource definition files, and do not use them for new public API automation. Older widget responses or examples may use `widgetId`; use `id` when you need to inspect server-owned widget metadata.
 
 Handles must be lowercase slug values using letters, numbers, and single hyphens between words, such as `product-details-proxy` or `support-api-key`.
 
@@ -1065,7 +1065,7 @@ Widget example:
 ```json
 {
   "handle": "promo-banner",
-  "widgetName": "Promo Banner",
+  "name": "Promo Banner",
   "liquid": "<section>Sale now live</section>",
   "javascript": "",
   "externalJavascriptUrls": [],
@@ -1073,7 +1073,7 @@ Widget example:
 }
 ```
 
-For widgets, `handle` is the stable public identifier and `widgetName` is display text. Older widget payloads or examples may use `widgetHandle`; use `handle` for new public API automation.
+For widgets, `handle` is the stable public identifier and `name` is display text. Older widget payloads or examples may use `widgetHandle`, `widgetId`, or `widgetName`; use `handle`, `id`, and `name` for new public API automation.
 
 ## Read, update, and delete
 
@@ -1352,7 +1352,7 @@ The CLI manages four saved APIEase resource types:
 
 All definition files must contain valid JSON with an object at the root. Use `handle` as the stable source-controlled identifier. Server-owned `id` values are metadata returned by APIEase and should not be stored in request, widget, variable, or function source files.
 
-Widget files use `handle` for the stable identifier and `widgetName` for display text. Older widget files that use `widgetHandle` should be migrated before new CLI-driven work.
+Widget files use `handle` for the stable identifier and `name` for display text. Older widget files that use `widgetHandle` or `widgetName` should be migrated before new CLI-driven work.
 
 Handles should be lowercase slug values using letters, numbers, and hyphens, for example:
 

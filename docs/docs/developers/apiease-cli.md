@@ -181,7 +181,7 @@ The CLI manages four saved APIEase resource types:
 
 All definition files must contain valid JSON with an object at the root. Use `handle` as the stable source-controlled identifier. Server-owned `id` values are metadata returned by APIEase and should not be stored in request, widget, variable, or function source files.
 
-Widget files use `handle` for the stable identifier and `widgetName` for display text. Older widget files that use `widgetHandle` should be migrated before new CLI-driven work.
+Widget files use `handle` for the stable identifier and `name` for display text. Older widget files that use `widgetHandle` or `widgetName` should be migrated before new CLI-driven work.
 
 Handles should be lowercase slug values using letters, numbers, and hyphens, for example:
 
