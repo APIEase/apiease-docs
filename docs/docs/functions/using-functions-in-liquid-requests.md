@@ -78,18 +78,7 @@ Example using `functionName`:
 {{ summary.message }}
 ```
 
-Example using `functionId`:
-
-```liquid
-{% function {
-  "functionId": "function-123",
-  "args": {
-    "amount": "{{ product.price }}",
-    "currency": "{{ cart.currency.iso_code }}"
-  }
-} as result %}
-{{ result }}
-```
+Use `functionName` for new Liquid templates. `functionId` remains a legacy option when you already have a server-owned function id, but do not copy server-owned ids into repository-managed examples.
 
 You can also pass a variable that already contains the invocation object:
 

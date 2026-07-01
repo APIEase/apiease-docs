@@ -16,10 +16,11 @@ Use this reading order when you are getting started:
 
 1. [Why use the template](./why-use-the-template.md) to understand why `apiease-template` is the recommended starting point
 2. [Quickstart with apiease-template](./quickstart-with-apiease-template.md) to initialize the project, configure auth, and sync resources
-3. [apiease-template](./apiease-template.md) to understand the repository layout and what belongs in source control
-4. [apiease-cli](./apiease-cli.md) for the command-line workflow that manages saved resources
-5. [APIEase Public API](./apiease-public-api.md) when you need lower-level HTTP integration
-6. [Using APIEase with AI agents](./using-apiease-with-ai-agents.md) when Codex-style agents will work inside the repository
+3. [Resource handles](./resource-handles.md) to understand stable identifiers for source-controlled resources
+4. [apiease-template](./apiease-template.md) to understand the repository layout and what belongs in source control
+5. [apiease-cli](./apiease-cli.md) for the command-line workflow that manages saved resources
+6. [APIEase Public API](./apiease-public-api.md) when you need lower-level HTTP integration
+7. [Using APIEase with AI agents](./using-apiease-with-ai-agents.md) when Codex-style agents will work inside the repository
 
 ## Choose the right page
 
@@ -27,6 +28,7 @@ Use these pages based on the job you need to do:
 
 - [Quickstart with apiease-template](./quickstart-with-apiease-template.md): the canonical start-here path for repository-based APIEase development
 - [Why use the template](./why-use-the-template.md): why the template comes before the CLI or public API in most projects
+- [Resource handles](./resource-handles.md): stable public identifiers for requests, widgets, variables, and functions
 - [apiease-template](./apiease-template.md): expected repository layout, template-managed files, and version-controlled artifacts
 - [apiease-cli](./apiease-cli.md): installation, configuration, CRUD commands, and template upgrade workflow
 - [APIEase Public API](./apiease-public-api.md): authentication, resource routes, remote request execution, and direct HTTP usage

@@ -19,7 +19,7 @@ async function getPhoto(photoId) {
   const pathParamsEmbeddedVar = JSON.stringify({ photoId });
   const getPicturesQueryParams = new URLSearchParams({
     pathParamsEmbedded: pathParamsEmbeddedVar,
-    requestId: '69782d80-63b8-11ee-b950-ff5a55fbe301',
+    requestId: 'facebook-photo',
   });
 
   const res = await fetch(
@@ -46,7 +46,7 @@ async function callApi() {
   const pathParamsEmbeddedVar = JSON.stringify({ albumId: '122103599360059617' });
   const getAlbumQueryParams = new URLSearchParams({
     pathParamsEmbedded: pathParamsEmbeddedVar,
-    requestId: '24d5bb60-63c8-11ee-b950-ff5a55fbe301',
+    requestId: 'facebook-album-photos',
   });
 
   const res = await fetch(
@@ -114,4 +114,3 @@ callApi();
   margin: 20px;
 }
 ```
-

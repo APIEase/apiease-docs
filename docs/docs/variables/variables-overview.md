@@ -24,7 +24,7 @@ In the APIEase admin, select **Variables** from the main navigation.
 
 The Variables page shows a table with four columns:
 
-- **Name**: The variable name. Select the name or the edit action to open the variable.
+- **Name**: The variable display name. Select the name or the edit action to open the variable.
 - **Value**: The current value summary. Non-sensitive values are shown directly. Sensitive values are masked.
 - **Sensitive**: Shows `Yes` or `No`.
 - **Actions**: Edit or delete the variable.
@@ -43,13 +43,15 @@ To create a variable:
 1. Open the **Variables** page.
 2. Select **Add variable**.
 3. Enter a **Name**.
-4. Enter a **Value**.
-5. Turn on **Sensitive** if the value should stay hidden after it is saved.
-6. Use the save bar to save the variable.
+4. Confirm or edit the **Handle**.
+5. Enter a **Value**.
+6. Turn on **Sensitive** if the value should stay hidden after it is saved.
+7. Use the save bar to save the variable.
 
 Notes:
 
 - `Name` is required when creating a variable.
+- `Handle` is the stable public identifier used by System Requests, `apiease-cli`, and the public API. APIEase generates it from the name until you edit it manually.
 - The save bar appears when you make changes.
 - You can use **Discard** in the save bar to abandon unsaved edits.
 
@@ -58,12 +60,12 @@ Notes:
 To edit a variable:
 
 1. Open the variable from the list.
-2. Update the **Value** and, if needed, the **Sensitive** checkbox.
+2. Update the **Name**, **Handle**, **Value**, and, if needed, the **Sensitive** checkbox.
 3. Save from the save bar.
 
 Important behavior:
 
-- After a variable is created, its **Name** is read-only.
+- Keep the **Handle** stable if requests, CLI scripts, or public API integrations already reference the variable.
 - Existing sensitive values stay masked in the editor. If you leave the masked value as-is and save, APIEase keeps the stored value.
 - If you want to replace a sensitive value, type a new value before saving.
 - If you turn off **Sensitive** for an existing masked variable, enter the replacement plain-text value before saving because APIEase does not reveal the stored secret back into the form.

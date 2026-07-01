@@ -13,7 +13,7 @@ This demo calls The Cat API via APIEase and displays a random cat image.
 ```javascript
 function callApi() {
   const queryParamsCaller = new URLSearchParams({
-    requestId: '72277ed0-db24-11ed-b56c-119d120a4914',
+    requestId: 'cat-random-image',
   });
 
   fetch('/apps/apiease/integration/caller/call?' + queryParamsCaller, {
@@ -63,4 +63,3 @@ function callApi() {
   margin-top: 10px;
 }
 ```
-

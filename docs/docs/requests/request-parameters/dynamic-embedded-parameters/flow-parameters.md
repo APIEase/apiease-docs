@@ -18,7 +18,7 @@ Dynamic embedded parameters are added as query parameters to calls made to APIEa
     exampleFlow3: "exampleFlowValue3",
   });
   const queryParams = new URLSearchParams({
-    requestId: "a1dd1880-ewsd-sdss-8f48-27f04dbadc31",
+    requestId: "start-order-flow",
     flowParamsEmbedded: flowParamsEmbeddedVar,
   });
   fetch('/apps/apiease/integration/caller/call?' + queryParams)
@@ -32,4 +32,3 @@ Dynamic embedded parameters are added as query parameters to calls made to APIEa
 ```
 
 In the snippet above, `flowParamsEmbedded` is set to the stringified `flowParamsEmbeddedVar`. APIEase looks for a query parameter named `flowParamsEmbedded` to hold the dynamic embedded flow parameters.
-

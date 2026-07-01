@@ -14,7 +14,7 @@ For example, you might need to:
 
 **Setting Next Request**
 
-Set the request id or request name of the next request you would like to call in the **Next Request** field.
+Set the request handle of the next request you would like to call in the **Next Request** field.
 
 **How Chaining Works in APIEase**
 

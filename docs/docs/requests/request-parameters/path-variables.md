@@ -37,7 +37,7 @@ const pathParamsEmbeddedVar = JSON.stringify({
   variable1: "dynamicEmbeddedPathValue1",
 });
 const queryParams = new URLSearchParams({
-  requestId: "a375c890-14a5-11f0-941a-f549b30199d1",
+  requestId: "product-details-proxy",
   pathParamsEmbedded: pathParamsEmbeddedVar,
 });
 fetch('/apps/apiease/integration/caller/call?' + queryParams)
@@ -56,4 +56,3 @@ In app path parameters act as the default parameter. Dynamic embedded parameters
 If you only have the in app `variable1=inAppValue1` then address  `https://ex.com/{variable1}` will resolve to `https://ex.com/inAppValue1`.
 
 If you have the in app `variable1 = inAppValue1` and `pathParamsEmbedded = JSON.stringify({ variable1: "dynamicEmbeddedPathValue1" })` then address `https://ex.com/{variable1}` will resolve to `https://ex.com/dynamicEmbeddedPathValue1`. So dynamic embedded parameters override the default in app path parameters of the same name.
-

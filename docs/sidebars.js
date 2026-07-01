@@ -33,6 +33,7 @@ const sidebars = {
         'developers/developer-overview',
         'developers/why-use-the-template',
         'developers/quickstart-with-apiease-template',
+        'developers/resource-handles',
         'developers/using-apiease-with-ai-agents',
         'developers/apiease-public-api',
         'developers/apiease-cli',

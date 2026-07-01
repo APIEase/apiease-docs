@@ -46,6 +46,8 @@ Each function includes these fields:
 - **Parameters**: Optional parameter definitions for the function.
 - **Liquid**: Required. The Liquid code that runs when the function is called.
 
+When you manage Functions through `apiease-cli` or the public API, include a stable `handle` in the JSON source file. The Function `name` remains the value used by the current Liquid function tag. For the repository identifier pattern, see [Resource handles](../developers/resource-handles.md).
+
 The editor supports the same save bar behavior used elsewhere in APIEase:
 
 - The save bar appears when you make changes.

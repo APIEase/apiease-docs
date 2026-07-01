@@ -16,7 +16,7 @@ let dumpId = null;
 async function callApi() {
   if (dumpId === null) {
     const createDumpQueryParams = new URLSearchParams({
-      requestId: 'd58be5e0-5b0a-11ee-9e5d-19ff9c7e593b',
+      requestId: 'http-dump-create',
     });
 
     const res = await fetch(
@@ -46,7 +46,7 @@ async function callApi() {
   const pathParamsEmbeddedVar = JSON.stringify({ dumpId });
 
   const callDumpQueryParams = new URLSearchParams({
-    requestId: 'e4edbbd0-5b0a-11ee-9e5d-19ff9c7e593b',
+    requestId: 'http-dump-inspect',
     queryParamsEmbedded: queryParamsEmbeddedVar,
     headersEmbedded: headersEmbeddedVar,
     bodyEmbedded: bodyEmbeddedVar,
@@ -119,4 +119,3 @@ document.getElementById('queryParameter').addEventListener('keydown', (event) =>
   margin-top: 10px;
 }
 ```
-

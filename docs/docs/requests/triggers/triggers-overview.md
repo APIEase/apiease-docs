@@ -17,7 +17,7 @@ Every APIEase request uses the same configuration but can be invoked in differen
 
 ## [Proxy Endpoint](./proxy-endpoint.md)
 - Expose a stable endpoint that forwards incoming HTTP calls to a configured request.
-- Helpful when another system needs to call APIEase without knowing the internal request id.
+- Helpful when another system needs to call APIEase with a stable request handle instead of an internal id.
 
 ## [Manual Calls](./manual-calls.md)
 - Run a request directly from the admin for testing or one-off actions.

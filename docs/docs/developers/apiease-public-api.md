@@ -50,10 +50,10 @@ The current resource base path is `/api/v1/resources`.
 
 | Resource | Collection route | Item route |
 | --- | --- | --- |
-| Requests | `/api/v1/resources/requests` | `/api/v1/resources/requests/{requestId}` |
-| Functions | `/api/v1/resources/functions` | `/api/v1/resources/functions/{functionId}` |
-| Variables | `/api/v1/resources/variables` | `/api/v1/resources/variables/{variableName}` |
-| Widgets | `/api/v1/resources/widgets` | `/api/v1/resources/widgets/{widgetId}` |
+| Requests | `/api/v1/resources/requests` | `/api/v1/resources/requests/{handle}` |
+| Functions | `/api/v1/resources/functions` | `/api/v1/resources/functions/{handle}` |
+| Variables | `/api/v1/resources/variables` | `/api/v1/resources/variables/{handle}` |
+| Widgets | `/api/v1/resources/widgets` | `/api/v1/resources/widgets/{handle}` |
 
 Collection routes support:
 
@@ -67,6 +67,21 @@ Item routes support:
 - `DELETE` to delete one resource
 
 In practice, `apiease-cli` is a thin wrapper around these routes.
+
+## Resource identity
+
+Use handles as the public identifiers for saved resources:
+
+- request resources use `handle`
+- function resources use `handle`
+- variable resources use `handle`
+- widget resources use `widgetHandle`
+
+APIEase still returns server-owned ids in some responses, such as `id` or `widgetId`. Treat those values as APIEase metadata. Do not store them in source-controlled resource definition files, and do not use them for new public API automation.
+
+Handles must be lowercase slug values using letters, numbers, and single hyphens between words, such as `product-details-proxy` or `support-api-key`.
+
+For a fuller explanation, see [Resource handles](./resource-handles.md).
 
 ## Request conventions
 
@@ -100,7 +115,7 @@ curl -X POST 'https://app-admin.apiease.com/api/v1/resources/requests' \
   -H 'x-apiease-api-key: your-apiease-api-key' \
   -H 'x-shop-myshopify-domain: yourstore.myshopify.com' \
   -d '{
-    "id": "product-details-proxy",
+    "handle": "product-details-proxy",
     "name": "Product Details Proxy",
     "type": "http",
     "method": "POST",
@@ -139,8 +154,55 @@ curl -X POST 'https://app-admin.apiease.com/api/v1/resources/requests' \
 When creating or updating a request:
 
 - send only the fields that belong to the resource itself
-- do not send `shop`, `shopId`, `shopDomain`, or `myshopifyDomain`
+- use `handle` as the stable source-owned identifier
+- do not send server-owned or shop-owned metadata such as `id`, `shop`, `shopId`, `shopDomain`, or `myshopifyDomain`
 - mark confidential parameter values as `sensitive: true`
+
+## Other resource payloads
+
+The other saved resource types follow the same handle-first identity model.
+
+Variable example:
+
+```json
+{
+  "handle": "support-api-key",
+  "name": "Support API Key",
+  "value": "replace-with-real-secret",
+  "sensitive": true
+}
+```
+
+Function example:
+
+```json
+{
+  "handle": "format-price",
+  "name": "format_price",
+  "description": "Format a numeric amount for display.",
+  "type": "liquid",
+  "liquid": "{{ amount }} {{ currency }}",
+  "parameters": [
+    { "name": "amount", "type": "number" },
+    { "name": "currency", "type": "string" }
+  ]
+}
+```
+
+Widget example:
+
+```json
+{
+  "widgetHandle": "promo-banner",
+  "widgetName": "Promo Banner",
+  "liquid": "<section>Sale now live</section>",
+  "javascript": "",
+  "externalJavascriptUrls": [],
+  "disableJavascript": false
+}
+```
+
+For widgets, `widgetHandle` is the handle and `widgetName` is display text.
 
 ## Read, update, and delete
 
@@ -179,7 +241,7 @@ curl -X DELETE 'https://app-admin.apiease.com/api/v1/resources/requests/product-
   -H 'x-shop-myshopify-domain: yourstore.myshopify.com'
 ```
 
-The same CRUD pattern also applies to functions, variables, and widgets with their respective routes.
+The same CRUD pattern also applies to functions, variables, and widgets with their respective handle-based item routes.
 
 ## Execute a saved request remotely
 
@@ -191,7 +253,7 @@ curl -X POST 'https://app-admin.apiease.com/api/remote/caller/call?requestId=pro
   -H 'x-shop-myshopify-domain: yourstore.myshopify.com'
 ```
 
-Use that route when the request definition already exists in APIEase and you want to trigger it from another system. For more detail, see [Calling APIEase Requests Remotely](../requests/triggers/calling-requests-remotely.md).
+Use that route when the request definition already exists in APIEase and you want to trigger it from another system. The query parameter is still named `requestId`, but pass the request handle as the value for new integrations. For more detail, see [Calling APIEase Requests Remotely](../requests/triggers/calling-requests-remotely.md).
 
 ## Response shape
 

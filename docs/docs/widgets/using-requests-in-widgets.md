@@ -7,13 +7,13 @@ description: Configure an APIEase request call inside a widget.
 Widgets can call APIEase requests. The widget runs in the browser, but the request runs on the server. This separation keeps integrations secure by keeping credentials and private logic off the storefront.
 
 ## Configure a request call
-1. Get the `requestId` for the request you want to run (from the request admin page).
+1. Get the handle for the request you want to run.
 2. In the widget edit page, the **Liquid** field is required; you can use a simple placeholder like `<div></div>`.
 3. Paste the JavaScript below into the widget's **JavaScript** field to call the APIEase integration endpoint with `fetch` and read the JSON response:
 
 ```js
 const queryParams = new URLSearchParams({
-  requestId: 'YOUR_REQUEST_ID',
+  requestId: 'product-details-proxy',
 });
 
 fetch('/apps/apiease/integration/caller/call?' + queryParams)

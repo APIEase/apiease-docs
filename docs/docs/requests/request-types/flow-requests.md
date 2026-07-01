@@ -10,7 +10,8 @@ Flow requests allow you to securely trigger or continue a Shopify Flow workflow.
 
 **Flow Request Fields**
 
-- **Name**: Optional display name. Needed when another request calls this one via a [chained request](../request-parameters/chained-requests.md).
+- **Name**: Optional display name.
+- **Handle**: Stable identifier used when another request calls this one via a [chained request](../request-parameters/chained-requests.md).
 - **Type**: Set to `flow` to trigger a Shopify Flow workflow.
 - **Parameters ([?](../request-parameters/in-app-vs-dynamic.md))**:
   - **Flow**: JSON key/value pairs passed to your workflow.
@@ -27,4 +28,4 @@ Flow requests allow you to securely trigger or continue a Shopify Flow workflow.
 - Manually via the "Copy and Execute" link on the requests admin page
 - From your storefront using Shopify's app proxy
 
-**Next Request**: You can specify the name of another request to run after this request finishes. This allows you to build multi-step workflows using [chained requests](../request-parameters/chained-requests.md).
+**Next Request**: You can specify the handle of another request to run after this request finishes. This allows you to build multi-step workflows using [chained requests](../request-parameters/chained-requests.md).

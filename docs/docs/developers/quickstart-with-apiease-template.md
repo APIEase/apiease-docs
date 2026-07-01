@@ -112,14 +112,14 @@ For example:
 
 ```bash
 cp docs/examples/resources/requests/example-request.json resources/requests/product-details-proxy.json
-cp docs/examples/resources/variables/example-variable.json resources/variables/support_api_key.json
+cp docs/examples/resources/variables/example-variable.json resources/variables/support-api-key.json
 ```
 
-Then update the copied files with your real identifiers, endpoints, parameter values, and secrets.
+Then update the copied files with your real handles, display names, endpoints, parameter values, and secrets.
 
 The request example already uses the real public API request shape, including:
 
-- `id`
+- `handle`
 - `name`
 - `type`
 - `method`
@@ -141,7 +141,7 @@ Once your JSON files are ready, use `apiease-cli` to create the saved resources 
 Create a variable first if your request depends on one:
 
 ```bash
-apiease create variable --file ./resources/variables/support_api_key.json
+apiease create variable --file ./resources/variables/support-api-key.json
 ```
 
 Create a request from your project file:
@@ -153,16 +153,18 @@ apiease create request --file ./resources/requests/product-details-proxy.json
 Read it back from APIEase:
 
 ```bash
-apiease read request --request-id product-details-proxy
+apiease read request --request-handle product-details-proxy
 ```
 
 Update it after you change the JSON file:
 
 ```bash
-apiease update request --request-id product-details-proxy --file ./resources/requests/product-details-proxy.json
+apiease update request --request-handle product-details-proxy --file ./resources/requests/product-details-proxy.json
 ```
 
-The same CRUD pattern applies to widgets, variables, and functions. The CLI is the normal path here: it reads your local JSON file, resolves auth, and calls the underlying [APIEase Public API](./apiease-public-api.md) for you.
+The same CRUD pattern applies to widgets, variables, and functions with resource-specific handle flags such as `--widget-handle`, `--variable-handle`, and `--function-handle`. The CLI is the normal path here: it reads your local JSON file, resolves auth, and calls the underlying [APIEase Public API](./apiease-public-api.md) for you.
+
+For the handle-based identifier model, see [Resource handles](./resource-handles.md).
 
 Use direct HTTP calls only when you need lower-level automation outside the CLI workflow.
 

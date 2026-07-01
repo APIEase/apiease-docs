@@ -20,10 +20,11 @@ This demo shows how a storefront button triggers APIEase, Shopify Flow, and a ch
 ## APIEase request chain
 1. **Request #1: The Cat API**  
    - Name: `Flow - Cat Images - Get Cat`  
+   - Handle: `flow-cat-images-get-cat`
    - Type: `http`  
    - Address: `https://api.thecatapi.com/v1/images/search`  
    - Method: `GET`  
-   - Next Request: `Flow - Cat Images - Add Cat`  
+   - Next Request: `flow-cat-images-add-cat`  
    - Sample response:
      ```json
      {
@@ -42,8 +43,9 @@ This demo shows how a storefront button triggers APIEase, Shopify Flow, and a ch
 
 2. **Request #2: Shopify Flow (APIEase Flow Trigger)**  
    - Name: `Flow - Cat Images - Add Cat`  
+   - Handle: `flow-cat-images-add-cat`
    - Type: `flow`  
-   - Next Request: `Flow - Cat Images - Increment Inventory`  
+   - Next Request: `flow-cat-images-increment-inventory`  
    - Incoming Flow parameters:
      ```json
      {
@@ -114,7 +116,7 @@ This example uses an explicit `X-Shopify-Access-Token` header for the Shopify Ad
 
 ## Shopify Flow workflow
 1. Trigger: **apiease-flow-trigger**.
-2. Condition: Confirm the incoming `requestId` matches the Flow request.
+2. Condition: Confirm the incoming `requestId` value matches the Flow request handle.
 3. Action: Shopify **Get location data** to retrieve variants and locations.
 4. Action: **Run Code** to classify image size and select the matching inventory item.
 5. Action: **apiease-flow-action** to return Flow parameters (including `incrementInventoryParameter`) to APIEase.
@@ -191,4 +193,3 @@ The Run Code step classifies the image size and attaches `incrementInventoryPara
 ### APIEase Flow Action
 
 ![APIEase Flow Action variables](https://cdn.shopify.com/s/files/1/0733/1820/3680/files/flow-cat-image-inventory-action-variable.png?v=1743120408)
-

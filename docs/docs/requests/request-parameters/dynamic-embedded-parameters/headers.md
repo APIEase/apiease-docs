@@ -18,7 +18,7 @@ const headerParamsEmbeddedVar = JSON.stringify({
 });
 
 const queryParams = new URLSearchParams({
-  requestId: "a1dd1880-ewsd-sdss-8f48-27f04dbadc31",
+  requestId: "customer-profile",
   headersEmbedded: headerParamsEmbeddedVar,
 });
 
@@ -30,4 +30,3 @@ fetch('/apps/apiease/integration/caller/call?' + queryParams)
 ```
 
 In the above javascript snippet we see that **headersEmbedded**  is set to the stringified "headersEmbeddedVar". APIEase looks for a query parameter named **headersEmbedded**  to hold the dynamic embedded header parameters.
-

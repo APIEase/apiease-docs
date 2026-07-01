@@ -17,7 +17,7 @@ const pathParamsEmbeddedVar = JSON.stringify({
   exampleParameter3: "exampleParameterValue3",
 });
 const pathParams = new URLSearchParams({
-  requestId: "a1dd1880-ewsd-sdss-8f48-27f04dbadc32",
+  requestId: "product-details-proxy",
   pathParamsEmbedded: pathParamsEmbeddedVar,
 });
 fetch('/apps/apiease/integration/caller/call?' + pathParams)
@@ -28,4 +28,3 @@ fetch('/apps/apiease/integration/caller/call?' + pathParams)
 ```
 
 In the above javascript snippet we see that  "**pathParamsEmbedded**" is set to the stringified "pathParamsEmbeddedVar".   APIEase looks for a query parameter named **pathParamsEmbedded**  to hold the dynamic embedded path parameters.
-

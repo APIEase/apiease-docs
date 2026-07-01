@@ -15,11 +15,11 @@ Liquid requests let you fetch products, loop through the response, and post each
 3. Use a Liquid request to connect them:
 
 ```liquid
-{% call { "requestId": "third-party-products-request-id" } as source %}
+{% call { "requestId": "third-party-products" } as source %}
 
 {% for product in source.data.products %}
   {% call {
-    "requestId": "shopify-product-upsert-request-id",
+    "requestId": "shopify-product-upsert",
     "bodyEmbedded": {
       "title": "{{ product.title }}",
       "vendor": "{{ product.vendor }}",

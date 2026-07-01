@@ -1,6 +1,6 @@
 ---
 title: Calling APIEase Requests Remotely
-description: How to execute APIEase requests via API key and requestId from outside Shopify.
+description: How to execute APIEase requests via API key and request handle from outside Shopify.
 ---
 # Calling APIEase Requests Remotely
 
@@ -14,11 +14,10 @@ You can call any APIEase request from any http client by making a direct HTTP re
 
 **Step 2**: Make the Remote Call
 
-**Address**: `https://app-admin.apiease.com/api/remote/caller/call?requestId=<your_request_id>`
+**Address**: `https://app-admin.apiease.com/api/remote/caller/call?requestId=<your-request-handle>`
 
 **Headers:**
 - `x-shop-myshopify-domain`: `yourstore.myshopify.com`
 - `x-apiease-api-key`: `<your_generated_api_key>`
 
-Replace `<your_request_id>` with the ID of the request you want to call. You can find the `requestId` in the APIEase request admin page.
-
+Replace `<your-request-handle>` with the handle of the request you want to call. The query parameter is still named `requestId`, but the value should be the request handle for new integrations.

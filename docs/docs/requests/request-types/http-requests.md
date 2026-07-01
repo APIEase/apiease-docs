@@ -10,7 +10,8 @@ HTTP API requests are highly configurable with many options.  HTTP requests allo
 
 **HTTP Request Fields**
 
-- **Name**: Optional display name. Required if this request is called by name from a [chained request](../request-parameters/chained-requests.md).
+- **Name**: Optional display name.
+- **Handle**: Stable identifier used by [chained requests](../request-parameters/chained-requests.md), storefront calls, `apiease-cli`, and the public API.
 - **Type**: Set to `http` for a standard API call to an external service.
 - **Address**: Full endpoint of the external API (for example, `https://api.example.com/data`).
 - **Method**: Choose GET, POST, DELETE, PUT, PATCH, or OPTIONS.
@@ -33,4 +34,4 @@ HTTP API requests are highly configurable with many options.  HTTP requests allo
   - Manually via the "Copy and Execute" link on the requests admin page
   - From your storefront using Shopify's app proxy
 
-- **Next Request**: You can implement [chained requests](../request-parameters/chained-requests.md) by setting the Next Request field to the name of a request to run after this one completes.
+- **Next Request**: You can implement [chained requests](../request-parameters/chained-requests.md) by setting the Next Request field to the handle of a request to run after this one completes.

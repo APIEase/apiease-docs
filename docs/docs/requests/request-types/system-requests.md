@@ -16,7 +16,8 @@ Use a System request when you need an internal, app-managed action (for example,
 
 **System Request Fields**
 
-- **Name**: Optional display name. Required if this request is called by name from a [chained request](../request-parameters/chained-requests.md).
+- **Name**: Optional display name.
+- **Handle**: Stable identifier used when another request calls this one via a [chained request](../request-parameters/chained-requests.md).
 - **Type**: Set to `system`.
 - **Address**: Unused for System requests (leave blank).
 - **Parameters ([?](../request-parameters/in-app-vs-dynamic.md))**:
@@ -31,7 +32,10 @@ System request behavior is controlled by two in-app system parameters:
 
 `arguments` must be an array (or a JSON string that parses to an array) of objects. Each array entry must include:
 
-- `name` (string, required)
+- `handle` (string, recommended), or
+- `name` (string, legacy compatibility fallback)
+
+Use `handle` for new System Request variable operations. Variable names are display text and can become ambiguous; handles are the stable public identifiers used by the CLI and public API.
 
 ## Supported functions
 
@@ -39,7 +43,8 @@ System request behavior is controlled by two in-app system parameters:
 
 Each `arguments` entry supports:
 
-- `name` (required)
+- `handle` (recommended)
+- `name` (legacy fallback)
 - `value` (required to set a meaningful value; may be `null` if intentionally setting `null`)
 - `sensitive` (optional boolean; APIEase may accept `"true"` / `"false"` but prefer a boolean)
 
@@ -47,7 +52,7 @@ Response `data` shape:
 
 ```json
 {
-  "<name>": { "set": true }
+  "<handle-or-name>": { "set": true }
 }
 ```
 
@@ -58,29 +63,30 @@ Example system parameters:
 
 ```json
 [
-  { "name": "variable1", "value": "value1", "sensitive": true },
-  { "name": "variable2", "value": "value2" }
+  { "handle": "support-api-key", "value": "value1", "sensitive": true },
+  { "handle": "support-email", "value": "help@example.com" }
 ]
 ```
 
 Example response (`data`):
 
 ```json
-{ "variable1": { "set": true }, "variable2": { "set": true } }
+{ "support-api-key": { "set": true }, "support-email": { "set": true } }
 ```
 
 ### getVariables
 
 Each `arguments` entry supports:
 
-- `name` (required)
+- `handle` (recommended)
+- `name` (legacy fallback)
 - `defaultValue` (optional; used when the variable is missing or null/undefined)
 
 Response `data` shape:
 
 ```json
 {
-  "<name>": "<value-or-default-or-null>"
+  "<handle-or-name>": "<value-or-default-or-null>"
 }
 ```
 
@@ -88,28 +94,29 @@ Example `arguments` (JSON string):
 
 ```json
 [
-  { "name": "variable1" },
-  { "name": "variable2", "defaultValue": "fallback2" }
+  { "handle": "support-api-key" },
+  { "handle": "support-email", "defaultValue": "help@example.com" }
 ]
 ```
 
 Example response (`data`):
 
 ```json
-{ "variable1": "persistedValue1", "variable2": "fallback2" }
+{ "support-api-key": "persistedValue1", "support-email": "help@example.com" }
 ```
 
 ### deleteVariables
 
 Each `arguments` entry supports:
 
-- `name` (required)
+- `handle` (recommended)
+- `name` (legacy fallback)
 
 Response `data` shape:
 
 ```json
 {
-  "<name>": { "deleted": true }
+  "<handle-or-name>": { "deleted": true }
 }
 ```
 
@@ -117,13 +124,13 @@ Example `arguments` (JSON string):
 
 ```json
 [
-  { "name": "variable1" },
-  { "name": "variable2" }
+  { "handle": "support-api-key" },
+  { "handle": "support-email" }
 ]
 ```
 
 Example response (`data`):
 
 ```json
-{ "variable1": { "deleted": true }, "variable2": { "deleted": false } }
+{ "support-api-key": { "deleted": true }, "support-email": { "deleted": false } }
 ```

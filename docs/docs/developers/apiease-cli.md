@@ -120,10 +120,10 @@ CRUD commands always require a resource name immediately after the verb. Support
 - `variable`
 - `function`
 
-Legacy bare command shapes such as `apiease read --request-id request-1` are not supported. Use the resource name explicitly:
+Legacy bare command shapes such as `apiease read --request-handle product-details-proxy` are not supported. Use the resource name explicitly:
 
 ```bash
-apiease read request --request-id request-1
+apiease read request --request-handle product-details-proxy
 ```
 
 ## Initialize a project
@@ -172,31 +172,77 @@ This is the CLI command that keeps a template-based repository current without b
 
 The CLI manages four saved APIEase resource types:
 
-| Resource | Create or update file | Identifier flag |
+| Resource | Definition file | Preferred identifier flag |
 | --- | --- | --- |
-| Request | JSON object | `--request-id` |
-| Widget | JSON object | `--widget-id` |
-| Variable | JSON object | `--variable-name` |
-| Function | JSON object | `--function-id` |
+| Request | JSON object | `--request-handle` |
+| Widget | JSON object | `--widget-handle` |
+| Variable | JSON object | `--variable-handle` |
+| Function | JSON object | `--function-handle` |
 
-All definition files must contain valid JSON with an object at the root.
+All definition files must contain valid JSON with an object at the root. Use a handle as the stable source-controlled identifier. Server-owned `id` values are metadata returned by APIEase and should not be stored in request, widget, variable, or function source files.
 
-Typical commands:
+For request, variable, and function files, use `handle`. Widget files currently use the public widget fields `widgetHandle` and `widgetName`, where `widgetHandle` is the stable handle and `widgetName` is display text.
+
+Handles should be lowercase slug values using letters, numbers, and hyphens, for example:
+
+```json
+{
+  "handle": "product-details-proxy",
+  "name": "Product Details Proxy",
+  "type": "http",
+  "method": "GET",
+  "address": "https://api.example.com/products"
+}
+```
+
+Create a resource from a JSON file:
 
 ```bash
 apiease create request --file ./request-definition.json
-apiease read request --request-id request-123
-apiease update request --request-id request-123 --file ./request-definition.json
-apiease delete request --request-id request-123
 ```
 
-The same CRUD pattern applies to widgets, variables, and functions:
+When a request file has a valid `handle`, `apiease create request` checks for an existing remote request with that handle. It creates the request if none exists, or updates the existing request if it already exists.
+
+Read, update, and delete by handle:
+
+```bash
+apiease read request --request-handle product-details-proxy
+apiease update request --request-handle product-details-proxy --file ./request-definition.json
+apiease delete request --request-handle product-details-proxy
+```
+
+The same handle-based CRUD pattern applies to widgets, variables, and functions:
 
 ```bash
 apiease create widget --file ./widget-definition.json
-apiease read variable --variable-name sale_banner
-apiease update function --function-id function-123 --file ./function-definition.json
-apiease delete widget --widget-id widget-123
+apiease read widget --widget-handle promo-banner
+apiease update widget --widget-handle promo-banner --file ./widget-definition.json
+apiease delete widget --widget-handle promo-banner
+
+apiease create variable --file ./variable-definition.json
+apiease read variable --variable-handle support-api-key
+apiease update variable --variable-handle support-api-key --file ./variable-definition.json
+apiease delete variable --variable-handle support-api-key
+
+apiease create function --file ./function-definition.json
+apiease read function --function-handle format-price
+apiease update function --function-handle format-price --file ./function-definition.json
+apiease delete function --function-handle format-price
+```
+
+Legacy flags remain available as compatibility aliases:
+
+- `--request-id`
+- `--widget-id`
+- `--variable-name`
+- `--function-id`
+
+Prefer the handle-named flags in new docs, scripts, and agent instructions. If you use a legacy alias during migration, pass the resource handle as the value.
+
+For older request files that still contain `id` metadata or no `handle`, you can migrate only the local identifier metadata:
+
+```bash
+apiease create request --file ./request-definition.json --auto-update-source-identifier
 ```
 
 Inside a template-based repository, the example resource files currently live under:
@@ -207,6 +253,8 @@ Inside a template-based repository, the example resource files currently live un
 - `docs/examples/resources/functions`
 
 Those files are a starting point. Replace them with project-specific resources and commit the definitions to git.
+
+For the broader identifier model, see [Resource handles](./resource-handles.md).
 
 ## Request definitions and related docs
 

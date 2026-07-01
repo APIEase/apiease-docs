@@ -18,7 +18,7 @@ const queryParamsEmbeddedVar = JSON.stringify({
 });
 
 const queryParams = new URLSearchParams({
-  requestId: "a1dd1880-ewsd-sdss-8f48-27f04dbadc30",
+  requestId: "product-search",
   queryParamsEmbedded: queryParamsEmbeddedVar,
 });
 
@@ -30,4 +30,3 @@ fetch('/apps/apiease/integration/caller/call?' + queryParams)
 ```
 
 In the above javascript snippet we see that **queryParamsEmbedded**  is set to the stringified "queryParamsEmbeddedVar".  APIEase looks for a query parameter named **queryParamsEmbedded**  to hold the dynamic embedded query parameters.
-

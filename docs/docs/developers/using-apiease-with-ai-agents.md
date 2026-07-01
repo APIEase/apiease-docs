@@ -59,6 +59,8 @@ Use `apiease.config.js` as the source of truth for resource directory names. In 
 
 Use `docs/examples/resources/*` as copyable examples, not as the long-term home for project resources.
 
+Resource files should use handles as stable identifiers. Requests, variables, and functions use `handle`; widgets use `widgetHandle`. Do not copy server-owned `id` values into source files. For the full convention, see [Resource handles](./resource-handles.md).
+
 When the task involves request behavior, do not re-invent request concepts from memory. Reuse the existing Requests documentation for detailed semantics:
 
 - [Requests Overview](../requests/requests-overview.md)
@@ -102,16 +104,16 @@ Example flow for a request:
 ```bash
 cp docs/examples/resources/requests/example-request.json resources/requests/product-details-proxy.json
 apiease create request --file ./resources/requests/product-details-proxy.json
-apiease read request --request-id product-details-proxy
+apiease read request --request-handle product-details-proxy
 ```
 
 After editing the same file again:
 
 ```bash
-apiease update request --request-id product-details-proxy --file ./resources/requests/product-details-proxy.json
+apiease update request --request-handle product-details-proxy --file ./resources/requests/product-details-proxy.json
 ```
 
-Use the same CRUD pattern for widgets, variables, and functions with the resource-specific identifier flags documented in [apiease-cli](./apiease-cli.md).
+Use the same CRUD pattern for widgets, variables, and functions with the resource-specific handle flags documented in [apiease-cli](./apiease-cli.md).
 
 ## Prefer the CLI over direct HTTP
 
@@ -132,6 +134,8 @@ curl -X POST 'https://app-admin.apiease.com/api/remote/caller/call?requestId=pro
   -H 'x-apiease-api-key: your-apiease-api-key' \
   -H 'x-shop-myshopify-domain: yourstore.myshopify.com'
 ```
+
+The remote caller parameter is still named `requestId`; pass the request handle as its value for new work.
 
 ## Keep source control in the loop
 

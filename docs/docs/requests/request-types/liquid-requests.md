@@ -10,7 +10,9 @@ To create a Liquid request, choose **Liquid** as the request type and enter the 
 
 **Liquid Request Fields**
 
-**Name**: You can optionally give your request a name for your reference. If you plan to call this request from another request using a chained request, the name will be used by the calling request.
+**Name**: You can optionally give your request a name for your reference.
+
+**Handle**: Stable identifier used by Liquid `call` tags, chained requests, storefront calls, `apiease-cli`, and the public API.
 
 **Type**: Set this to **liquid** to create a request that renders a Liquid template.
 
@@ -65,20 +67,20 @@ At runtime, embedded parameters take precedence over in app parameters for the m
 
 **The call tag**
 
-Use the call tag to invoke any saved APIEase request from within your Liquid template. You can bind the response to a variable with `as`. You must provide `requestId` to the call tag.
+Use the call tag to invoke any saved APIEase request from within your Liquid template. You can bind the response to a variable with `as`. You must provide `requestId` to the call tag. For new work, pass the request handle as the `requestId` value.
 
-Basic syntax with hard coded requestId:
+Basic syntax with a hard coded request handle:
 
 ```liquid
-{% call { "requestId": "51bcee90-89ce-11f0-ac46-894599c37" } as response %}
+{% call { "requestId": "product-details-proxy" } as response %}
 {{ response.status }}
 {{ response.data | json }}
 ```
 
-Basic syntax with requestId that must be set as a Liquid Parameter:
+Basic syntax with a request handle that must be set as a Liquid parameter:
 
 ```liquid
-{% call { "requestId": "{requestId}" } as response %}
+{% call { "requestId": "{requestHandle}" } as response %}
 {{ response.status }}
 {{ response.data | json }}
 ```
@@ -89,7 +91,7 @@ You can also pass a single JSON object. This is convenient when you want to embe
 
 ```liquid
 {% call {
-  "requestId": "",
+  "requestId": "product-details-proxy",
   "headersEmbedded": { "Authorization": "Bearer {api_token}" },
   "queryParamsEmbedded": { "limit": 10 },
   "pathParamsEmbedded": { "productId": "product_id" },
@@ -131,7 +133,7 @@ Important behavior:
 
 - `as <name>` is required.
 - Inline arguments are mapped to the Function's declared parameters in order.
-- Object syntax supports `functionName` or `functionId`.
+- Object syntax supports `functionName` or legacy `functionId`. Prefer `functionName` in new Liquid templates.
 - Missing arguments resolve to `null`.
 - Extra positional arguments are rejected.
 
@@ -142,12 +144,12 @@ For full details and more examples, see [Using Functions in Liquid Requests](../
 You can save values from one call and pass them into a second call using embedded parameters.
 
 ```liquid
-{% call {"requestId": "51bcee90-89ce-11f0-ac46-894599c37"} as getCustomer %}
+{% call {"requestId": "customer-lookup"} as getCustomer %}
 
 {% assign email = getCustomer.data.email %}
 
 {% call {
-  "requestId": "51bcee90-89ce-11f0-ac46-894599c38",
+  "requestId": "send-customer-email",
   "bodyEmbedded": { "email": email }
 } as sendEmail %}
 
@@ -159,7 +161,7 @@ You can save values from one call and pass them into a second call using embedde
 Conditional logic:
 
 ```liquid
-{% call { "requestId": "51bcee90-89ce-11f0-ac46-894599c37" } as response %}
+{% call { "requestId": "product-details-proxy" } as response %}
 {% if response.status == 200 %}
   Success
 {% else %}
@@ -170,7 +172,7 @@ Conditional logic:
 Looping:
 
 ```liquid
-{% call { "requestId": "51bcee90-89ce-11f0-ac46-894599c37" } as response %}
+{% call { "requestId": "product-details-proxy" } as response %}
 
 {% for item in response.data.items %}
   {{ forloop.index }}. {{ item.title }}
@@ -180,7 +182,7 @@ Looping:
 Assign and capture:
 
 ```liquid
-{% call { "requestId": "51bcee90-89ce-11f0-ac46-894599c37" } as response %}
+{% call { "requestId": "product-details-proxy" } as response %}
 
 {% if response.status == 200 %}
   Success
@@ -209,7 +211,7 @@ Choose how the request should be triggered:
 
 **Next Request**
 
-You can specify the name of another request to run after this request finishes. This allows you to build multi step workflows using chained requests.
+You can specify the handle of another request to run after this request finishes. This allows you to build multi step workflows using chained requests.
 
 **Examples**
 
@@ -223,7 +225,7 @@ Hello world:
 Call a saved HTTP request and show JSON:
 
 ```liquid
-{% call { "requestId": "51bcee90-89ce-11f0-ac46-894599c37" } as r %}
+{% call { "requestId": "product-details-proxy" } as r %}
 {{ r.data | json }}
 ```
 
@@ -243,7 +245,7 @@ POST with a dynamic body:
 ```liquid
 {% assign email = "test@example.com" %}
 {% call {
-  "requestId": "51bcee90-89ce-11f0-ac46-894599c37",
+  "requestId": "newsletter-signup",
   "headersEmbedded": { "Content-Type": "application/json" },
   "bodyEmbedded": { "email": "{{email}}", "source": "storefront" }
 } as sub %}

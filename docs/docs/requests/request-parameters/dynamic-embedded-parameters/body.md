@@ -18,7 +18,7 @@ const bodyEmbeddedVar = JSON.stringify({
 });
 
 const queryParams = new URLSearchParams({
-  requestId: "a1dd1880-ewsd-sdss-8f48-27f04dbadc33",
+  requestId: "newsletter-signup",
   bodyEmbedded: bodyEmbeddedVar,
 });
 
@@ -30,4 +30,3 @@ fetch('/apps/apiease/integration/caller/call?' + queryParams)
 ```
 
 In the above javascript snippet we see that **bodyEmbedded**  is set to the stringified "bodyEmbeddedVar". APIEase looks for a query parameter named **bodyEmbedded**  to hold the dynamic embedded body parameters.
-

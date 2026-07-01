@@ -8,6 +8,8 @@ Everything that you can accomplish with APIEase starts with a request.
 
 A request is a configuration that defines how APIEase should securely call an external API, trigger a Shopify Flow workflow, run Liquid logic, or execute internal system functions. Each request contains the destination (when applicable), any necessary parameters, and optional logic to determine when and how it should run.
 
+Each request has a handle. Use the handle as the stable identifier when another request calls it, storefront code triggers it, or `apiease-cli` and the public API manage it.
+
 Requests can be used for a wide variety of purposes, including:
 
 - Calling third-party APIs from your Shopify storefront

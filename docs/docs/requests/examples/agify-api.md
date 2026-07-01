@@ -15,7 +15,7 @@ function callApi() {
   const agifyInputName = document.getElementById('agifyInputName').value;
   const queryParamsEmbedded = JSON.stringify({ name: agifyInputName });
   const queryParamsCaller = new URLSearchParams({
-    requestId: '14d572d0-db21-11ed-b56c-119d120a4914',
+    requestId: 'agify-age-lookup',
     queryParamsEmbedded,
   });
 
@@ -73,4 +73,3 @@ document.getElementById('agifyInputName').addEventListener('keydown', (event) =>
   margin-top: 10px;
 }
 ```
-

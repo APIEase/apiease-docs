@@ -12,7 +12,7 @@ If you want a more convenient and reusable way to make storefront calls, use [Wi
 Use caution with Storefront App Proxy requests. Anyone from anywhere can call Storefront App Proxy requests. APIEase verifies that Storefront App Proxy requests have been routed through the Shopify App Proxy and that a Storefront App Proxy trigger has been added to the directly called request. However, anyone can call this request via the Shopify App Proxy just as you can from your storefront.
 
 ## How it works
-- Your theme calls the APIEase app proxy path (for example `/apps/apiease/integration/caller/call`) and includes the `requestId` for the request to run.
+- Your theme calls the APIEase app proxy path (for example `/apps/apiease/integration/caller/call`) and includes the request handle as the `requestId` value for the request to run.
 - Shopify forwards the call through the app proxy. If the customer is logged in, Shopify passes the customer id to APIEase.
 - APIEase executes the request on the server, injects any sensitive parameters you saved in the admin, and returns the request's final response to the storefront.
 
@@ -29,7 +29,7 @@ Use the copied snippet as-is to verify the integration, then extend it with any 
 ```html
 <script>
   const queryParams = new URLSearchParams({
-    requestId: "e4234d0-5b0a-11ee-9e5d-195679c7ea93b",
+    requestId: "product-details-proxy",
   });
   fetch('/apps/apiease/integration/caller/call?' + queryParams).
     then(function(response) {return response.json();}).
@@ -37,7 +37,7 @@ Use the copied snippet as-is to verify the integration, then extend it with any 
 </script>
 ```
 
-- `requestId` tells APIEase which request to run; this value is filled in when you click **Copy**.
+- `requestId` tells APIEase which request to run. Use the request handle as this value for new storefront code.
 - Add `pathParamsEmbedded`, `queryParamsEmbedded`, `headersEmbedded`, `bodyEmbedded`, or `flowParamsEmbedded` as needed to pass dynamic embedded parameters from the storefront.
 - Keep confidential values stored in the APIEase request configuration; do not place secrets in storefront code.
 
