@@ -53,7 +53,7 @@ Prefer the handle-named flags for read, update, and delete commands:
 
 Legacy flags such as `--request-id`, `--widget-id`, `--variable-name`, and `--function-id` remain available as compatibility aliases in current CLI versions. When you use those aliases during migration, pass the handle as the value unless you are intentionally addressing an older server-owned id.
 
-With request files, `apiease create request --file <path>` is idempotent when the file has a valid `handle`: the CLI creates the request if it does not exist, or updates the existing request with that handle if it does. For widgets, variables, and functions, create the resource with a stable handle in the file, then use the matching handle flag for later updates.
+For requests, widgets, variables, and functions, `apiease create <resource> --file <path>` is idempotent when the file has a valid `handle`: the CLI creates the resource if it does not exist, or updates the existing resource with that handle if it does. Lookup failures other than not found stop the command instead of falling back to create.
 
 ## Public API identifiers
 
@@ -111,6 +111,6 @@ For older widget source files that still use `widgetHandle` or `widgetName`, run
 apiease create widget --file ./resources/widgets/product-details-widget.json --auto-update-source-identifier
 ```
 
-That rewrites the local widget JSON before create. If `widgetHandle` exists and `handle` is missing, the CLI writes `handle` from `widgetHandle`. If `widgetName` exists and `name` is missing, the CLI writes `name` from `widgetName`. Existing `handle` and `name` values are preserved, unrelated widget fields stay unchanged, and the resulting `handle` is used for create-or-update behavior.
+That rewrites the local widget JSON before the create-or-update operation. If `widgetHandle` exists and `handle` is missing, the CLI writes `handle` from `widgetHandle`. If `widgetName` exists and `name` is missing, the CLI writes `name` from `widgetName`. Existing `handle` and `name` values are preserved, unrelated widget fields stay unchanged, and the resulting `handle` is used for create-or-update behavior.
 
 For variables and functions, update the JSON source manually so it contains `handle`, the stable source identifier, and no server-owned id.

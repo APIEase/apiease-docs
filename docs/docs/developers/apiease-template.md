@@ -105,7 +105,7 @@ The template is designed for a repository-first workflow:
 2. configure APIEase authentication for the environment you want to target
 3. create or adapt JSON resource definitions in your project
 4. version those definitions and the project metadata in git
-5. use [apiease-cli](./apiease-cli.md) to create, read, update, or delete the saved resources in APIEase
+5. use [apiease-cli](./apiease-cli.md) to create or update, read, or delete the saved resources in APIEase
 6. use the [APIEase Public API](./apiease-public-api.md) directly only when you need a lower-level integration than the CLI
 7. run `apiease upgrade` later to adopt safe template updates without overwriting project-owned work
 

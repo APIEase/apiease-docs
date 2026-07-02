@@ -95,7 +95,7 @@ For most Codex-style tasks, the working loop should be:
 1. read the local guidance files
 2. inspect the current resource files and examples
 3. add or edit JSON definitions under `resources/*`
-4. sync those definitions with `apiease-cli`
+4. sync those definitions with idempotent `apiease create` commands
 5. read the saved resource back when needed to confirm the change
 6. review and commit the repository changes
 
@@ -107,13 +107,13 @@ apiease create request --file ./resources/requests/product-details-proxy.json
 apiease read request --request-handle product-details-proxy
 ```
 
-After editing the same file again:
+After editing the same file again, rerun the same create command:
 
 ```bash
-apiease update request --request-handle product-details-proxy --file ./resources/requests/product-details-proxy.json
+apiease create request --file ./resources/requests/product-details-proxy.json
 ```
 
-Use the same CRUD pattern for widgets, variables, and functions with the resource-specific handle flags documented in [apiease-cli](./apiease-cli.md).
+When a resource file has a valid `handle`, `apiease create` creates the resource if it is missing and updates the existing resource if that handle already exists. Use the same create-or-update pattern for widgets, variables, and functions. Use the resource-specific handle flags documented in [apiease-cli](./apiease-cli.md) for read, explicit update, and delete commands.
 
 ## Prefer the CLI over direct HTTP
 

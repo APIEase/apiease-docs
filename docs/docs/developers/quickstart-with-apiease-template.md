@@ -136,15 +136,15 @@ Keep the detailed request behavior in the existing Requests docs instead of re-d
 
 ## Sync resources with APIEase through the CLI
 
-Once your JSON files are ready, use `apiease-cli` to create the saved resources in APIEase.
+Once your JSON files are ready, use `apiease-cli` to create or update the saved resources in APIEase.
 
-Create a variable first if your request depends on one:
+Sync a variable first if your request depends on one:
 
 ```bash
 apiease create variable --file ./resources/variables/support-api-key.json
 ```
 
-Create a request from your project file:
+Sync a request from your project file:
 
 ```bash
 apiease create request --file ./resources/requests/product-details-proxy.json
@@ -156,13 +156,15 @@ Read it back from APIEase:
 apiease read request --request-handle product-details-proxy
 ```
 
-Update it after you change the JSON file:
+Rerun `apiease create` after you change the JSON file:
 
 ```bash
-apiease update request --request-handle product-details-proxy --file ./resources/requests/product-details-proxy.json
+apiease create request --file ./resources/requests/product-details-proxy.json
 ```
 
-The same CRUD pattern applies to widgets, variables, and functions with resource-specific handle flags such as `--widget-handle`, `--variable-handle`, and `--function-handle`. The CLI is the normal path here: it reads your local JSON file, resolves auth, and calls the underlying [APIEase Public API](./apiease-public-api.md) for you.
+When a resource file has a valid `handle`, `apiease create` creates the resource if it is missing and updates the existing resource if that handle already exists. This create-or-update behavior applies to requests, widgets, variables, and functions.
+
+Use resource-specific handle flags such as `--widget-handle`, `--variable-handle`, and `--function-handle` for read, explicit update, and delete commands. The CLI is the normal path here: it reads your local JSON file, resolves auth, and calls the underlying [APIEase Public API](./apiease-public-api.md) for you.
 
 For the handle-based identifier model, see [Resource handles](./resource-handles.md).
 
