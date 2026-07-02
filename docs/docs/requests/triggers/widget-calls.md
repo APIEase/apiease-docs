@@ -15,5 +15,10 @@ Widget Calls are a trigger type for APIEase requests. They are a more convenient
 
 To configure the widget-side request call, see [Using Requests in Widgets](../../widgets/using-requests-in-widgets.md).
 
+## Passing values to Liquid requests
+Widget JavaScript uses the same APIEase integration endpoint as storefront calls. For Liquid requests, set `requestId` to the request handle and pass per-call values with `liquidParamsEmbedded`.
+
+`liquidParamsEmbedded` should contain a JSON object string. Inside the Liquid request, read those values from `apiEaseParameters.liquidParams.<parameterName>`.
+
 ## Security warning
 Widgets run in the browser and are inspectable. Sensitive credentials must not be placed in widgets. Configure credentials inside the APIEase request where they are stored securely. Treat all widget inputs as untrusted.

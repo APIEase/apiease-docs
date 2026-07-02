@@ -104,6 +104,7 @@ const sidebars = {
                 'requests/request-parameters/dynamic-embedded-parameters/headers',
                 'requests/request-parameters/dynamic-embedded-parameters/query-parameters',
                 'requests/request-parameters/dynamic-embedded-parameters/flow-parameters',
+                'requests/request-parameters/dynamic-embedded-parameters/liquid-parameters',
               ],
             },
             'requests/request-parameters/form-urlencoded-bodies',

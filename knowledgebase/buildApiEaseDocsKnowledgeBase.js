@@ -120,6 +120,26 @@ function buildDocRoute({docId, slug, baseUrl, routeBasePath}) {
   return normalizeUrlPath(baseUrl, routeBasePath, routeTarget);
 }
 
+function validateDocContent(docs) {
+  const liquidEmbeddedMissingRuntimePath = docs
+    .filter((doc) => {
+      return (
+        doc.body.includes('liquidParamsEmbedded') &&
+        !doc.body.includes('apiEaseParameters.liquidParams')
+      );
+    })
+    .map((doc) => doc.docId);
+
+  if (liquidEmbeddedMissingRuntimePath.length > 0) {
+    throw new Error(
+      [
+        'Docs that mention liquidParamsEmbedded must also show apiEaseParameters.liquidParams as the Liquid read path.',
+        ...liquidEmbeddedMissingRuntimePath.map((docId) => `- ${docId}`),
+      ].join('\n')
+    );
+  }
+}
+
 function collectDocIds(items, docMap, bucket) {
   for (const item of items) {
     if (typeof item === 'string') {
@@ -243,6 +263,8 @@ async function generateKnowledgeBaseText() {
           : null,
     });
   }
+
+  validateDocContent([...docMap.values()]);
 
   const orderedDocIds = [];
   for (const sidebar of Object.values(sidebars)) {

@@ -9,7 +9,7 @@ In some cases, it's not enough to define your request parameters statically in t
 
 This is where dynamic embedded parameters come in.
 
-With APIEase, you can pass query parameters, headers, or body content dynamically from your storefront using embedded placeholders. These dynamic values are injected into the request at the moment it is triggered from the storefront.
+With APIEase, you can pass query parameters, headers, body content, path values, Flow values, or Liquid request values dynamically from your storefront using embedded placeholders. These dynamic values are injected into the request at the moment it is triggered from the storefront.
 
 **Why Use Dynamic Embedded Parameters?**
 
@@ -47,5 +47,9 @@ You can embed dynamic values into:
 - Headers
 - Request body
 - Path segments
+- Flow parameters
+- Liquid request parameters
 
 Each of these can be populated using JavaScript embedded in your storefront snippet. The data you pass is merged into the request structure when it is triggered, ensuring both flexibility and security.
+
+For Liquid requests, use `liquidParamsEmbedded` to pass a JSON object of per-call values. Inside the Liquid request, read those values from `apiEaseParameters.liquidParams.<parameterName>`. See [Dynamic embedded Liquid parameters](./liquid-parameters.md) for a complete example.

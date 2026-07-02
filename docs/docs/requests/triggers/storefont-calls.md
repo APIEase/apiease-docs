@@ -29,16 +29,19 @@ Use the copied snippet as-is to verify the integration, then extend it with any 
 ```html
 <script>
   const queryParams = new URLSearchParams({
-    requestId: "product-details-proxy",
+    requestId: "status-message",
   });
-  fetch('/apps/apiease/integration/caller/call?' + queryParams).
+  fetch('/apps/apiease/integration/caller/call?' + queryParams.toString(), {
+    headers: { Accept: 'application/json' },
+  }).
     then(function(response) {return response.json();}).
     then(function(jsonResponse) {console.log(jsonResponse);});
 </script>
 ```
 
-- `requestId` tells APIEase which request to run. Use the request handle as this value for new storefront code.
-- Add `pathParamsEmbedded`, `queryParamsEmbedded`, `headersEmbedded`, `bodyEmbedded`, or `flowParamsEmbedded` as needed to pass dynamic embedded parameters from the storefront.
+- `requestId` is an APIEase runtime query parameter that tells APIEase which request to run. Use the request handle as this value for new storefront code.
+- Add `pathParamsEmbedded`, `queryParamsEmbedded`, `headersEmbedded`, `bodyEmbedded`, `flowParamsEmbedded`, or `liquidParamsEmbedded` as needed to pass dynamic embedded parameters from the storefront.
+- For Liquid requests, `liquidParamsEmbedded` passes a JSON object of runtime values. Inside the Liquid request, read those values from `apiEaseParameters.liquidParams.<parameterName>`.
 - Keep confidential values stored in the APIEase request configuration; do not place secrets in storefront code.
 
 Do not add a Storefront App Proxy trigger to helper requests that are only invoked by another APIEase request or by a Liquid `call` tag.
