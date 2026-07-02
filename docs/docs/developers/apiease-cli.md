@@ -181,7 +181,7 @@ The CLI manages four saved APIEase resource types:
 
 All definition files must contain valid JSON with an object at the root. Use `handle` as the stable source-controlled identifier. Server-owned `id` values are metadata returned by APIEase and should not be stored in request, widget, variable, or function source files.
 
-Widget files use `handle` for the stable identifier and `name` for display text. Older widget files that use `widgetHandle` or `widgetName` should be migrated before new CLI-driven work.
+Widget files use `handle` for the stable identifier and `name` for display text. Older widget files that use `widgetHandle` or `widgetName` can be migrated with `apiease create widget --file ./widget-definition.json --auto-update-source-identifier` before create.
 
 Handles should be lowercase slug values using letters, numbers, and hyphens, for example:
 
@@ -244,6 +244,14 @@ For older request files that still contain `id` metadata or no `handle`, you can
 ```bash
 apiease create request --file ./request-definition.json --auto-update-source-identifier
 ```
+
+For older widget files that still contain `widgetHandle` or `widgetName`, you can migrate the local source fields before create:
+
+```bash
+apiease create widget --file ./widget-definition.json --auto-update-source-identifier
+```
+
+The widget migration writes `handle` from `widgetHandle` only when `handle` is missing, writes `name` from `widgetName` only when `name` is missing, preserves unrelated widget fields, and uses the resulting `handle` for create-or-update behavior.
 
 Inside a template-based repository, the example resource files currently live under:
 

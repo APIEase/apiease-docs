@@ -105,4 +105,12 @@ apiease create request --file ./resources/requests/product-details-proxy.json --
 
 That updates only the local request identifier metadata. It does not change request behavior such as `type`, `method`, `address`, `parameters`, `triggers`, `liquid`, or `nextRequest`.
 
-For widgets, variables, and functions, update the JSON source manually so it contains `handle`, the stable source identifier, and no server-owned id. Older widget files that use `widgetHandle` and `widgetName` should be migrated to `handle` and `name`.
+For older widget source files that still use `widgetHandle` or `widgetName`, run:
+
+```bash
+apiease create widget --file ./resources/widgets/product-details-widget.json --auto-update-source-identifier
+```
+
+That rewrites the local widget JSON before create. If `widgetHandle` exists and `handle` is missing, the CLI writes `handle` from `widgetHandle`. If `widgetName` exists and `name` is missing, the CLI writes `name` from `widgetName`. Existing `handle` and `name` values are preserved, unrelated widget fields stay unchanged, and the resulting `handle` is used for create-or-update behavior.
+
+For variables and functions, update the JSON source manually so it contains `handle`, the stable source identifier, and no server-owned id.
