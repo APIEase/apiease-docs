@@ -489,15 +489,15 @@ Keep the detailed request behavior in the existing Requests docs instead of re-d
 
 ## Sync resources with APIEase through the CLI
 
-Once your JSON files are ready, use `apiease-cli` to create the saved resources in APIEase.
+Once your JSON files are ready, use `apiease-cli` to create or update the saved resources in APIEase.
 
-Create a variable first if your request depends on one:
+Sync a variable first if your request depends on one:
 
 ```bash
 apiease create variable --file ./resources/variables/support-api-key.json
 ```
 
-Create a request from your project file:
+Sync a request from your project file:
 
 ```bash
 apiease create request --file ./resources/requests/product-details-proxy.json
@@ -509,13 +509,15 @@ Read it back from APIEase:
 apiease read request --request-handle product-details-proxy
 ```
 
-Update it after you change the JSON file:
+Rerun `apiease create` after you change the JSON file:
 
 ```bash
-apiease update request --request-handle product-details-proxy --file ./resources/requests/product-details-proxy.json
+apiease create request --file ./resources/requests/product-details-proxy.json
 ```
 
-The same CRUD pattern applies to widgets, variables, and functions with resource-specific handle flags such as `--widget-handle`, `--variable-handle`, and `--function-handle`. The CLI is the normal path here: it reads your local JSON file, resolves auth, and calls the underlying [APIEase Public API](./apiease-public-api.md) for you.
+When a resource file has a valid `handle`, `apiease create` creates the resource if it is missing and updates the existing resource if that handle already exists. This create-or-update behavior applies to requests, widgets, variables, and functions.
+
+Use resource-specific handle flags such as `--widget-handle`, `--variable-handle`, and `--function-handle` for read, explicit update, and delete commands. The CLI is the normal path here: it reads your local JSON file, resolves auth, and calls the underlying [APIEase Public API](./apiease-public-api.md) for you.
 
 For the handle-based identifier model, see [Resource handles](./resource-handles.md).
 
@@ -634,7 +636,7 @@ Prefer the handle-named flags for read, update, and delete commands:
 
 Legacy flags such as `--request-id`, `--widget-id`, `--variable-name`, and `--function-id` remain available as compatibility aliases in current CLI versions. When you use those aliases during migration, pass the handle as the value unless you are intentionally addressing an older server-owned id.
 
-With request files, `apiease create request --file <path>` is idempotent when the file has a valid `handle`: the CLI creates the request if it does not exist, or updates the existing request with that handle if it does. For widgets, variables, and functions, create the resource with a stable handle in the file, then use the matching handle flag for later updates.
+For requests, widgets, variables, and functions, `apiease create <resource> --file <path>` is idempotent when the file has a valid `handle`: the CLI creates the resource if it does not exist, or updates the existing resource with that handle if it does. Lookup failures other than not found stop the command instead of falling back to create.
 
 ## Public API identifiers
 
@@ -692,7 +694,7 @@ For older widget source files that still use `widgetHandle` or `widgetName`, run
 apiease create widget --file ./resources/widgets/product-details-widget.json --auto-update-source-identifier
 ```
 
-That rewrites the local widget JSON before create. If `widgetHandle` exists and `handle` is missing, the CLI writes `handle` from `widgetHandle`. If `widgetName` exists and `name` is missing, the CLI writes `name` from `widgetName`. Existing `handle` and `name` values are preserved, unrelated widget fields stay unchanged, and the resulting `handle` is used for create-or-update behavior.
+That rewrites the local widget JSON before the create-or-update operation. If `widgetHandle` exists and `handle` is missing, the CLI writes `handle` from `widgetHandle`. If `widgetName` exists and `name` is missing, the CLI writes `name` from `widgetName`. Existing `handle` and `name` values are preserved, unrelated widget fields stay unchanged, and the resulting `handle` is used for create-or-update behavior.
 
 For variables and functions, update the JSON source manually so it contains `handle`, the stable source identifier, and no server-owned id.
 
@@ -796,7 +798,7 @@ For most Codex-style tasks, the working loop should be:
 1. read the local guidance files
 2. inspect the current resource files and examples
 3. add or edit JSON definitions under `resources/*`
-4. sync those definitions with `apiease-cli`
+4. sync those definitions with idempotent `apiease create` commands
 5. read the saved resource back when needed to confirm the change
 6. review and commit the repository changes
 
@@ -808,13 +810,13 @@ apiease create request --file ./resources/requests/product-details-proxy.json
 apiease read request --request-handle product-details-proxy
 ```
 
-After editing the same file again:
+After editing the same file again, rerun the same create command:
 
 ```bash
-apiease update request --request-handle product-details-proxy --file ./resources/requests/product-details-proxy.json
+apiease create request --file ./resources/requests/product-details-proxy.json
 ```
 
-Use the same CRUD pattern for widgets, variables, and functions with the resource-specific handle flags documented in [apiease-cli](./apiease-cli.md).
+When a resource file has a valid `handle`, `apiease create` creates the resource if it is missing and updates the existing resource if that handle already exists. Use the same create-or-update pattern for widgets, variables, and functions. Use the resource-specific handle flags documented in [apiease-cli](./apiease-cli.md) for read, explicit update, and delete commands.
 
 ## Prefer the CLI over direct HTTP
 
@@ -1191,7 +1193,7 @@ Use it when you want to:
 
 - initialize a project from the APIEase template
 - keep requests, widgets, variables, and functions under source control
-- create, read, update, and delete saved APIEase resources from local JSON files
+- create or update, read, and delete saved APIEase resources from local JSON files
 - apply template updates without overwriting local conflicts
 
 In practice, `apiease-cli` is the thin layer between your repository and the [APIEase Public API](./apiease-public-api.md).
@@ -1204,7 +1206,7 @@ The intended developer workflow is:
 2. use `apiease init` to copy in the current template structure
 3. configure APIEase authentication for the target environment
 4. store resource definitions in git as JSON files
-5. use `apiease create`, `read`, `update`, and `delete` to sync those files with APIEase
+5. use idempotent `apiease create` commands to sync those files with APIEase, then `read` or `delete` resources when needed
 6. use `apiease upgrade` to pull safe template updates later
 
 This keeps your APIEase configuration versioned in git while still using the same public API contract that powers the CLI.
@@ -1360,7 +1362,7 @@ The CLI manages four saved APIEase resource types:
 
 All definition files must contain valid JSON with an object at the root. Use `handle` as the stable source-controlled identifier. Server-owned `id` values are metadata returned by APIEase and should not be stored in request, widget, variable, or function source files.
 
-Widget files use `handle` for the stable identifier and `name` for display text. Older widget files that use `widgetHandle` or `widgetName` can be migrated with `apiease create widget --file ./widget-definition.json --auto-update-source-identifier` before create.
+Widget files use `handle` for the stable identifier and `name` for display text. Older widget files that use `widgetHandle` or `widgetName` can be migrated with `apiease create widget --file ./widget-definition.json --auto-update-source-identifier` before the create-or-update operation.
 
 Handles should be lowercase slug values using letters, numbers, and hyphens, for example:
 
@@ -1374,15 +1376,17 @@ Handles should be lowercase slug values using letters, numbers, and hyphens, for
 }
 ```
 
-Create a resource from a JSON file:
+Create or update a resource from a JSON file:
 
 ```bash
 apiease create request --file ./request-definition.json
 ```
 
-When a request file has a valid `handle`, `apiease create request` checks for an existing remote request with that handle. It creates the request if none exists, or updates the existing request if it already exists.
+For requests, widgets, variables, and functions, `apiease create <resource>` is idempotent when the file has a valid `handle`. The CLI looks up the remote resource by handle, updates it when found, and creates it when missing.
 
-Read, update, and delete by handle:
+Lookup failures other than not found stop the command instead of falling back to create. Human output reports either `<Resource> created successfully.` or `<Resource> updated successfully.`, and JSON output includes `operation` as `created` or `updated`. For example, rerunning `apiease create widget --file ./widget-definition.json` updates the existing widget instead of creating a duplicate.
+
+Read, update explicitly, and delete by handle:
 
 ```bash
 apiease read request --request-handle product-details-proxy
@@ -1390,7 +1394,7 @@ apiease update request --request-handle product-details-proxy --file ./request-d
 apiease delete request --request-handle product-details-proxy
 ```
 
-The same handle-based CRUD pattern applies to widgets, variables, and functions:
+The same handle-based command pattern applies to widgets, variables, and functions:
 
 ```bash
 apiease create widget --file ./widget-definition.json
@@ -1424,7 +1428,7 @@ For older request files that still contain `id` metadata or no `handle`, you can
 apiease create request --file ./request-definition.json --auto-update-source-identifier
 ```
 
-For older widget files that still contain `widgetHandle` or `widgetName`, you can migrate the local source fields before create:
+For older widget files that still contain `widgetHandle` or `widgetName`, you can migrate the local source fields before the create-or-update operation:
 
 ```bash
 apiease create widget --file ./widget-definition.json --auto-update-source-identifier
@@ -1466,6 +1470,8 @@ apiease create request --file ./request-definition.json --json
 ```
 
 Without `--json`, the CLI prints human-readable success and failure output.
+
+For create-or-update commands, JSON output includes `operation: "created"` when the CLI created a missing resource and `operation: "updated"` when it updated an existing resource.
 
 Structured failures include the APIEase error code, message, optional HTTP status, and any field errors returned by the public API.
 
@@ -1579,7 +1585,7 @@ The template is designed for a repository-first workflow:
 2. configure APIEase authentication for the environment you want to target
 3. create or adapt JSON resource definitions in your project
 4. version those definitions and the project metadata in git
-5. use [apiease-cli](./apiease-cli.md) to create, read, update, or delete the saved resources in APIEase
+5. use [apiease-cli](./apiease-cli.md) to create or update, read, or delete the saved resources in APIEase
 6. use the [APIEase Public API](./apiease-public-api.md) directly only when you need a lower-level integration than the CLI
 7. run `apiease upgrade` later to adopt safe template updates without overwriting project-owned work
 
