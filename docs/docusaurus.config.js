@@ -141,6 +141,10 @@ const config = {
                 href: 'https://github.com/APIEase/apiease-template',
               },
               {
+                label: 'APIEase Examples',
+                href: 'https://github.com/APIEase/apiease-examples',
+              },
+              {
                 label: 'Support',
                 href: 'mailto:support@apiease.com',
               },
