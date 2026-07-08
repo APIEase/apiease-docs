@@ -82,7 +82,7 @@ const config = {
             label: 'Docs',
           },
           {
-            href: 'https://github.com/APIEase/apiease-docs',
+            href: 'https://github.com/APIEase',
             label: 'GitHub',
             position: 'right',
           },
