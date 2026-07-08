@@ -27,7 +27,7 @@ const config = {
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
-  organizationName: 'kevinstl-org', // Usually your GitHub org/user name.
+  organizationName: 'APIEase', // Usually your GitHub org/user name.
   projectName: 'apiease', // Usually your repo name.
 
   onBrokenLinks: 'throw',
@@ -50,7 +50,7 @@ const config = {
           exclude: ['tutorial-basics/**', 'tutorial-extras/**'],
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
-          // editUrl: 'https://github.com/kevinstl-org/apiease/tree/main/docs/',
+          // editUrl: 'https://github.com/APIEase/apiease/tree/main/docs/',
         },
         blog: false,
         theme: {
@@ -134,11 +134,11 @@ const config = {
             items: [
               {
                 label: 'APIEase CLI',
-                href: 'https://github.com/kevinstl-org/apiease-cli',
+                href: 'https://github.com/APIEase/apiease-cli',
               },
               {
                 label: 'APIEase Template',
-                href: 'https://github.com/kevinstl-org/apiease-template',
+                href: 'https://github.com/APIEase/apiease-template',
               },
               {
                 label: 'Support',

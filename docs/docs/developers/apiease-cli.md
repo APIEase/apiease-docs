@@ -6,7 +6,7 @@ description: Install and use apiease-cli to initialize template projects and man
 
 `apiease-cli` is the Node-based command-line tool for working with APIEase from a repository.
 
-GitHub repository: [kevinstl-org/apiease-cli](https://github.com/kevinstl-org/apiease-cli)
+GitHub repository: [APIEase/apiease-cli](https://github.com/APIEase/apiease-cli)
 
 Use it when you want to:
 

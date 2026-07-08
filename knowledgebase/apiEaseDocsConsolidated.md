@@ -1187,7 +1187,7 @@ CONTENT
 
 `apiease-cli` is the Node-based command-line tool for working with APIEase from a repository.
 
-GitHub repository: [kevinstl-org/apiease-cli](https://github.com/kevinstl-org/apiease-cli)
+GitHub repository: [APIEase/apiease-cli](https://github.com/APIEase/apiease-cli)
 
 Use it when you want to:
 
@@ -1486,7 +1486,7 @@ CONTENT
 
 `apiease-template` is the starter repository that `apiease-cli` uses when you run `apiease init`.
 
-GitHub repository: [kevinstl-org/apiease-template](https://github.com/kevinstl-org/apiease-template)
+GitHub repository: [APIEase/apiease-template](https://github.com/APIEase/apiease-template)
 
 It is the recommended foundation for APIEase development because it gives you:
 
