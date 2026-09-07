@@ -16,7 +16,7 @@ HTTP Requests let you call external APIs using any method (GET, POST, PUT, PATCH
 
 ## [Flow Requests](../requests/request-types/flow-requests.md)
 
-Flow Requests allow Shopify Flow to trigger logic that APIEase runs. APIEase receives the Flow input, processes any parameters, executes the defined request or workflow, and returns output data that Flow can use in subsequent steps.
+Flow requests send data from APIEase into a Shopify Flow workflow through the APIEase Flow Trigger. To run a saved APIEase request from a workflow that starts in Shopify Flow, use the [APIEase Flow Action](../requests/shopify-flow-integration/run-saved-request-from-flow.md); the saved request keeps the type needed for its operation, such as HTTP.
 
 ## [Liquid Requests](../requests/request-types/liquid-requests.md)
 

@@ -10,6 +10,10 @@ APIEase and Shopify Flow play different roles. Use Flow for logic and native Sho
 - Shopify Flow is the logic engine: branching, conditions, and Shopify-native actions.
 - APIEase is the API execution layer: authenticated API calls, scheduling, response handling, and triggering Flow when needed.
 
+## Starting in Shopify Flow
+
+A workflow with a Shopify Flow trigger can invoke an existing APIEase request using [APIEase Flow Action](./run-saved-request-from-flow.md). Set its required Flow Parameters JSON to include `requestId` with the saved request handle. That request can remain HTTP, Liquid, or another type appropriate to its operation. No prior APIEase Flow execution is needed.
+
 ## Why start in APIEase
 - You need to call external APIs (ERP, warehouse, AI, CRM, etc.).
 - You need to store or use credentials that Flow should not handle.

@@ -174,6 +174,7 @@ const sidebars = {
               label: 'Shopify Flow integration',
           items: [
             'requests/shopify-flow-integration/architecture',
+            'requests/shopify-flow-integration/run-saved-request-from-flow',
             'requests/shopify-flow-integration/add-flow-request',
             'requests/shopify-flow-integration/minimal-flow-integration',
             'requests/shopify-flow-integration/cat-image-inventory',

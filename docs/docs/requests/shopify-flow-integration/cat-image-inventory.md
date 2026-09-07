@@ -116,7 +116,7 @@ This example uses an explicit `X-Shopify-Access-Token` header for the Shopify Ad
 
 ## Shopify Flow workflow
 1. Trigger: **apiease-flow-trigger**.
-2. Condition: Confirm the incoming `requestId` value matches the Flow request handle.
+2. Condition: Confirm the incoming `requestId` value matches the saved Flow request ID, not its handle (available in the request edit-page URL).
 3. Action: Shopify **Get location data** to retrieve variants and locations.
 4. Action: **Run Code** to classify image size and select the matching inventory item.
 5. Action: **apiease-flow-action** to return Flow parameters (including `incrementInventoryParameter`) to APIEase.

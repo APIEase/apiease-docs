@@ -6,6 +6,8 @@ description: Configure APIEase Flow trigger/action requests and parameter mappin
 
 Flow requests hand data from APIEase to a Shopify Flow workflow. A Flow request is a request type, not an execution mechanism: add a suitable trigger when it is the entry request, or select its handle as **Next Request** when another APIEase request should continue into Flow.
 
+To run a saved APIEase request from a Shopify Flow workflow, use [APIEase Flow Action](../shopify-flow-integration/run-saved-request-from-flow.md). For the APIEase-to-Flow setup, follow [Minimal Flow integration](../shopify-flow-integration/minimal-flow-integration.md).
+
 ![Flow request editor](https://cdn.shopify.com/s/files/1/0733/1820/3680/files/add-http-api-requests.png?v=1744748372)
 
 **Flow Request Fields**

@@ -51,7 +51,7 @@ HTTP Requests let you call external APIs using any method (GET, POST, PUT, PATCH
 
 ## [Flow Requests](../requests/request-types/flow-requests.md)
 
-Flow Requests allow Shopify Flow to trigger logic that APIEase runs. APIEase receives the Flow input, processes any parameters, executes the defined request or workflow, and returns output data that Flow can use in subsequent steps.
+Flow requests send data from APIEase into a Shopify Flow workflow through the APIEase Flow Trigger. To run a saved APIEase request from a workflow that starts in Shopify Flow, use the [APIEase Flow Action](../requests/shopify-flow-integration/run-saved-request-from-flow.md); the saved request keeps the type needed for its operation, such as HTTP.
 
 ## [Liquid Requests](../requests/request-types/liquid-requests.md)
 
@@ -2133,6 +2133,8 @@ CONTENT
 
 Flow requests hand data from APIEase to a Shopify Flow workflow. A Flow request is a request type, not an execution mechanism: add a suitable trigger when it is the entry request, or select its handle as **Next Request** when another APIEase request should continue into Flow.
 
+To run a saved APIEase request from a Shopify Flow workflow, use [APIEase Flow Action](../shopify-flow-integration/run-saved-request-from-flow.md). For the APIEase-to-Flow setup, follow [Minimal Flow integration](../shopify-flow-integration/minimal-flow-integration.md).
+
 ![Flow request editor](https://cdn.shopify.com/s/files/1/0733/1820/3680/files/add-http-api-requests.png?v=1744748372)
 
 **Flow Request Fields**
@@ -3814,6 +3816,10 @@ APIEase and Shopify Flow play different roles. Use Flow for logic and native Sho
 - Shopify Flow is the logic engine: branching, conditions, and Shopify-native actions.
 - APIEase is the API execution layer: authenticated API calls, scheduling, response handling, and triggering Flow when needed.
 
+## Starting in Shopify Flow
+
+A workflow with a Shopify Flow trigger can invoke an existing APIEase request using [APIEase Flow Action](./run-saved-request-from-flow.md). Set its required Flow Parameters JSON to include `requestId` with the saved request handle. That request can remain HTTP, Liquid, or another type appropriate to its operation. No prior APIEase Flow execution is needed.
+
 ## Why start in APIEase
 - You need to call external APIs (ERP, warehouse, AI, CRM, etc.).
 - You need to store or use credentials that Flow should not handle.
@@ -3840,6 +3846,44 @@ APIEase and Shopify Flow play different roles. Use Flow for logic and native Sho
 
 ## Summary
 Put APIEase at the edges (inbound/outbound APIs, credentials, chaining) and Flow in the middle as the logic engine. If a workflow touches external services or credentialed calls, start or end in APIEase and run the logic in Flow.
+
+SOURCE
+https://docs.apiease.com/docs/requests/shopify-flow-integration/run-saved-request-from-flow
+
+TITLE
+Run a saved request from Shopify Flow
+
+CONTENT
+# Run a saved request from Shopify Flow
+
+Use **APIEase Flow Action** when a Shopify Flow workflow needs to run a request already saved in APIEase.
+
+1. Save the request in APIEase in the same store. Keep its type appropriate to the work: for an external API call, use **HTTP** with the required URL, method, parameters, and credentials. Mark credentials **Sensitive**. Copy the request's **Handle**.
+2. Create or open your Shopify Flow workflow with the trigger you need, such as an order event.
+3. Add the **APIEase Flow Action** (`apiease-flow-action`).
+4. Set the required **Flow Parameters** field to valid JSON containing `requestId` with your saved request handle:
+
+```json
+{"requestId":"inventory-sync"}
+```
+
+5. Supply any additional values the saved request needs, then turn on the workflow. When the action runs, APIEase invokes the saved request through normal request execution.
+
+The JSON key is `requestId` even when its value is a handle. The saved request's internal ID also works. Use the handle, not its display name, a full request URL, or a separate `requestHandle` field. You do not need a proxy endpoint, remote API key, storefront trigger, or conversion to the **Flow** request type for this action. Normal request configuration and usage limits still apply.
+
+For requests using workflow data, include fields alongside `requestId` in the JSON and configure the saved request to consume those values through its previous-response parameter mappings. Ensure the final text remains valid JSON when inserting Shopify Flow variables. Keep API credentials saved as Sensitive request parameters rather than including them in the workflow JSON.
+
+## When executionId is needed
+
+For a workflow that starts in Shopify Flow, `executionId` is not required:
+
+```json
+{"requestId":"inventory-sync","orderId":"123456789"}
+```
+
+`executionId` is relevant when APIEase has already started a Shopify Flow workflow and is waiting for its result. Preserve the execution ID supplied in that trigger's `flowParameters` when returning output through APIEase Flow Action. Including both `executionId` and `requestId` resolves the earlier execution and then runs the selected saved request.
+
+The action has one required input field, **Flow Parameters**. It does not declare structured output fields for later Shopify Flow steps. If you need an external API response available inside Flow, start the request in APIEase and pass its response into a chained Flow request; see [Minimal Flow integration](./minimal-flow-integration.md).
 
 SOURCE
 https://docs.apiease.com/docs/requests/shopify-flow-integration/add-flow-request
@@ -3869,14 +3913,30 @@ Minimal Flow integration with APIEase
 CONTENT
 # Minimal Flow integration with APIEase
 
-Use this quick setup to trigger Shopify Flow from APIEase and capture Flow output.
+This setup starts in APIEase and triggers a Shopify Flow workflow. To start in Shopify Flow and run a saved APIEase request instead, follow [Run a saved request from Shopify Flow](./run-saved-request-from-flow.md).
 
-1. Create a **Flow** request in APIEase.
-2. In Shopify Flow, build a workflow that uses the **APIEase Flow Trigger**.
-3. Add a **Condition** step to ensure the incoming `requestId` value matches your Flow request handle.
-4. Add the **APIEase Flow Action** and return a variable named `flowParameters`.
+1. Create and save a **Flow** request in APIEase. Add any Flow parameters your workflow needs.
+2. In Shopify Flow, create a workflow using the **APIEase Flow Trigger**.
+3. Add a **Condition** matching the trigger's `requestId` to the saved Flow request's ID. This trigger field contains the request ID, not its handle. You can find the ID in the request's edit-page URL.
+4. Add your workflow steps. The trigger's `flowParameters` is JSON text containing the inputs and an `executionId` generated by APIEase.
+5. To return a result to the waiting APIEase request, add the **APIEase Flow Action**. Its required **Flow Parameters** field must contain JSON preserving that `executionId`. You can pass through the trigger's `flowParameters` variable, or parse it in **Run code**, add result fields, and serialize it again. Do not replace it with an empty object or invent an execution ID.
+6. Turn on the workflow. Run the saved Flow request from APIEase, from one of its configured triggers, or by chaining to its handle as **Next Request** from another request.
 
-> Important: If Flow does not return `flowParameters`, APIEase still responds, but the Flow-produced details are omitted. APIEase waits for the Flow action runtime call to finish before sending the final response to the original requester.
+For example, a **Run code** step that receives the trigger's `flowParameters` can return a JSON string for the action:
+
+```javascript
+export default function main(input) {
+  const parameters = JSON.parse(input.flowParameters);
+  parameters.result = "complete";
+  return {message: JSON.stringify(parameters)};
+}
+```
+
+Select that step's `message` output as the action's **Flow Parameters** value. Configure the Run code input to include the trigger's `flowParameters`.
+
+APIEase normally waits for a callback containing the matching `executionId`, subject to its Flow response wait limit (25 seconds by default). Without that callback it can time out; completion of an unrelated action does not resolve the request. An immediate-response configuration returns before workflow completion.
+
+To also run a subsequent saved APIEase request, add its handle as `requestId` inside the returned JSON while preserving `executionId`. APIEase resolves the originating execution first, then invokes that saved request. The trigger's top-level `requestId` identifies the originating Flow request; a `requestId` inside the action JSON selects a request to run.
 
 SOURCE
 https://docs.apiease.com/docs/requests/shopify-flow-integration/cat-image-inventory
@@ -3999,7 +4059,7 @@ This example uses an explicit `X-Shopify-Access-Token` header for the Shopify Ad
 
 ## Shopify Flow workflow
 1. Trigger: **apiease-flow-trigger**.
-2. Condition: Confirm the incoming `requestId` value matches the Flow request handle.
+2. Condition: Confirm the incoming `requestId` value matches the saved Flow request ID, not its handle (available in the request edit-page URL).
 3. Action: Shopify **Get location data** to retrieve variants and locations.
 4. Action: **Run Code** to classify image size and select the matching inventory item.
 5. Action: **apiease-flow-action** to return Flow parameters (including `incrementInventoryParameter`) to APIEase.
