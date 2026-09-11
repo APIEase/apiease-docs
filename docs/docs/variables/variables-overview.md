@@ -6,6 +6,8 @@ description: Manage persisted shop variables from the APIEase admin.
 
 The Variables page lets you manage persisted shop variables for the current store directly from the APIEase admin.
 
+For built-in values supplied during request execution, see [System Variables](../general/apiease-details/system/system-variables/overview.md). These are automatically available and are not managed on the Variables page.
+
 These are the same variables used by [System Requests](../requests/request-types/system-requests.md), so you can manage values manually in the admin or read and write them programmatically in request flows.
 
 ## Open the Variables page

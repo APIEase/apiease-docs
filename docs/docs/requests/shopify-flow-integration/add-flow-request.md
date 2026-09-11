@@ -13,3 +13,5 @@ Follow these steps to create a Flow request and send data into Shopify Flow.
 5. (Optional) Add **Flow** parameters with any JSON you want to send into the workflow.
 6. (Optional) Chain this Flow request from another request by setting it as the **Next Request** of the prior step.
 7. Save the request.
+
+To pass the initiating APIEase API key's friendly name to your workflow, see [Pass metadata to Shopify Flow](../../general/apiease-details/system/system-variables/apiease-metadata.md#pass-metadata-to-shopify-flow). The example shows how to send a whole metadata object or just its name and read it from the trigger's `flowParameters` JSON text.

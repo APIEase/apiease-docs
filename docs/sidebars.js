@@ -250,6 +250,20 @@ const sidebars = {
           type: 'category',
           label: 'APIEase details',
           items: [
+            {
+              type: 'category',
+              label: 'System',
+              items: [
+                {
+                  type: 'category',
+                  label: 'System Variables',
+                  items: [
+                    'general/apiease-details/system/system-variables/overview',
+                    'general/apiease-details/system/system-variables/apiease-metadata',
+                  ],
+                },
+              ],
+            },
             'general/apiease-details/ip-address-whitelisting',
             'general/apiease-details/importing-third-party-products',
             'general/apiease-details/automatic-shopify-customer-id-injection',

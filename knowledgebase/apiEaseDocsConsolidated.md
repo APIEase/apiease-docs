@@ -3904,6 +3904,8 @@ Follow these steps to create a Flow request and send data into Shopify Flow.
 6. (Optional) Chain this Flow request from another request by setting it as the **Next Request** of the prior step.
 7. Save the request.
 
+To pass the initiating APIEase API key's friendly name to your workflow, see [Pass metadata to Shopify Flow](../../general/apiease-details/system/system-variables/apiease-metadata.md#pass-metadata-to-shopify-flow). The example shows how to send a whole metadata object or just its name and read it from the trigger's `flowParameters` JSON text.
+
 SOURCE
 https://docs.apiease.com/docs/requests/shopify-flow-integration/minimal-flow-integration
 
@@ -4875,6 +4877,8 @@ CONTENT
 
 The Variables page lets you manage persisted shop variables for the current store directly from the APIEase admin.
 
+For built-in values supplied during request execution, see [System Variables](../general/apiease-details/system/system-variables/overview.md). These are automatically available and are not managed on the Variables page.
+
 These are the same variables used by [System Requests](../requests/request-types/system-requests.md), so you can manage values manually in the admin or read and write them programmatically in request flows.
 
 ## Open the Variables page
@@ -5560,6 +5564,10 @@ See: [Remote Calls](../../requests/triggers/calling-requests-remotely.md)
 
 The key remains available on the **Settings** page. Use **Show** to reveal it or **Copy** to copy it. Anyone with access to this page can reveal or copy the key, so limit admin access appropriately.
 
+## Use the key name during execution
+
+The friendly name of the key that authenticated the initiating request is available as `{apieaseMetaData.apieaseApiKeyName}`. This contains the name, never the secret key, and remains available through chained requests and nested Liquid calls. See [apieaseMetaData](../apiease-details/system/system-variables/apiease-metadata.md) for availability and a Shopify Flow example.
+
 ## What it is not
 
 This is different from the shop access token APIEase uses to call the Shopify Admin API:
@@ -5570,6 +5578,159 @@ This is different from the shop access token APIEase uses to call the Shopify Ad
 Treat this key like a secret. Store it securely and create separate keys for separate external systems. To rotate a key, create and save a replacement, update and verify its callers, then delete the old key and save the change.
 
 Deleting a key revokes access for callers that still use it. APIEase API keys are different from sensitive request parameters: API keys remain revealable and copyable in **Settings**, while sensitive request parameters are masked after saving and are not returned through normal read interfaces.
+
+SOURCE
+https://docs.apiease.com/docs/general/apiease-details/system/system-variables/overview
+
+TITLE
+System Variables overview
+
+CONTENT
+# System Variables overview
+
+System Variables are built-in values provided by APIEase during request execution. Reference them wherever APIEase supports runtime variable substitution or Liquid rendering.
+
+They are distinct from [persisted shop variables](../../../../variables/variables-overview.md), which you create and manage on the Variables page. They are also distinct from [System-type request parameters](../../../../requests/request-parameters/in-app-parameters/in-app-system-parameters.md), which control request behavior. You do not need to create or configure a System parameter to enable System Variables.
+
+## Reference a System Variable
+
+Names are case-sensitive. Use single braces, such as `{variableName}`, for APIEase runtime substitution. Use dot notation to access a child of an object.
+
+For example, [apieaseMetaData](./apiease-metadata.md) provides supported information about the current execution:
+
+- Whole object: `{apieaseMetaData}`
+- API key friendly name: `{apieaseMetaData.apieaseApiKeyName}`
+
+A bare `apieaseMetaData` value without braces is literal text. In native Liquid expressions, use Liquid syntax instead, such as `{{ apieaseMetaData.apieaseApiKeyName }}`.
+
+Availability depends on where APIEase performs runtime substitution or Liquid rendering. Arbitrary widget JavaScript is not automatically rewritten to replace System Variable references.
+
+## Unresolved references
+
+If APIEase cannot resolve a single-brace reference, such as `{apieaseMetaDataFFFFF}`, it leaves the reference unchanged and execution continues.
+
+APIEase reports an `UNRESOLVED_VARIABLE` warning in backend logs, the response's `warnings` array, and call history. The warning identifies the variable and the parameter's type and name, includes the request ID when available, and explains that execution continued. Parameter values are not included in the warning.
+
+Referencing an absent object child can also produce this warning. For example, `{apieaseMetaData.apieaseApiKeyName}` is unresolved when the initiating request did not authenticate with a named APIEase API key. Check the spelling and case of the reference and whether the child is available for that execution.
+
+These unchanged-reference and warning rules apply to APIEase single-brace substitution. They do not apply to native Liquid expressions such as `{{ apieaseMetaData.apieaseApiKeyName }}`, which are handled by Liquid rendering.
+
+SOURCE
+https://docs.apiease.com/docs/general/apiease-details/system/system-variables/apiease-metadata
+
+TITLE
+apieaseMetaData
+
+CONTENT
+# apieaseMetaData
+
+`apieaseMetaData` is an automatically available [System Variable](./overview.md) object containing supported information about the current execution. You do not create it on the Variables page or enable it with a System parameter.
+
+## Reference the object or a child
+
+| Reference | Value |
+| --- | --- |
+| `{apieaseMetaData}` | The whole metadata object |
+| `{apieaseMetaData.apieaseApiKeyName}` | The authenticating APIEase API key's friendly name, when available |
+
+The spelling is case-sensitive. A bare `apieaseMetaData` value without braces is literal text.
+
+When `{apieaseMetaData}` is the entire value, Flow, Liquid, System, and JSON body parameter values preserve the object. Text destinations, such as headers and query parameters, receive serialized JSON text for the object.
+
+Metadata is available where APIEase performs runtime substitution or Liquid rendering. Arbitrary widget JavaScript is not automatically rewritten.
+
+## apieaseMetaData.apieaseApiKeyName
+
+`apieaseApiKeyName` contains the friendly name of the [APIEase API key](../../../settings/apiease-api-key.md) used to authenticate the initiating request. It contains the name, never the secret key.
+
+It is currently the only supported metadata child. For a fictional API key named `Example integration`, the object is:
+
+```json
+{"apieaseApiKeyName": "Example integration"}
+```
+
+If execution did not authenticate with a named APIEase API key, `apieaseMetaData` is `{}` and `apieaseApiKeyName` is absent. Referencing that absent child with single braces can produce an [unresolved-variable warning](./overview.md#unresolved-references).
+
+The initiating request's authentication information remains available through [chained requests](../../../../requests/request-parameters/chained-requests.md) and nested Liquid calls.
+
+## Pass metadata to Shopify Flow
+
+Create a [Flow request](../../../../requests/shopify-flow-integration/add-flow-request.md), then add a Flow-type parameter:
+
+| Setting | Value |
+| --- | --- |
+| Type | `flow` |
+| Name | `myMetadata` |
+| Value | `{apieaseMetaData}` |
+
+You choose the output parameter name: `myMetadata` is an example, not a required name. For this example, initiate the request with an APIEase API key named `Example integration`, either directly or through a request chain.
+
+In Shopify Flow, use the **APIEase Flow Trigger** as described in the [minimal Flow integration](../../../../requests/shopify-flow-integration/minimal-flow-integration.md). Its `flowParameters` field is JSON text. After parsing it, the payload includes:
+
+```json
+{
+  "requestFlowParameters": {
+    "myMetadata": {
+      "apieaseApiKeyName": "Example integration"
+    }
+  },
+  "executionId": "example-execution-id"
+}
+```
+
+APIEase generates the actual `executionId`. The metadata object is under `requestFlowParameters.myMetadata`; its friendly name is at `requestFlowParameters.myMetadata.apieaseApiKeyName` after parsing `flowParameters`.
+
+For a **Run code** step, include the trigger field in the input query:
+
+```graphql
+query {
+  flowParameters
+}
+```
+
+Then read the child in the workflow's JavaScript:
+
+```javascript
+export default function main(input) {
+  const parameters = JSON.parse(input.flowParameters);
+  return {
+    callingIntegration:
+      parameters.requestFlowParameters.myMetadata.apieaseApiKeyName ?? ""
+  };
+}
+```
+
+Define the Run code output so later workflow steps can select `callingIntegration`:
+
+```graphql
+type Output {
+  callingIntegration: String!
+}
+```
+
+The output is `Example integration` for this example, or an empty string when the metadata child is absent. If your workflow returns a result to APIEase, follow the minimal integration's instructions to preserve `executionId` in the callback.
+
+### Pass only the name
+
+To send only the friendly name instead of the object, configure:
+
+| Setting | Value |
+| --- | --- |
+| Type | `flow` |
+| Name | `callingIntegration` |
+| Value | `{apieaseMetaData.apieaseApiKeyName}` |
+
+After parsing the trigger's `flowParameters`, `requestFlowParameters.callingIntegration` is `"Example integration"`. If the child is absent, the single-brace reference stays unchanged and can produce an unresolved-variable warning.
+
+## Use native Liquid
+
+In an APIEase Liquid template, access the friendly name directly:
+
+```liquid
+{{ apieaseMetaData.apieaseApiKeyName }}
+```
+
+For the fictional key above, this renders `Example integration`. Native Liquid expressions follow Liquid rendering behavior, not APIEase's single-brace unresolved-reference warning rules.
 
 SOURCE
 https://docs.apiease.com/docs/general/apiease-details/ip-address-whitelisting

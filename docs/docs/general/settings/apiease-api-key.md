@@ -24,6 +24,10 @@ See: [Remote Calls](../../requests/triggers/calling-requests-remotely.md)
 
 The key remains available on the **Settings** page. Use **Show** to reveal it or **Copy** to copy it. Anyone with access to this page can reveal or copy the key, so limit admin access appropriately.
 
+## Use the key name during execution
+
+The friendly name of the key that authenticated the initiating request is available as `{apieaseMetaData.apieaseApiKeyName}`. This contains the name, never the secret key, and remains available through chained requests and nested Liquid calls. See [apieaseMetaData](../apiease-details/system/system-variables/apiease-metadata.md) for availability and a Shopify Flow example.
+
 ## What it is not
 
 This is different from the shop access token APIEase uses to call the Shopify Admin API:
