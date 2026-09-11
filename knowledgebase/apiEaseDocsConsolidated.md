@@ -5799,7 +5799,7 @@ Overrides change the APIEase response, not the destination API or the work alrea
 
 ## Read overrides from a Flow or Liquid result
 
-For a result-dependent status or message, enable either or both flags:
+For a result-dependent status or message, add either or both flags to the saved request with type **System**:
 
 | Name | Value | Field read from the result |
 | --- | --- | --- |
@@ -5808,7 +5808,11 @@ For a result-dependent status or message, enable either or both flags:
 
 The flags default to disabled. Enter lowercase `true` as the parameter value to enable each one independently. These flags read completed **Flow or Liquid** output; HTTP and System results do not supply output-based overrides.
 
-For Liquid, make the rendered result a JSON object with `apieaseSystemData` at its top level:
+The returned `apieaseSystemData` object is separate from the [apieaseMetaData System Variable](../system-variables/apiease-metadata.md). It must be at the top level of the current result, not nested inside another result property.
+
+### Set overrides in a Liquid result
+
+Make the rendered result a JSON object with `apieaseSystemData` at its top level:
 
 ```json
 {
@@ -5820,9 +5824,64 @@ For Liquid, make the rendered result a JSON object with `apieaseSystemData` at i
 }
 ```
 
-For Flow, include the same `apieaseSystemData` object at the top level of the JSON returned through **APIEase Flow Action**, alongside the original `executionId` supplied by the trigger. Preserve that execution ID so APIEase can resolve the waiting call. See [Minimal Flow integration](../../../../requests/shopify-flow-integration/minimal-flow-integration.md) for callback setup.
+### Set overrides in a Shopify Flow result
 
-The returned `apieaseSystemData` object is separate from the [apieaseMetaData System Variable](../system-variables/apiease-metadata.md). It must be in the current result, not nested inside another result property.
+Set `apieaseSystemData.apieaseResponseCodeOverride` in the JSON sent through **APIEase Flow Action → Flow Parameters**. A **Run code** step can add the override while preserving the original `executionId` that APIEase needs to resolve the waiting call.
+
+Start with a workflow using the **APIEase Flow Trigger**, as described in [Minimal Flow integration](../../../../requests/shopify-flow-integration/minimal-flow-integration.md).
+
+1. On the saved APIEase Flow request, add a **System** parameter named `OVERRIDE_APIEASE_RESPONSE_CODE` with value `true`, then save. Keep `IMMEDIATE_FLOW_RESPONSE` set to `false` or remove it so APIEase waits for the result.
+2. In Shopify Flow, add a **Run code** step after the workflow steps that determine the result. Configure its **Input** to include the trigger's `flowParameters`:
+
+   ```graphql
+   {
+     flowParameters
+   }
+   ```
+
+3. Define the Run code **Output** schema:
+
+   ```graphql
+   type Output {
+     message: String!
+   }
+   ```
+
+4. Use this **Code** to return a `409` response:
+
+   ```javascript
+   export default function main(input) {
+     const parameters = JSON.parse(input.flowParameters);
+
+     parameters.apieaseSystemData = {
+       ...parameters.apieaseSystemData,
+       apieaseResponseCodeOverride: 409
+     };
+
+     return { message: JSON.stringify(parameters) };
+   }
+   ```
+
+   Replace `409` with the code appropriate to your workflow result. Codes must be integers from **200 through 599**.
+
+5. Add **APIEase Flow Action** after Run code. In its **Flow Parameters** field, use the variable picker to select that **Run code → message** output. This passes the serialized JSON back to APIEase. The Run code output named `message` carries the entire callback JSON; it does not itself override the APIEase response message.
+
+The returned JSON has this shape, alongside any other preserved input or result fields:
+
+```json
+{
+  "executionId": "<original execution ID from the APIEase trigger>",
+  "apieaseSystemData": {
+    "apieaseResponseCodeOverride": 409
+  }
+}
+```
+
+Preserve the trigger's actual `executionId`; do not replace it with the placeholder above. Keep `apieaseSystemData` at the top level, without an extra `data` wrapper.
+
+To also override the response message, add `apieaseResponseMessageOverride: "Item unavailable"` to the same `apieaseSystemData` object and enable the **System** parameter `OVERRIDE_APIEASE_RESPONSE_MESSAGE` with value `true` on the saved request.
+
+The override applies to the original caller's response when the callback arrives while APIEase is still waiting. The Flow action's callback acknowledgment is independent of that response code. A late callback cannot change an immediate, queued, or timed-out response already returned to the caller. See [Flow Parameters](./flow-parameters.md) for response wait settings.
 
 ## Precedence and invalid values
 
