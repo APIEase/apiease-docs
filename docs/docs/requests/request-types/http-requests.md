@@ -20,7 +20,7 @@ HTTP API requests are highly configurable with many options.  HTTP requests allo
   - **Query parameters**: Values to include in the query string.
   - **Body**: Add the payload for methods such as POST, PUT, or PATCH. APIEase supports standard JSON bodies and [form URL-encoded bodies](../request-parameters/form-urlencoded-bodies.md).
   - **Path**: Dynamic [path variables](../request-parameters/path-variables.md) to substitute into the address.
-  - **System**: Used by APIEase for features such as [Customer Authentication](../customer-authenticated-requests.md).
+  - **System**: Configure [HTTP timeouts, response formats, and certificate verification](../../general/apiease-details/system/system-parameters/http-parameters.md), or other [System Parameters](../../general/apiease-details/system/system-parameters/overview.md).
   - You can provide [in app parameters](../request-parameters/in-app-vs-dynamic.md) or pass [dynamic embedded parameters](../request-parameters/dynamic-embedded-parameters/dynamic-embedded-parameters-overview.md) from the storefront.
   - If the request includes credentials or API keys, mark them as **Sensitive** so they remain encrypted and never shown in the storefront or admin UI.
   

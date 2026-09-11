@@ -248,12 +248,27 @@ const sidebars = {
         },
         {
           type: 'category',
-          label: 'APIEase details',
+          label: 'APIEase Details',
           items: [
             {
               type: 'category',
               label: 'System',
               items: [
+                {
+                  type: 'category',
+                  label: 'System Parameters',
+                  link: {
+                    type: 'doc',
+                    id: 'general/apiease-details/system/system-parameters/overview',
+                  },
+                  items: [
+                    'general/apiease-details/system/system-parameters/http-parameters',
+                    'general/apiease-details/system/system-parameters/flow-parameters',
+                    'general/apiease-details/system/system-parameters/liquid-parameters',
+                    'general/apiease-details/system/system-parameters/response-overrides',
+                    'general/apiease-details/system/system-parameters/runtime-history',
+                  ],
+                },
                 {
                   type: 'category',
                   label: 'System Variables',

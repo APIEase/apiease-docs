@@ -26,7 +26,7 @@ To create a Liquid request, choose **Liquid** as the request type and enter the 
 **Parameters**: Parameters are optional for Liquid requests. Add a saved parameter when a value should be stored on the request, reused as a default, marked sensitive, or inserted with `{parameterName}` before execution.
 
 - **Liquid**: Saved key value pairs you want available for `{parameterName}` substitution.
-- **System**: System parameters used by APIEase in special cases such as Customer Authentication.
+- **System**: Configure [immediate Liquid responses](../../general/apiease-details/system/system-parameters/liquid-parameters.md), [response overrides](../../general/apiease-details/system/system-parameters/response-overrides.md), or other [System Parameters](../../general/apiease-details/system/system-parameters/overview.md).
 
 **Saved Liquid parameters**
 

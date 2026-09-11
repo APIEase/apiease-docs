@@ -2104,7 +2104,7 @@ HTTP API requests are highly configurable with many options.  HTTP requests allo
   - **Query parameters**: Values to include in the query string.
   - **Body**: Add the payload for methods such as POST, PUT, or PATCH. APIEase supports standard JSON bodies and [form URL-encoded bodies](../request-parameters/form-urlencoded-bodies.md).
   - **Path**: Dynamic [path variables](../request-parameters/path-variables.md) to substitute into the address.
-  - **System**: Used by APIEase for features such as [Customer Authentication](../customer-authenticated-requests.md).
+  - **System**: Configure [HTTP timeouts, response formats, and certificate verification](../../general/apiease-details/system/system-parameters/http-parameters.md), or other [System Parameters](../../general/apiease-details/system/system-parameters/overview.md).
   - You can provide [in app parameters](../request-parameters/in-app-vs-dynamic.md) or pass [dynamic embedded parameters](../request-parameters/dynamic-embedded-parameters/dynamic-embedded-parameters-overview.md) from the storefront.
   - If the request includes credentials or API keys, mark them as **Sensitive** so they remain encrypted and never shown in the storefront or admin UI.
   
@@ -2144,7 +2144,7 @@ To run a saved APIEase request from a Shopify Flow workflow, use [APIEase Flow A
 - **Type**: Set to `flow` to trigger a Shopify Flow workflow.
 - **Parameters ([?](../request-parameters/in-app-vs-dynamic.md))**:
   - **Flow**: JSON key/value pairs passed to your workflow.
-  - **System**: Used by APIEase in cases such as [Customer Authentication](../customer-authenticated-requests.md).
+  - **System**: Control [immediate responses and Flow response wait times](../../general/apiease-details/system/system-parameters/flow-parameters.md), or configure behavior such as [Customer Authentication](../customer-authenticated-requests.md).
   - Supply [in app parameters](../request-parameters/in-app-vs-dynamic.md) or [dynamic embedded parameters](../request-parameters/dynamic-embedded-parameters/dynamic-embedded-parameters-overview.md) from the storefront.
   - Mark credentials or secrets as **Sensitive** so they are encrypted and never exposed in the storefront or admin UI.
 
@@ -2160,6 +2160,20 @@ To run a saved APIEase request from a Shopify Flow workflow, use [APIEase Flow A
 See [Triggers overview](../triggers/triggers-overview.md) to choose an entry point and understand its prerequisite.
 
 **Next Request**: You can specify the handle of another request to run after this request finishes. This allows you to build multi-step workflows using [chained requests](../request-parameters/chained-requests.md).
+
+## Return a result from the workflow
+
+APIEase receives the result when your workflow runs **APIEase Flow Action** with the original `executionId` in its **Flow Parameters** JSON. Follow [Minimal Flow integration](../shopify-flow-integration/minimal-flow-integration.md) to configure that callback.
+
+Place the callback after the steps whose results the caller needs. Steps after the callback may still be running when the caller receives its response. Without a resolving callback, a waiting request can reach its wait limit.
+
+## Concurrent calls and queued responses
+
+Two simultaneous calls to the same request ID can each wait for their own Flow result. The current default allows up to 10 concurrent executions per request ID, per shop.
+
+When the concurrency limit is reached, an additional call is queued and immediately returns **Request queued** with an execution ID. That response confirms the call was queued, not that its workflow has completed. The queued work is processed in the background when capacity becomes available.
+
+Neither disabling immediate response nor increasing the response wait time changes this queue behavior. See [Flow Parameters](../../general/apiease-details/system/system-parameters/flow-parameters.md) to configure those settings.
 
 SOURCE
 https://docs.apiease.com/docs/requests/request-types/liquid-requests
@@ -2192,7 +2206,7 @@ To create a Liquid request, choose **Liquid** as the request type and enter the 
 **Parameters**: Parameters are optional for Liquid requests. Add a saved parameter when a value should be stored on the request, reused as a default, marked sensitive, or inserted with `{parameterName}` before execution.
 
 - **Liquid**: Saved key value pairs you want available for `{parameterName}` substitution.
-- **System**: System parameters used by APIEase in special cases such as Customer Authentication.
+- **System**: Configure [immediate Liquid responses](../../general/apiease-details/system/system-parameters/liquid-parameters.md), [response overrides](../../general/apiease-details/system/system-parameters/response-overrides.md), or other [System Parameters](../../general/apiease-details/system/system-parameters/overview.md).
 
 **Saved Liquid parameters**
 
@@ -2665,7 +2679,7 @@ Use an **in-app parameter** for a value saved with the request. Examples include
 
 Use a **dynamic embedded parameter** for a runtime value that can change on each call. For example, storefront code can pass the ID of the product currently being viewed instead of saving one product ID on the request. Dynamic embedded parameters are also called runtime parameters or embedded parameters.
 
-Both forms use the same locations: headers, query parameters, path parameters, body, Flow parameters, Liquid parameters, and supported System parameters. If a saved parameter and dynamic embedded parameter have the same name in the same location, the dynamic embedded value overrides the saved value for that execution.
+Both forms use the same locations: headers, query parameters, path parameters, body, Flow parameters, Liquid parameters, and supported System parameters. If a saved parameter and dynamic embedded parameter have the same name in the same location, the dynamic embedded value normally overrides the saved value for that execution. Some [System Parameters](../../general/apiease-details/system/system-parameters/overview.md), including `REQUEST_TIMEOUT_SECONDS`, `IMMEDIATE_FLOW_RESPONSE`, and `RECORD_RUNTIME_HISTORY`, use the saved request setting instead.
 
 Start with the [request parameters overview](./request-parameters-overview.md), then use the [in-app parameter](./in-app-parameters/in-app-parameters-overview.md) or [dynamic embedded parameter](./dynamic-embedded-parameters/dynamic-embedded-parameters-overview.md) pages for setup details.
 
@@ -2842,6 +2856,8 @@ CONTENT
 System parameters are special values that control how a request is handled by APIEase. Unlike headers, query parameters, or body values that are sent to the destination endpoint, system parameters affect the behavior of the request itself.
 
 These parameters are managed directly in the request editor.
+
+See [System Parameters](../../../general/apiease-details/system/system-parameters/overview.md) for the complete reference, including HTTP, Flow, Liquid, response overrides, and runtime history settings.
 
 **How to Add a System Parameter**  
 While editing your request:
@@ -5578,6 +5594,284 @@ This is different from the shop access token APIEase uses to call the Shopify Ad
 Treat this key like a secret. Store it securely and create separate keys for separate external systems. To rotate a key, create and save a replacement, update and verify its callers, then delete the old key and save the change.
 
 Deleting a key revokes access for callers that still use it. APIEase API keys are different from sensitive request parameters: API keys remain revealable and copyable in **Settings**, while sensitive request parameters are masked after saving and are not returned through normal read interfaces.
+
+SOURCE
+https://docs.apiease.com/docs/general/apiease-details/system/system-parameters/overview
+
+TITLE
+System Parameters
+
+CONTENT
+# System Parameters
+
+System Parameters are named settings that control how APIEase handles a request. Use them to adjust timeouts, choose response formats, return before processing finishes, or control other supported request behavior.
+
+Add them using the **System** parameter type on the request. For example, an HTTP request can have a System parameter named `REQUEST_TIMEOUT_SECONDS` with value `30`.
+
+System Parameters configure request behavior. [System Variables](../system-variables/overview.md) provide values you can reference during execution. Choosing the **System** parameter type also does not change the request's type: HTTP, Flow, and Liquid requests can all use their supported System Parameters.
+
+## Add or change a parameter
+
+1. Open the saved request in the APIEase request editor.
+2. Click the **+** icon in the Parameter column.
+3. Select **System**.
+4. Enter the exact **Name** and **Value** shown in the relevant guide below.
+5. Click **Save** at the top of the request editor.
+
+Edit an existing parameter to change its value. Remove an optional parameter to restore its default behavior. Names are case-sensitive; for settings enabled by `true`, enter the lowercase text `true` without quotes in the editor.
+
+## Parameter reference
+
+| Guide | Parameters | Applies to |
+| --- | --- | --- |
+| [HTTP Parameters](./http-parameters.md) | `REQUEST_TIMEOUT_SECONDS`, `RESPONSE_BODY_MODE`, `VERIFY_SSL_CERT` | HTTP requests |
+| [Flow Parameters](./flow-parameters.md) | `IMMEDIATE_FLOW_RESPONSE`, `FLOW_RESPONSE_WAIT_TIME` | Flow requests |
+| [Liquid Parameters](./liquid-parameters.md) | `IMMEDIATE_LIQUID_RESPONSE` | Liquid requests |
+| [Response Overrides](./response-overrides.md) | `APIEASE_RESPONSE_CODE_OVERRIDE`, `APIEASE_RESPONSE_MESSAGE_OVERRIDE`, `OVERRIDE_APIEASE_RESPONSE_CODE`, `OVERRIDE_APIEASE_RESPONSE_MESSAGE` | Completed responses; result-driven overrides are specific to Flow and Liquid |
+| [Runtime History](./runtime-history.md) | `RECORD_RUNTIME_HISTORY` | Request execution and chains |
+| [Customer-authenticated requests](../../../../requests/customer-authenticated-requests.md) | `validateCustomer`, `customerId` | Shopify storefront app-proxy calls |
+| [System Requests](../../../../requests/request-types/system-requests.md) | `function`, `arguments` | System requests that manage shop variables |
+
+A parameter only affects the request types and execution paths that support it. Adding an arbitrary System parameter does not create a new APIEase feature or change a service-wide limit.
+
+## Saved settings and runtime values
+
+Save these settings on the request for consistent behavior across calls. Some System parameters also accept dynamic values through supported request execution interfaces, but the usual dynamic-override rule has exceptions:
+
+- `REQUEST_TIMEOUT_SECONDS` uses the saved request setting; runtime callers cannot override it.
+- `IMMEDIATE_FLOW_RESPONSE` and `RECORD_RUNTIME_HISTORY` are read from the saved request parameters. Configure them in the editor.
+
+See [in-app parameters vs dynamic embedded parameters](../../../../requests/request-parameters/in-app-vs-dynamic.md) for the general distinction. Follow each parameter's guide for defaults, supported values, and limits.
+
+SOURCE
+https://docs.apiease.com/docs/general/apiease-details/system/system-parameters/http-parameters
+
+TITLE
+HTTP Parameters
+
+CONTENT
+# HTTP Parameters
+
+These [System Parameters](./overview.md) apply to saved [HTTP requests](../../../../requests/request-types/http-requests.md). Add each setting with the **System** parameter type and save the request.
+
+| Name | Example value | Default |
+| --- | --- | --- |
+| `REQUEST_TIMEOUT_SECONDS` | `30` | 15 seconds |
+| `RESPONSE_BODY_MODE` | `TEXT` | Normal automatic response handling |
+| `VERIFY_SSL_CERT` | `true` | Certificate verification enabled |
+
+## Set the request timeout
+
+Set `REQUEST_TIMEOUT_SECONDS` to a positive number of seconds, such as `30` for a 30-second outbound HTTP timeout. Omitted, invalid, zero, or negative values use the 15-second default.
+
+Configure this parameter on the saved request. Dynamic embedded values cannot override it. This timeout applies to the outbound HTTP call; it does not extend the calling application's connection timeout or the [Flow response wait time](./flow-parameters.md).
+
+## Choose the response body format
+
+Set `RESPONSE_BODY_MODE` to one of these values:
+
+| Value | Behavior |
+| --- | --- |
+| `JSON` | Parse a JSON response into structured data. If text cannot be parsed as JSON, keep the original text. |
+| `TEXT` | Return the response body as UTF-8 text, including when it contains JSON. |
+| `BASE64` | Encode the response bytes as Base64, useful for binary content such as images or PDFs. |
+
+With `BASE64`, the response contains `data.base64` and a top-level `mimeType`. The MIME type comes from the destination's Content-Type header, with `application/octet-stream` as the fallback.
+
+Mode values are trimmed and normalized to uppercase. Omitting the parameter or entering an unsupported value restores normal automatic response handling. This setting changes how APIEase reads the response; it does not change the outbound request's Content-Type.
+
+## Control HTTPS certificate verification
+
+`VERIFY_SSL_CERT` defaults to `true`, which verifies the destination's HTTPS certificate. Keep this enabled for normal use.
+
+Setting it to `false` disables certificate verification. This weakens HTTPS authentication and should only be used for a controlled endpoint whose certificate issue you understand. The current setting uses an exact text comparison: only `true` enables verification when the parameter is present. Use `true` or remove the parameter to restore verification.
+
+To change the status or message APIEase returns after a completed HTTP response, see [Response Overrides](./response-overrides.md).
+
+SOURCE
+https://docs.apiease.com/docs/general/apiease-details/system/system-parameters/flow-parameters
+
+TITLE
+Flow Parameters
+
+CONTENT
+# Flow Parameters
+
+Use System parameters on a saved [Flow request](../../../../requests/request-types/flow-requests.md) to control whether APIEase waits for the workflow's response and how long it waits.
+
+Add these settings with the **System** parameter type. The **Flow** parameter type is for values you pass into the workflow.
+
+For settings shared with other request types, see [Response Overrides](./response-overrides.md) and [Runtime History](./runtime-history.md).
+
+## Add a setting
+
+1. Open your saved Flow request in the APIEase request editor.
+2. Click the **+** icon in the Parameter column.
+3. Select **System**.
+4. Enter the **Name** and **Value** from the table below, using the exact capitalization shown.
+5. Click **Save** at the top of the request editor.
+
+| Name | Example value | Effect |
+| --- | --- | --- |
+| `IMMEDIATE_FLOW_RESPONSE` | `true` | Return without waiting for the Flow result. |
+| `FLOW_RESPONSE_WAIT_TIME` | `60` | Wait up to 60 seconds for the Flow result when immediate response is disabled. |
+
+## Enable immediate response
+
+Set `IMMEDIATE_FLOW_RESPONSE` to `true` to let the caller continue while the workflow runs in the background. The immediate response does not contain the final Flow result or confirm that the workflow has completed.
+
+To restore waiting, set `IMMEDIATE_FLOW_RESPONSE` to `false` or remove the parameter. Waiting is the default.
+
+If both parameters are present and immediate response is enabled, `FLOW_RESPONSE_WAIT_TIME` does not make the caller wait.
+
+For how concurrent requests are handled, see [Concurrent calls and queued responses](../../../../requests/request-types/flow-requests.md#concurrent-calls-and-queued-responses).
+
+## Adjust the response wait time
+
+Set `FLOW_RESPONSE_WAIT_TIME` to the number of **seconds** APIEase should wait for the Flow response. For example, use `60` to allow up to one minute. Keep `IMMEDIATE_FLOW_RESPONSE` disabled when you want the caller to wait.
+
+- **Default:** 25 seconds when the parameter is omitted.
+- **Minimum:** 10 seconds. Lower values are raised to 10.
+- **Maximum:** 86,400 seconds (24 hours). Higher values are capped at 86,400.
+
+Use a whole number without a unit suffix. This setting controls APIEase's Flow response wait; it does not extend timeouts imposed by the calling application or the connection. Reaching the wait limit does not mean the Shopify workflow has completed or been canceled.
+
+See [Return a result from the workflow](../../../../requests/request-types/flow-requests.md#return-a-result-from-the-workflow) for how APIEase receives the response it is waiting for.
+
+SOURCE
+https://docs.apiease.com/docs/general/apiease-details/system/system-parameters/liquid-parameters
+
+TITLE
+Liquid Parameters
+
+CONTENT
+# Liquid Parameters
+
+Use the `IMMEDIATE_LIQUID_RESPONSE` [System parameter](./overview.md) on a [Liquid request](../../../../requests/request-types/liquid-requests.md) when the caller can continue without waiting for the rendered result.
+
+## Enable immediate response
+
+Add a parameter with these editor values, then save the request:
+
+| Field | Value |
+| --- | --- |
+| Type | **System** |
+| Name | `IMMEDIATE_LIQUID_RESPONSE` |
+| Value | `true` |
+
+APIEase starts rendering the Liquid template and returns status `200` with the acknowledgment `Liquid request received and processing.` as its response data. The acknowledgment does not contain the rendered result or confirm that rendering or any requests invoked by the template succeeded.
+
+Errors that occur during background processing cannot be returned through that already-sent response. Use immediate response when the caller does not need the final result.
+
+## Restore waiting
+
+Set `IMMEDIATE_LIQUID_RESPONSE` to `false` or remove it to wait for the rendered result. Waiting is the default. Only the lowercase text `true` enables immediate response.
+
+[Response Overrides](./response-overrides.md) can customize a completed Liquid result, including values returned by the template. They do not change an immediate Liquid acknowledgment.
+
+SOURCE
+https://docs.apiease.com/docs/general/apiease-details/system/system-parameters/response-overrides
+
+TITLE
+Response Overrides
+
+CONTENT
+# Response Overrides
+
+Use these [System Parameters](./overview.md) to customize the status code or message APIEase returns after a request completes. For example, a workflow can complete successfully but return a business result such as `409` with the message `Item unavailable`.
+
+## Set a response code or message
+
+Add either or both parameters to the saved request with type **System**:
+
+| Name | Example value | Effect |
+| --- | --- | --- |
+| `APIEASE_RESPONSE_CODE_OVERRIDE` | `409` | Set the response status code. |
+| `APIEASE_RESPONSE_MESSAGE_OVERRIDE` | `Item unavailable` | Set the response's `message` field. |
+
+The code must be an integer from **200 through 599**, or its three-digit text representation. The message must be text; an empty string is allowed. Unresolved variable references are not accepted as override values.
+
+Direct overrides do not require either of the flags below. Their values can also use normal request variable substitution, such as `{responseCode}` or `{responseMessage}` from a previous request's response. The resolved values must meet the same code and message rules.
+
+These direct overrides apply to completed HTTP responses and successful System, Liquid, or Flow results. An HTTP destination's error status, such as `404`, can be overridden when APIEase received a normal HTTP response; a transport failure cannot.
+
+Overrides change the APIEase response, not the destination API or the work already performed. The message is a response field, not an HTTP reason phrase. Response data remains unchanged by the override, although HTTP statuses **204**, **205**, and **304**, and HEAD responses, are sent without a body.
+
+## Read overrides from a Flow or Liquid result
+
+For a result-dependent status or message, enable either or both flags:
+
+| Name | Value | Field read from the result |
+| --- | --- | --- |
+| `OVERRIDE_APIEASE_RESPONSE_CODE` | `true` | `apieaseSystemData.apieaseResponseCodeOverride` |
+| `OVERRIDE_APIEASE_RESPONSE_MESSAGE` | `true` | `apieaseSystemData.apieaseResponseMessageOverride` |
+
+The flags default to disabled. Enter lowercase `true` as the parameter value to enable each one independently. These flags read completed **Flow or Liquid** output; HTTP and System results do not supply output-based overrides.
+
+For Liquid, make the rendered result a JSON object with `apieaseSystemData` at its top level:
+
+```json
+{
+  "available": false,
+  "apieaseSystemData": {
+    "apieaseResponseCodeOverride": 409,
+    "apieaseResponseMessageOverride": "Item unavailable"
+  }
+}
+```
+
+For Flow, include the same `apieaseSystemData` object at the top level of the JSON returned through **APIEase Flow Action**, alongside the original `executionId` supplied by the trigger. Preserve that execution ID so APIEase can resolve the waiting call. See [Minimal Flow integration](../../../../requests/shopify-flow-integration/minimal-flow-integration.md) for callback setup.
+
+The returned `apieaseSystemData` object is separate from the [apieaseMetaData System Variable](../system-variables/apiease-metadata.md). It must be in the current result, not nested inside another result property.
+
+## Precedence and invalid values
+
+APIEase resolves the code and message independently, using this order:
+
+1. A valid value from the Flow or Liquid result, when its corresponding flag is `true`.
+2. A valid direct System parameter value.
+3. The normal response code or message.
+
+Invalid override values are ignored and reported with an `INVALID_RESPONSE_OVERRIDE` warning. An invalid output override can therefore fall back to a valid direct setting. Removing the parameters restores normal response behavior.
+
+## Responses that are not overridden
+
+Overrides do not replace authentication or validation failures, concurrency rejections, transport errors, failed execution, or incomplete Flow results. In particular, queued Flow acknowledgments, immediate Flow responses, Flow wait timeouts, and immediate Liquid acknowledgments keep their normal responses.
+
+To use a Flow or Liquid result to determine the response, keep immediate response disabled. See [Flow Parameters](./flow-parameters.md) and [Liquid Parameters](./liquid-parameters.md).
+
+In a request chain, these settings apply to the current request's result. A later request can supply the final response returned by the chain; configure overrides on the request whose response you intend to return.
+
+SOURCE
+https://docs.apiease.com/docs/general/apiease-details/system/system-parameters/runtime-history
+
+TITLE
+Runtime History
+
+CONTENT
+# Runtime History
+
+`RECORD_RUNTIME_HISTORY` is a [System parameter](./overview.md) that controls the detail retained in a request's runtime history entry. This is the execution history carried through a request chain, including when that chain passes history into a Shopify Flow workflow.
+
+## Retain runtime values
+
+On the saved request whose values you want to retain, add:
+
+| Field | Value |
+| --- | --- |
+| Type | **System** |
+| Name | `RECORD_RUNTIME_HISTORY` |
+| Value | `true` |
+
+With `true`, APIEase includes runtime parameter values and response data in that request's history entry. Saved parameters explicitly marked **Sensitive** remain redacted. Response bodies and other runtime values can still contain confidential data, so enable this only when the chain needs those details.
+
+## Default behavior
+
+The default is `false`. Remove the parameter or set it to `false` to redact response data and runtime parameter values from the history entry. APIEase still records the history entry; this setting controls its detail rather than turning history collection on or off.
+
+Configure this on each saved request whose history should include runtime detail. A setting on one request does not enable it for every request in the chain, and dynamic embedded values do not override this saved setting.
+
+This parameter does not control the ordinary response sent to the caller or the previous-response data passed to the next request. It is not required for normal [chained request](../../../../requests/request-parameters/chained-requests.md) parameter substitution, and it does not configure persistent log retention.
 
 SOURCE
 https://docs.apiease.com/docs/general/apiease-details/system/system-variables/overview
