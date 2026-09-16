@@ -27,6 +27,7 @@ Edit an existing parameter to change its value. Remove an optional parameter to 
 | [HTTP Parameters](./http-parameters.md) | `REQUEST_TIMEOUT_SECONDS`, `RESPONSE_BODY_MODE`, `VERIFY_SSL_CERT` | HTTP requests |
 | [Flow Parameters](./flow-parameters.md) | `IMMEDIATE_FLOW_RESPONSE`, `FLOW_RESPONSE_WAIT_TIME` | Flow requests |
 | [Liquid Parameters](./liquid-parameters.md) | `IMMEDIATE_LIQUID_RESPONSE` | Liquid requests |
+| [Concurrency Limit Response](./concurrency-limit-response.md) | `CONCURRENCY_LIMIT_EXCEEDED_RESPONSE` | All request types; applies only at an existing concurrency check |
 | [Response Overrides](./response-overrides.md) | `APIEASE_RESPONSE_CODE_OVERRIDE`, `APIEASE_RESPONSE_MESSAGE_OVERRIDE`, `OVERRIDE_APIEASE_RESPONSE_CODE`, `OVERRIDE_APIEASE_RESPONSE_MESSAGE` | Completed responses; result-driven overrides are specific to Flow and Liquid |
 | [Runtime History](./runtime-history.md) | `RECORD_RUNTIME_HISTORY` | Request execution and chains |
 | [Customer-authenticated requests](../../../../requests/customer-authenticated-requests.md) | `validateCustomer`, `customerId` | Shopify storefront app-proxy calls |
@@ -38,6 +39,7 @@ A parameter only affects the request types and execution paths that support it. 
 
 Save these settings on the request for consistent behavior across calls. Some System parameters also accept dynamic values through supported request execution interfaces, but the usual dynamic-override rule has exceptions:
 
+- `CONCURRENCY_LIMIT_EXCEEDED_RESPONSE` accepts only the saved literal `429`; runtime callers cannot override it.
 - `REQUEST_TIMEOUT_SECONDS` uses the saved request setting; runtime callers cannot override it.
 - `IMMEDIATE_FLOW_RESPONSE` and `RECORD_RUNTIME_HISTORY` are read from the saved request parameters. Configure them in the editor.
 
