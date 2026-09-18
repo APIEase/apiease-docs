@@ -216,13 +216,13 @@ Choose the interface based on where you want the work and its review history to 
 | Interface | Best fit |
 | --- | --- |
 | APIEase admin | Create, edit, test, and run resources interactively. |
-| Apex in APIEase | Ask the in-product assistant to create, update, or delete requests and widgets during a conversation. |
+| Apex in APIEase | Ask the in-product assistant to propose changes to requests, widgets, Variables, and Functions, then review and approve the exact proposal. |
 | `apiease-template` | Establish a repository layout for source-controlled requests, widgets, variables, and functions. |
 | `apiease-cli` | Initialize or upgrade a template project and sync its saved resource definitions with APIEase. |
 | APIEase public API | Build custom HTTP automation for saved resources or execute an existing saved request remotely. |
 | Coding agent in a template repository | Edit version-controlled resource definitions, review them in git, and optionally sync them through `apiease-cli`. |
 
-These are separate workflows. Apex changes APIEase resources directly during the conversation. A coding agent working in an `apiease-template` repository changes local files first, so the git diff can be the review boundary. See [Using APIEase with AI agents](./using-apiease-with-ai-agents.md) for the safety and resource-scope distinctions.
+These are separate workflows. Apex uses an in-product proposal review before approved changes are applied. A coding agent working in an `apiease-template` repository changes local files first, so the git diff can be the review boundary. See [Using APIEase with AI agents](./using-apiease-with-ai-agents.md) for the safety and resource-scope distinctions.
 
 ## Recommended path
 
@@ -742,11 +742,11 @@ Most agent-driven APIEase work should follow this path:
 
 ## Distinguish Apex from a repository agent
 
-Apex is the assistant inside APIEase. It can create, update, and delete requests and widgets directly during the conversation. It does not currently manage Variables, Functions, or every APIEase resource.
+Apex is the assistant inside APIEase. It can design changes to requests, widgets, Variables, and Functions during a conversation. Apex prepares a proposal first; you review the exact resource operations before approving or rejecting it.
 
-Apex resource changes do not have a general preview, approval, undo, or safe-mode step. Review every resource that Apex creates or updates, and treat deletion instructions carefully.
+The review shows description changes alongside the resource operations. Approval applies the exact reviewed proposal. Asking for changes rejects that immutable proposal and starts a new revision; it does not silently edit the proposal you already reviewed. Rejection, cancellation, or a failed apply leaves live resources unchanged.
 
-For a request that could change real data, Apex may initially configure request-specific controls such as a dry-run option or a disabled `ALLOW_*` Variable when that pattern fits the integration. Inspect and test the saved request before enabling live behavior. Those execution controls do not postpone or preview Apex's creation, update, or deletion of the APIEase resource itself.
+For a request that could change real data, Apex may initially configure request-specific controls such as a dry-run option or a disabled `ALLOW_*` Variable when that pattern fits the integration. Inspect and test the saved request before enabling live behavior. An applied proposal confirms the APIEase resource change; it does not prove that an external integration works or that the broader business objective is complete.
 
 A coding agent such as Codex or Claude Code uses the repository workflow documented on the rest of this page. It can manage requests, widgets, Variables, and Functions through version-controlled files and `apiease-cli`. The local diff provides the review boundary before you sync or commit changes.
 
@@ -797,6 +797,8 @@ Use `apiease.config.js` as the source of truth for resource directory names. In 
 Use `docs/examples/resources/*` as copyable examples, not as the long-term home for project resources.
 
 Resource files should use `handle` as the stable identifier across requests, widgets, variables, and functions. Do not copy server-owned `id` values into source files. For the full convention, see [Resource handles](./resource-handles.md).
+
+Use the optional `description` field to record a resource's purpose, behavior, and important relationships. Descriptions are supported for all four resource types. Keep operational status, credentials, approval notes, and test claims out of descriptions. Omitting `description` from an update preserves the current text; an explicit empty string clears it.
 
 When the task involves request behavior, do not re-invent request concepts from memory. Reuse the existing Requests documentation for detailed semantics:
 
@@ -1012,6 +1014,20 @@ If you are working with request resources, keep these conventions in mind:
 - For `liquid` requests, include saved Liquid `parameters` only for saved values, sensitive values, or `{parameterName}` substitution.
 - Add a `storefrontAppProxy` trigger only to requests that should be called directly through Shopify's app proxy. Do not add it to Liquid helper requests that are only called by other APIEase requests.
 
+## Resource descriptions
+
+Requests, widgets, variables, and functions support a `description` string of up
+to 65,536 Unicode characters. Use it
+to explain what the resource is for, how it behaves, and important relationships
+to other resources. Do not put secrets, temporary execution status, approval
+notes, or unverified test claims in it.
+
+For requests, widgets, and variables, `description` is optional. Existing legacy
+resources may omit it. Functions include the same field in their resource shape.
+When updating a resource, omitting `description` preserves the saved value;
+sending `"description": ""` clears it. `null` is not valid. A description-only
+update is still a real resource change.
+
 The public API accepts the same request concepts already documented in the Requests section. Use those pages as the source of truth for detailed behavior instead of duplicating that material here:
 
 - [Requests Overview](../requests/requests-overview.md)
@@ -1034,6 +1050,7 @@ curl -X POST 'https://app-admin.apiease.com/api/v1/resources/requests' \
   -d '{
     "handle": "product-details-proxy",
     "name": "Product Details Proxy",
+    "description": "Fetch product details for the authenticated storefront proxy endpoint.",
     "type": "http",
     "method": "POST",
     "address": "https://api.example.com/products/{productHandle}/details",
@@ -1085,6 +1102,7 @@ Variable example:
 {
   "handle": "support-api-key",
   "name": "Support API Key",
+  "description": "Stores the support provider credential used by support requests.",
   "value": "replace-with-real-secret",
   "sensitive": true
 }
@@ -1112,6 +1130,7 @@ Widget example:
 {
   "handle": "promo-banner",
   "name": "Promo Banner",
+  "description": "Renders the storefront promotion banner and its client-side behavior.",
   "liquid": "<section>Sale now live</section>",
   "javascript": "",
   "externalJavascriptUrls": [],
@@ -1408,6 +1427,12 @@ The CLI manages four saved APIEase resource types:
 
 All definition files must contain valid JSON with an object at the root. Use `handle` as the stable source-controlled identifier. Server-owned `id` values are metadata returned by APIEase and should not be stored in request, widget, variable, or function source files.
 
+All four resource types support a `description` that records purpose, behavior,
+and important relationships. Keep it in the JSON file so pull, review, and Git
+history preserve the same text as APIEase. Omit the field from an update to keep
+the saved description, or set it to an empty string to clear it. Do not use
+`null`, and do not put credentials or temporary lifecycle status in descriptions.
+
 Widget files use `handle` for the stable identifier and `name` for display text. Older widget files that use `widgetHandle` or `widgetName` can be migrated with `apiease create widget --file ./widget-definition.json --auto-update-source-identifier` before the create-or-update operation.
 
 Handles should be lowercase slug values using letters, numbers, and hyphens, for example:
@@ -1416,6 +1441,7 @@ Handles should be lowercase slug values using letters, numbers, and hyphens, for
 {
   "handle": "product-details-proxy",
   "name": "Product Details Proxy",
+  "description": "Fetch product details from the external catalog service.",
   "type": "http",
   "method": "GET",
   "address": "https://api.example.com/products"
@@ -1558,6 +1584,13 @@ The example resources are intentionally lightweight. Use them as reference mater
 
 Those examples use `handle` as the stable source-controlled identifier across requests, widgets, variables, and functions. Server-owned `id` values should not be stored in template resource files. See [Resource handles](./resource-handles.md) for the full identifier pattern.
 
+Each resource definition can also carry a `description` explaining its purpose,
+behavior, and important relationships. Descriptions round-trip through the CLI,
+public API, export/import, and Git projection with the rest of the resource.
+Legacy request, widget, or variable files may omit the field without acquiring an
+empty value. In an update, omission preserves the saved description and an
+explicit empty string clears it.
+
 ## Expected repository layout
 
 This is the shape the template establishes today:
@@ -1670,6 +1703,11 @@ Everything that you can accomplish with APIEase starts with a request.
 A request is a configuration that defines how APIEase should securely call an external API, trigger a Shopify Flow workflow, run Liquid logic, or execute internal system functions. Each request contains the destination (when applicable), any necessary parameters, and optional logic to determine when and how it should run.
 
 Each request has a handle. Use the handle as the stable identifier when another request calls it, storefront code triggers it, or `apiease-cli` and the public API manage it.
+
+A request can also have a description. Use it to summarize the request's purpose,
+behavior, and important relationships, such as which widget or chained request
+uses it. The description is documentation; it does not affect execution or prove
+that an integration has been tested successfully.
 
 Requests can be used for a wide variety of purposes, including:
 
@@ -4631,7 +4669,7 @@ Additional list behavior:
 Each function includes these fields:
 
 - **Name**: Required. This is the function name you call from Liquid.
-- **Description**: Optional. Use it to explain what the function returns or when to use it.
+- **Description**: Use it to explain what the function returns, when to use it, and important relationships to requests or other resources. Keep credentials and temporary execution status out of it.
 - **Type**: Currently fixed to `liquid`.
 - **Parameters**: Optional parameter definitions for the function.
 - **Liquid**: Required. The Liquid code that runs when the function is called.
@@ -4907,6 +4945,7 @@ In the APIEase admin, select **Variables** from the main navigation.
 - Create a new variable
 - Open an existing variable and update its value
 - Mark a variable as sensitive so its value stays masked in the UI
+- Add a description of the variable's purpose and where it is used
 - Delete variables you no longer need
 
 ## Variables list
@@ -4933,9 +4972,10 @@ To create a variable:
 2. Select **Add variable**.
 3. Enter a **Name**.
 4. Confirm or edit the **Handle**.
-5. Enter a **Value**.
-6. Turn on **Sensitive** if the value should stay hidden after it is saved.
-7. Use the save bar to save the variable.
+5. Optionally add a **Description** of the variable's purpose and relationships.
+6. Enter a **Value**.
+7. Turn on **Sensitive** if the value should stay hidden after it is saved.
+8. Use the save bar to save the variable.
 
 Notes:
 
@@ -4949,7 +4989,7 @@ Notes:
 To edit a variable:
 
 1. Open the variable from the list.
-2. Update the **Name**, **Handle**, **Value**, and, if needed, the **Sensitive** checkbox.
+2. Update the **Name**, **Handle**, **Description**, **Value**, and, if needed, the **Sensitive** checkbox.
 3. Save from the save bar.
 
 Important behavior:
@@ -4960,6 +5000,9 @@ Important behavior:
 - If you turn off **Sensitive** for an existing masked variable, enter the replacement plain-text value before saving because APIEase does not reveal the stored secret back into the form.
 
 The **Sensitive** setting for a Variable reduces accidental disclosure in the APIEase admin; it is not the same boundary as a sensitive request parameter. The underlying Variable value remains available to authorized runtime and programmatic workflows, including System requests, Liquid workflows, and authenticated external systems. Do not return a sensitive Variable from a publicly callable request.
+
+Descriptions are not secret storage. Do not copy the variable value, credentials,
+approval state, or temporary execution results into the description.
 
 ## Delete a variable
 
@@ -4983,6 +5026,11 @@ CONTENT
 # Widgets overview
 
 APIEase widgets are reusable storefront UI components that you build and manage in APIEase, then render in your Shopify theme through the APIEase Widget App Block or Widget App Embed. A widget can output Liquid (markup) and optionally run JavaScript, which makes it a good fit for UI that needs to stay flexible but still integrate with your backend logic.
+
+Add a description to explain what the widget renders, where it is intended to be
+used, and which requests or variables it relies on. The description travels with
+the widget through the public API, CLI, and project review, but it is not rendered
+on the storefront.
 
 ## Why widgets are useful
 
@@ -5514,7 +5562,7 @@ CONTENT
 
 ## Should I use the APIEase admin, Apex, the CLI, the template, or the public API?
 
-Use the APIEase admin for interactive configuration and testing. Use Apex for conversational changes to requests and widgets inside APIEase. For source-controlled work, start with [`apiease-template`](../../developers/why-use-the-template.md) and use [`apiease-cli`](../../developers/apiease-cli.md) to sync saved resources. Use the [public API](../../developers/apiease-public-api.md) directly for custom HTTP automation that the CLI does not cover.
+Use the APIEase admin for interactive configuration and testing. Use Apex for conversational proposals covering requests, widgets, Variables, and Functions inside APIEase. For source-controlled work, start with [`apiease-template`](../../developers/why-use-the-template.md) and use [`apiease-cli`](../../developers/apiease-cli.md) to sync saved resources. Use the [public API](../../developers/apiease-public-api.md) directly for custom HTTP automation that the CLI does not cover.
 
 A coding agent working in a template repository is a separate workflow from Apex. See the [developer overview](../../developers/developer-overview.md) for the complete comparison.
 
@@ -5544,11 +5592,11 @@ Not when a request, widget, Variable, or Function file has a valid `handle`. `ap
 
 ## Can an AI agent manage APIEase resources for me?
 
-Yes, but choose the workflow deliberately. Apex can create, update, and delete requests and widgets directly inside APIEase. A coding agent in an `apiease-template` repository can manage requests, widgets, Variables, and Functions as files and sync them with `apiease-cli`, with git diffs providing a review boundary. Follow [Using APIEase with AI agents](../../developers/using-apiease-with-ai-agents.md).
+Yes, but choose the workflow deliberately. Apex can propose creates, updates, and deletes for requests, widgets, Variables, and Functions, with an in-product review before approval. A coding agent in an `apiease-template` repository can manage the same families as files and sync them with `apiease-cli`, with git diffs providing a review boundary. Follow [Using APIEase with AI agents](../../developers/using-apiease-with-ai-agents.md).
 
 ## Does Apex preview or wait for approval before changing a resource?
 
-No. Apex applies request and widget creation, updates, and deletions during the conversation without a general preview, approval, undo, or safe-mode layer. Review created or updated resources afterward and be careful with deletion instructions.
+Yes. Apex presents an immutable proposal with the exact resource operations and full before-and-after description changes for creates and updates. Approve it to apply those reviewed bytes, reject it to leave live resources unchanged, or request changes to begin a new proposal revision. Approval and application do not by themselves verify that an external integration works end to end.
 
 Request execution safety is narrower: Apex may initially use an integration-specific dry-run setting or disabled `ALLOW_*` Variable where appropriate. Inspect and test the request before enabling live behavior. See [Using APIEase with AI agents](../../developers/using-apiease-with-ai-agents.md) for this distinction.
 

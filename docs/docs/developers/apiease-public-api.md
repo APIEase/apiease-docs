@@ -97,6 +97,20 @@ If you are working with request resources, keep these conventions in mind:
 - For `liquid` requests, include saved Liquid `parameters` only for saved values, sensitive values, or `{parameterName}` substitution.
 - Add a `storefrontAppProxy` trigger only to requests that should be called directly through Shopify's app proxy. Do not add it to Liquid helper requests that are only called by other APIEase requests.
 
+## Resource descriptions
+
+Requests, widgets, variables, and functions support a `description` string of up
+to 65,536 Unicode characters. Use it
+to explain what the resource is for, how it behaves, and important relationships
+to other resources. Do not put secrets, temporary execution status, approval
+notes, or unverified test claims in it.
+
+For requests, widgets, and variables, `description` is optional. Existing legacy
+resources may omit it. Functions include the same field in their resource shape.
+When updating a resource, omitting `description` preserves the saved value;
+sending `"description": ""` clears it. `null` is not valid. A description-only
+update is still a real resource change.
+
 The public API accepts the same request concepts already documented in the Requests section. Use those pages as the source of truth for detailed behavior instead of duplicating that material here:
 
 - [Requests Overview](../requests/requests-overview.md)
@@ -119,6 +133,7 @@ curl -X POST 'https://app-admin.apiease.com/api/v1/resources/requests' \
   -d '{
     "handle": "product-details-proxy",
     "name": "Product Details Proxy",
+    "description": "Fetch product details for the authenticated storefront proxy endpoint.",
     "type": "http",
     "method": "POST",
     "address": "https://api.example.com/products/{productHandle}/details",
@@ -170,6 +185,7 @@ Variable example:
 {
   "handle": "support-api-key",
   "name": "Support API Key",
+  "description": "Stores the support provider credential used by support requests.",
   "value": "replace-with-real-secret",
   "sensitive": true
 }
@@ -197,6 +213,7 @@ Widget example:
 {
   "handle": "promo-banner",
   "name": "Promo Banner",
+  "description": "Renders the storefront promotion banner and its client-side behavior.",
   "liquid": "<section>Sale now live</section>",
   "javascript": "",
   "externalJavascriptUrls": [],

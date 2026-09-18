@@ -17,13 +17,13 @@ Choose the interface based on where you want the work and its review history to 
 | Interface | Best fit |
 | --- | --- |
 | APIEase admin | Create, edit, test, and run resources interactively. |
-| Apex in APIEase | Ask the in-product assistant to create, update, or delete requests and widgets during a conversation. |
+| Apex in APIEase | Ask the in-product assistant to propose changes to requests, widgets, Variables, and Functions, then review and approve the exact proposal. |
 | `apiease-template` | Establish a repository layout for source-controlled requests, widgets, variables, and functions. |
 | `apiease-cli` | Initialize or upgrade a template project and sync its saved resource definitions with APIEase. |
 | APIEase public API | Build custom HTTP automation for saved resources or execute an existing saved request remotely. |
 | Coding agent in a template repository | Edit version-controlled resource definitions, review them in git, and optionally sync them through `apiease-cli`. |
 
-These are separate workflows. Apex changes APIEase resources directly during the conversation. A coding agent working in an `apiease-template` repository changes local files first, so the git diff can be the review boundary. See [Using APIEase with AI agents](./using-apiease-with-ai-agents.md) for the safety and resource-scope distinctions.
+These are separate workflows. Apex uses an in-product proposal review before approved changes are applied. A coding agent working in an `apiease-template` repository changes local files first, so the git diff can be the review boundary. See [Using APIEase with AI agents](./using-apiease-with-ai-agents.md) for the safety and resource-scope distinctions.
 
 ## Recommended path
 

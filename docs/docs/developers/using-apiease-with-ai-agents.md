@@ -15,11 +15,11 @@ Most agent-driven APIEase work should follow this path:
 
 ## Distinguish Apex from a repository agent
 
-Apex is the assistant inside APIEase. It can create, update, and delete requests and widgets directly during the conversation. It does not currently manage Variables, Functions, or every APIEase resource.
+Apex is the assistant inside APIEase. It can design changes to requests, widgets, Variables, and Functions during a conversation. Apex prepares a proposal first; you review the exact resource operations before approving or rejecting it.
 
-Apex resource changes do not have a general preview, approval, undo, or safe-mode step. Review every resource that Apex creates or updates, and treat deletion instructions carefully.
+The review shows description changes alongside the resource operations. Approval applies the exact reviewed proposal. Asking for changes rejects that immutable proposal and starts a new revision; it does not silently edit the proposal you already reviewed. Rejection, cancellation, or a failed apply leaves live resources unchanged.
 
-For a request that could change real data, Apex may initially configure request-specific controls such as a dry-run option or a disabled `ALLOW_*` Variable when that pattern fits the integration. Inspect and test the saved request before enabling live behavior. Those execution controls do not postpone or preview Apex's creation, update, or deletion of the APIEase resource itself.
+For a request that could change real data, Apex may initially configure request-specific controls such as a dry-run option or a disabled `ALLOW_*` Variable when that pattern fits the integration. Inspect and test the saved request before enabling live behavior. An applied proposal confirms the APIEase resource change; it does not prove that an external integration works or that the broader business objective is complete.
 
 A coding agent such as Codex or Claude Code uses the repository workflow documented on the rest of this page. It can manage requests, widgets, Variables, and Functions through version-controlled files and `apiease-cli`. The local diff provides the review boundary before you sync or commit changes.
 
@@ -70,6 +70,8 @@ Use `apiease.config.js` as the source of truth for resource directory names. In 
 Use `docs/examples/resources/*` as copyable examples, not as the long-term home for project resources.
 
 Resource files should use `handle` as the stable identifier across requests, widgets, variables, and functions. Do not copy server-owned `id` values into source files. For the full convention, see [Resource handles](./resource-handles.md).
+
+Use the optional `description` field to record a resource's purpose, behavior, and important relationships. Descriptions are supported for all four resource types. Keep operational status, credentials, approval notes, and test claims out of descriptions. Omitting `description` from an update preserves the current text; an explicit empty string clears it.
 
 When the task involves request behavior, do not re-invent request concepts from memory. Reuse the existing Requests documentation for detailed semantics:
 

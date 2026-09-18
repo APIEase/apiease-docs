@@ -6,6 +6,11 @@ description: Understand what APIEase widgets are and why they are useful.
 
 APIEase widgets are reusable storefront UI components that you build and manage in APIEase, then render in your Shopify theme through the APIEase Widget App Block or Widget App Embed. A widget can output Liquid (markup) and optionally run JavaScript, which makes it a good fit for UI that needs to stay flexible but still integrate with your backend logic.
 
+Add a description to explain what the widget renders, where it is intended to be
+used, and which requests or variables it relies on. The description travels with
+the widget through the public API, CLI, and project review, but it is not rendered
+on the storefront.
+
 ## Why widgets are useful
 
 - **UI + secure API requests, together:** Widgets help you connect storefront UI components to secure API requests powered by APIEase, without moving secrets or request logic into the theme.

@@ -32,6 +32,13 @@ The example resources are intentionally lightweight. Use them as reference mater
 
 Those examples use `handle` as the stable source-controlled identifier across requests, widgets, variables, and functions. Server-owned `id` values should not be stored in template resource files. See [Resource handles](./resource-handles.md) for the full identifier pattern.
 
+Each resource definition can also carry a `description` explaining its purpose,
+behavior, and important relationships. Descriptions round-trip through the CLI,
+public API, export/import, and Git projection with the rest of the resource.
+Legacy request, widget, or variable files may omit the field without acquiring an
+empty value. In an update, omission preserves the saved description and an
+explicit empty string clears it.
+
 ## Expected repository layout
 
 This is the shape the template establishes today:

@@ -6,7 +6,7 @@ description: Quick answers about the APIEase public API, API keys, handles, apie
 
 ## Should I use the APIEase admin, Apex, the CLI, the template, or the public API?
 
-Use the APIEase admin for interactive configuration and testing. Use Apex for conversational changes to requests and widgets inside APIEase. For source-controlled work, start with [`apiease-template`](../../developers/why-use-the-template.md) and use [`apiease-cli`](../../developers/apiease-cli.md) to sync saved resources. Use the [public API](../../developers/apiease-public-api.md) directly for custom HTTP automation that the CLI does not cover.
+Use the APIEase admin for interactive configuration and testing. Use Apex for conversational proposals covering requests, widgets, Variables, and Functions inside APIEase. For source-controlled work, start with [`apiease-template`](../../developers/why-use-the-template.md) and use [`apiease-cli`](../../developers/apiease-cli.md) to sync saved resources. Use the [public API](../../developers/apiease-public-api.md) directly for custom HTTP automation that the CLI does not cover.
 
 A coding agent working in a template repository is a separate workflow from Apex. See the [developer overview](../../developers/developer-overview.md) for the complete comparison.
 
@@ -36,10 +36,10 @@ Not when a request, widget, Variable, or Function file has a valid `handle`. `ap
 
 ## Can an AI agent manage APIEase resources for me?
 
-Yes, but choose the workflow deliberately. Apex can create, update, and delete requests and widgets directly inside APIEase. A coding agent in an `apiease-template` repository can manage requests, widgets, Variables, and Functions as files and sync them with `apiease-cli`, with git diffs providing a review boundary. Follow [Using APIEase with AI agents](../../developers/using-apiease-with-ai-agents.md).
+Yes, but choose the workflow deliberately. Apex can propose creates, updates, and deletes for requests, widgets, Variables, and Functions, with an in-product review before approval. A coding agent in an `apiease-template` repository can manage the same families as files and sync them with `apiease-cli`, with git diffs providing a review boundary. Follow [Using APIEase with AI agents](../../developers/using-apiease-with-ai-agents.md).
 
 ## Does Apex preview or wait for approval before changing a resource?
 
-No. Apex applies request and widget creation, updates, and deletions during the conversation without a general preview, approval, undo, or safe-mode layer. Review created or updated resources afterward and be careful with deletion instructions.
+Yes. Apex presents an immutable proposal with the exact resource operations and full before-and-after description changes for creates and updates. Approve it to apply those reviewed bytes, reject it to leave live resources unchanged, or request changes to begin a new proposal revision. Approval and application do not by themselves verify that an external integration works end to end.
 
 Request execution safety is narrower: Apex may initially use an integration-specific dry-run setting or disabled `ALLOW_*` Variable where appropriate. Inspect and test the request before enabling live behavior. See [Using APIEase with AI agents](../../developers/using-apiease-with-ai-agents.md) for this distinction.

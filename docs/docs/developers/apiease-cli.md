@@ -189,6 +189,12 @@ The CLI manages four saved APIEase resource types:
 
 All definition files must contain valid JSON with an object at the root. Use `handle` as the stable source-controlled identifier. Server-owned `id` values are metadata returned by APIEase and should not be stored in request, widget, variable, or function source files.
 
+All four resource types support a `description` that records purpose, behavior,
+and important relationships. Keep it in the JSON file so pull, review, and Git
+history preserve the same text as APIEase. Omit the field from an update to keep
+the saved description, or set it to an empty string to clear it. Do not use
+`null`, and do not put credentials or temporary lifecycle status in descriptions.
+
 Widget files use `handle` for the stable identifier and `name` for display text. Older widget files that use `widgetHandle` or `widgetName` can be migrated with `apiease create widget --file ./widget-definition.json --auto-update-source-identifier` before the create-or-update operation.
 
 Handles should be lowercase slug values using letters, numbers, and hyphens, for example:
@@ -197,6 +203,7 @@ Handles should be lowercase slug values using letters, numbers, and hyphens, for
 {
   "handle": "product-details-proxy",
   "name": "Product Details Proxy",
+  "description": "Fetch product details from the external catalog service.",
   "type": "http",
   "method": "GET",
   "address": "https://api.example.com/products"

@@ -10,6 +10,11 @@ A request is a configuration that defines how APIEase should securely call an ex
 
 Each request has a handle. Use the handle as the stable identifier when another request calls it, storefront code triggers it, or `apiease-cli` and the public API manage it.
 
+A request can also have a description. Use it to summarize the request's purpose,
+behavior, and important relationships, such as which widget or chained request
+uses it. The description is documentation; it does not affect execution or prove
+that an integration has been tested successfully.
+
 Requests can be used for a wide variety of purposes, including:
 
 - Calling third-party APIs from your Shopify storefront

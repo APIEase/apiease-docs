@@ -20,6 +20,7 @@ In the APIEase admin, select **Variables** from the main navigation.
 - Create a new variable
 - Open an existing variable and update its value
 - Mark a variable as sensitive so its value stays masked in the UI
+- Add a description of the variable's purpose and where it is used
 - Delete variables you no longer need
 
 ## Variables list
@@ -46,9 +47,10 @@ To create a variable:
 2. Select **Add variable**.
 3. Enter a **Name**.
 4. Confirm or edit the **Handle**.
-5. Enter a **Value**.
-6. Turn on **Sensitive** if the value should stay hidden after it is saved.
-7. Use the save bar to save the variable.
+5. Optionally add a **Description** of the variable's purpose and relationships.
+6. Enter a **Value**.
+7. Turn on **Sensitive** if the value should stay hidden after it is saved.
+8. Use the save bar to save the variable.
 
 Notes:
 
@@ -62,7 +64,7 @@ Notes:
 To edit a variable:
 
 1. Open the variable from the list.
-2. Update the **Name**, **Handle**, **Value**, and, if needed, the **Sensitive** checkbox.
+2. Update the **Name**, **Handle**, **Description**, **Value**, and, if needed, the **Sensitive** checkbox.
 3. Save from the save bar.
 
 Important behavior:
@@ -73,6 +75,9 @@ Important behavior:
 - If you turn off **Sensitive** for an existing masked variable, enter the replacement plain-text value before saving because APIEase does not reveal the stored secret back into the form.
 
 The **Sensitive** setting for a Variable reduces accidental disclosure in the APIEase admin; it is not the same boundary as a sensitive request parameter. The underlying Variable value remains available to authorized runtime and programmatic workflows, including System requests, Liquid workflows, and authenticated external systems. Do not return a sensitive Variable from a publicly callable request.
+
+Descriptions are not secret storage. Do not copy the variable value, credentials,
+approval state, or temporary execution results into the description.
 
 ## Delete a variable
 

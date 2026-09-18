@@ -41,7 +41,7 @@ Additional list behavior:
 Each function includes these fields:
 
 - **Name**: Required. This is the function name you call from Liquid.
-- **Description**: Optional. Use it to explain what the function returns or when to use it.
+- **Description**: Use it to explain what the function returns, when to use it, and important relationships to requests or other resources. Keep credentials and temporary execution status out of it.
 - **Type**: Currently fixed to `liquid`.
 - **Parameters**: Optional parameter definitions for the function.
 - **Liquid**: Required. The Liquid code that runs when the function is called.
