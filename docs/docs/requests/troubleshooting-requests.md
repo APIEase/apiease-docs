@@ -15,7 +15,7 @@ Avoid repeatedly testing a write request against production while changing sever
 
 ## 2. Test the saved request manually
 
-Use a [manual call](./triggers/manual-calls.md) to test the request from APIEase admin before adding a webhook, schedule, remote call, proxy endpoint, storefront call, or Widget Call.
+Use a [manual call](./triggers/manual-calls.md) to test the request from APIEase admin before invoking it through a webhook, schedule, remote call, proxy endpoint, or storefront call from theme or widget JavaScript.
 
 Review the returned status, body, and execution details. Record which configuration produced the result, but do not copy credentials or private response data into support messages or shared logs.
 
@@ -72,13 +72,13 @@ For a network error or timeout, first recheck the scheme, host, and path and con
 
 ## 7. Isolate the trigger
 
-If the request works manually, test only the entry point that fails. The [triggers overview](./triggers/triggers-overview.md) links to the prerequisites for every supported trigger.
+If the request works manually, test only the entry point that fails. The [triggers overview](./triggers/triggers-overview.md) links to the prerequisites for each execution mechanism.
 
 - **Webhook:** confirm the intended event is selected and map fields from the actual webhook payload.
 - **Cron:** confirm the five-field expression and remember that schedules use UTC.
 - **Remote call:** confirm the request handle, shop-domain header, and APIEase API key.
 - **Proxy endpoint:** confirm the configured path, HTTP method, and authentication choice.
-- **Storefront or Widget Call:** confirm the directly called request has the matching trigger and that the browser call supplies the expected runtime parameters.
+- **Storefront call from theme or widget JavaScript:** confirm the directly called request has a **Storefront App Proxy** trigger and that the browser call supplies the expected runtime parameters.
 
 Compare the failing trigger's runtime parameters with the values used by the successful manual call. Missing input, a different parameter name or location, or a dynamic override can explain why the same saved request behaves differently.
 

@@ -1,21 +1,21 @@
 ---
-title: Widget calls
+title: Widget Request Calls
 description: Trigger APIEase requests from widgets on the storefront.
 ---
-# Widget calls
+# Widget Request Calls
 
 Widgets are reusable storefront components managed inside APIEase. They can render UI and call requests. If you have not used widgets before, start with [Widgets overview](../../widgets/widgets-overview.md).
 
-Widget Calls are a trigger type for APIEase requests. Use one when an APIEase widget should call the request from the storefront. This is the reusable-UI alternative to pasting a [storefront call](./storefont-calls.md) into theme Liquid.
+To call a request from a widget, use JavaScript to send a [storefront call](./storefont-calls.md) through Shopify's app proxy. Add the **Storefront App Proxy** trigger to the directly called request and save it.
 
 ## How it works
-- The widget runs in the browser.
-- The widget triggers the request.
+- The widget's JavaScript runs in the browser.
+- The JavaScript calls the request through Shopify's app proxy.
 - The request executes on the server and returns a response.
 
 To configure the widget-side request call, see [Using Requests in Widgets](../../widgets/using-requests-in-widgets.md).
 
-A widget is the reusable Liquid, CSS, and JavaScript component. The request remains a separate server-side resource, and **Widget Calls** authorizes that widget-side entry point. Choose a [Widget App Block](../../widgets/widget-app-block.md) to place the widget on a specific page or section, or a [Widget App Embed](../../widgets/widget-app-embed.md) for a widget that should load across the storefront.
+A widget is the reusable Liquid, CSS, and JavaScript component. The request remains a separate server-side resource. Choose a [Widget App Block](../../widgets/widget-app-block.md) to place the widget on a specific page or section, or a [Widget App Embed](../../widgets/widget-app-embed.md) for a widget that should load across the storefront.
 
 ## Passing values to Liquid requests
 Widget JavaScript uses the same APIEase integration endpoint as storefront calls. For Liquid requests, set `requestId` to the request handle and pass per-call values with `liquidParamsEmbedded`.

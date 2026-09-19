@@ -19,7 +19,7 @@ Compare the returned status and body with the receiving API's current documentat
 
 ## Why does a request work manually but fail from a webhook, schedule, remote call, proxy, storefront, or widget?
 
-The saved request is probably not the first layer to change. Check the failing trigger's prerequisites and compare its runtime parameters with the successful manual run. Missing input, a different name or parameter location, or a runtime override can change the result. Start with the [triggers overview](../../requests/triggers/triggers-overview.md).
+The saved request is probably not the first layer to change. Check the failing call's prerequisites and compare its runtime parameters with the successful manual run. For storefront calls from theme or widget JavaScript, the directly called request needs a **Storefront App Proxy** trigger. Missing input, a different name or parameter location, or a runtime override can change the result. Start with the [triggers overview](../../requests/triggers/triggers-overview.md).
 
 ## Why does my request return 401 or 403?
 

@@ -1804,7 +1804,7 @@ Avoid repeatedly testing a write request against production while changing sever
 
 ## 2. Test the saved request manually
 
-Use a [manual call](https://docs.apiease.com/docs/requests/triggers/manual-calls) to test the request from APIEase admin before adding a webhook, schedule, remote call, proxy endpoint, storefront call, or Widget Call.
+Use a [manual call](https://docs.apiease.com/docs/requests/triggers/manual-calls) to test the request from APIEase admin before invoking it through a webhook, schedule, remote call, proxy endpoint, or storefront call from theme or widget JavaScript.
 
 Review the returned status, body, and execution details. Record which configuration produced the result, but do not copy credentials or private response data into support messages or shared logs.
 
@@ -1861,13 +1861,13 @@ For a network error or timeout, first recheck the scheme, host, and path and con
 
 ## 7. Isolate the trigger
 
-If the request works manually, test only the entry point that fails. The [triggers overview](https://docs.apiease.com/docs/requests/triggers/triggers-overview) links to the prerequisites for every supported trigger.
+If the request works manually, test only the entry point that fails. The [triggers overview](https://docs.apiease.com/docs/requests/triggers/triggers-overview) links to the prerequisites for each execution mechanism.
 
 - **Webhook:** confirm the intended event is selected and map fields from the actual webhook payload.
 - **Cron:** confirm the five-field expression and remember that schedules use UTC.
 - **Remote call:** confirm the request handle, shop-domain header, and APIEase API key.
 - **Proxy endpoint:** confirm the configured path, HTTP method, and authentication choice.
-- **Storefront or Widget Call:** confirm the directly called request has the matching trigger and that the browser call supplies the expected runtime parameters.
+- **Storefront call from theme or widget JavaScript:** confirm the directly called request has a **Storefront App Proxy** trigger and that the browser call supplies the expected runtime parameters.
 
 Compare the failing trigger's runtime parameters with the values used by the successful manual call. Missing input, a different parameter name or location, or a dynamic override can explain why the same saved request behaves differently.
 
@@ -2273,9 +2273,9 @@ If your request includes confidential values such as API keys or credentials, ch
 
 **Runtime embedded Liquid parameters**
 
-Use `liquidParamsEmbedded` for per-call values supplied at runtime by a storefront call, widget call, or another request. For storefront and widget calls, `liquidParamsEmbedded` is an APIEase runtime query parameter. Its value must be a JSON object string. Inside the Liquid request, APIEase exposes those values at `apiEaseParameters.liquidParams`.
+Use `liquidParamsEmbedded` for per-call values supplied at runtime by storefront JavaScript, widget JavaScript, or another request. For storefront calls from theme or widget JavaScript, `liquidParamsEmbedded` is an APIEase runtime query parameter. Its value must be a JSON object string. Inside the Liquid request, APIEase exposes those values at `apiEaseParameters.liquidParams`.
 
-JavaScript storefront/widget call:
+Calling a request from theme or widget JavaScript:
 
 ```javascript
 const liquidParams = {
@@ -3200,13 +3200,13 @@ Dynamic embedded Liquid parameters
 CONTENT
 # Dynamic embedded Liquid parameters
 
-Use `liquidParamsEmbedded` when a storefront call or widget call needs to pass per-call values into a Liquid request.
+Use `liquidParamsEmbedded` when calling a Liquid request from theme or widget JavaScript to pass per-call values.
 
 `requestId` and `liquidParamsEmbedded` are APIEase runtime query parameters. Set `requestId` to the request handle that should run. Set `liquidParamsEmbedded` to a JSON-stringified object. Inside the Liquid request, APIEase exposes that object at `apiEaseParameters.liquidParams`.
 
 The keys inside `liquidParamsEmbedded` are user-defined. For example, if the caller sends `{ "visitorName": "Alex" }`, the Liquid request reads `apiEaseParameters.liquidParams.visitorName`.
 
-JavaScript storefront/widget call:
+Calling a request from theme or widget JavaScript:
 
 ```javascript
 const liquidParams = {
@@ -3394,7 +3394,7 @@ Choose the execution mechanism that matches where the run starts and what the ca
 | Call a saved request from a server or external automation | [Remote call](https://docs.apiease.com/docs/requests/triggers/calling-requests-remotely) | The request handle, shop domain, and an APIEase API key |
 | Publish a purpose-built HTTP route | [Proxy endpoint](https://docs.apiease.com/docs/requests/triggers/proxy-endpoint) | A unique path and method; choose whether authentication is required |
 | Call from Shopify theme code | [Storefront call](https://docs.apiease.com/docs/requests/triggers/storefont-calls) | A Storefront App Proxy trigger on the directly called request |
-| Call from reusable storefront UI | [Widget call](https://docs.apiease.com/docs/requests/triggers/widget-calls) | A saved widget and a request configured for Widget Calls |
+| Call from reusable storefront UI | [Widget request call](https://docs.apiease.com/docs/requests/triggers/widget-calls) | A saved widget with JavaScript that makes a storefront call, and a Storefront App Proxy trigger on the directly called request |
 
 Customer-authenticated calls are a restricted form of storefront call, not a separate general-purpose API. Use [customer validation](https://docs.apiease.com/docs/requests/customer-authenticated-requests) when a storefront request must require a logged-in customer or allow only selected customer IDs.
 
@@ -3649,7 +3649,7 @@ CONTENT
 
 Run any APIEase request directly from your Shopify storefront using Shopify's app proxy. This lets you start workflows from theme code without exposing credentials or private logic in the browser.
 
-If you want a reusable storefront component, use [Widget Calls](https://docs.apiease.com/docs/requests/triggers/widget-calls) instead of pasting request code into theme Liquid.
+For a reusable storefront component, put the JavaScript request call in an [APIEase widget](https://docs.apiease.com/docs/requests/triggers/widget-calls). The widget uses the same storefront route and Storefront App Proxy trigger described below.
 
 ## Storefront access boundary
 
@@ -3704,23 +3704,23 @@ SOURCE
 https://docs.apiease.com/docs/requests/triggers/widget-calls
 
 TITLE
-Widget calls
+Widget Request Calls
 
 CONTENT
-# Widget calls
+# Widget Request Calls
 
 Widgets are reusable storefront components managed inside APIEase. They can render UI and call requests. If you have not used widgets before, start with [Widgets overview](https://docs.apiease.com/docs/widgets/widgets-overview).
 
-Widget Calls are a trigger type for APIEase requests. Use one when an APIEase widget should call the request from the storefront. This is the reusable-UI alternative to pasting a [storefront call](https://docs.apiease.com/docs/requests/triggers/storefont-calls) into theme Liquid.
+To call a request from a widget, use JavaScript to send a [storefront call](https://docs.apiease.com/docs/requests/triggers/storefont-calls) through Shopify's app proxy. Add the **Storefront App Proxy** trigger to the directly called request and save it.
 
 ## How it works
-- The widget runs in the browser.
-- The widget triggers the request.
+- The widget's JavaScript runs in the browser.
+- The JavaScript calls the request through Shopify's app proxy.
 - The request executes on the server and returns a response.
 
 To configure the widget-side request call, see [Using Requests in Widgets](https://docs.apiease.com/docs/widgets/using-requests-in-widgets).
 
-A widget is the reusable Liquid, CSS, and JavaScript component. The request remains a separate server-side resource, and **Widget Calls** authorizes that widget-side entry point. Choose a [Widget App Block](https://docs.apiease.com/docs/widgets/widget-app-block) to place the widget on a specific page or section, or a [Widget App Embed](https://docs.apiease.com/docs/widgets/widget-app-embed) for a widget that should load across the storefront.
+A widget is the reusable Liquid, CSS, and JavaScript component. The request remains a separate server-side resource. Choose a [Widget App Block](https://docs.apiease.com/docs/widgets/widget-app-block) to place the widget on a specific page or section, or a [Widget App Embed](https://docs.apiease.com/docs/widgets/widget-app-embed) for a widget that should load across the storefront.
 
 ## Passing values to Liquid requests
 Widget JavaScript uses the same APIEase integration endpoint as storefront calls. For Liquid requests, set `requestId` to the request handle and pass per-call values with `liquidParamsEmbedded`.
@@ -5254,9 +5254,9 @@ Using Requests in Widgets
 CONTENT
 # Using Requests in Widgets
 
-Widgets can call APIEase requests. The widget runs in the browser, but the request runs on the server. This separation keeps integrations secure by keeping credentials and private logic off the storefront.
+Widgets can call APIEase requests through JavaScript. The widget's JavaScript runs in the browser, but the request runs on the server. This separation keeps integrations secure by keeping credentials and private logic off the storefront.
 
-Before adding the call, add the **Widget Calls** trigger to the request. The widget, request, and theme placement are separate: the widget contains the storefront UI, the request performs the server-side work, and an [App Block or App Embed](https://docs.apiease.com/docs/widgets/widget-app-extensions) determines where the widget loads.
+For the JavaScript call below, add the **Storefront App Proxy** trigger to the directly called request and save it. The JavaScript sends a [storefront call](https://docs.apiease.com/docs/requests/triggers/storefont-calls) through Shopify's app proxy. The widget contains the storefront UI, the request performs the server-side work, and an [App Block or App Embed](https://docs.apiease.com/docs/widgets/widget-app-extensions) determines where the widget loads.
 
 ## Configure a request call
 1. Get the handle for the request you want to run.
@@ -5472,7 +5472,7 @@ CONTENT
 
 ## How should I run a request?
 
-Choose the entry point that matches the caller: use a manual call in APIEase admin, a webhook for a Shopify event, cron for a recurring schedule, a remote call from a trusted external system, a proxy endpoint for a purpose-built HTTP route, a storefront call from theme code, or a Widget Call from an APIEase widget. The [triggers overview](https://docs.apiease.com/docs/requests/triggers/triggers-overview) compares prerequisites for each option.
+Choose the entry point that matches the caller: use a manual call in APIEase admin, a webhook for a Shopify event, cron for a recurring schedule, a remote call from a trusted external system, a proxy endpoint for a purpose-built HTTP route, or a storefront call from theme code or an APIEase widget's JavaScript. The [triggers overview](https://docs.apiease.com/docs/requests/triggers/triggers-overview) compares prerequisites for each option.
 
 ## How do I test or run a request once from APIEase admin?
 
@@ -5498,9 +5498,9 @@ Use a **Storefront App Proxy** trigger on the request that theme code calls dire
 
 For a storefront call, add `validateCustomer=true` as a System parameter to require any logged-in customer. To allow selected customers, add one `customerId` System parameter for each allowed Shopify customer ID--not a JSON array in one value. Customer validation relies on the identity Shopify supplies through its app proxy; it is not authentication for remote calls or proxy endpoints. See [Customer-authenticated requests](https://docs.apiease.com/docs/requests/customer-authenticated-requests).
 
-## What is the difference between a widget, a Widget Call, an App Block, and an App Embed?
+## What is the difference between a widget, an App Block, and an App Embed?
 
-A **widget** is reusable storefront Liquid, CSS, and JavaScript; **Widget Calls** lets its browser code run a separate APIEase request on the server. An **App Block** places a widget in a specific theme section or template, while an **App Embed** loads selected widgets across the storefront. See [Widget calls](https://docs.apiease.com/docs/requests/triggers/widget-calls) and [Widget App Extensions](https://docs.apiease.com/docs/widgets/widget-app-extensions).
+A **widget** is reusable storefront Liquid, CSS, and JavaScript. An **App Block** places a widget in a specific theme section or template, while an **App Embed** loads selected widgets across the storefront. See [Widgets overview](https://docs.apiease.com/docs/widgets/widgets-overview) and [Widget App Extensions](https://docs.apiease.com/docs/widgets/widget-app-extensions).
 
 ## How do I send APIEase data into Shopify Flow?
 
@@ -5533,7 +5533,7 @@ Compare the returned status and body with the receiving API's current documentat
 
 ## Why does a request work manually but fail from a webhook, schedule, remote call, proxy, storefront, or widget?
 
-The saved request is probably not the first layer to change. Check the failing trigger's prerequisites and compare its runtime parameters with the successful manual run. Missing input, a different name or parameter location, or a runtime override can change the result. Start with the [triggers overview](https://docs.apiease.com/docs/requests/triggers/triggers-overview).
+The saved request is probably not the first layer to change. Check the failing call's prerequisites and compare its runtime parameters with the successful manual run. For storefront calls from theme or widget JavaScript, the directly called request needs a **Storefront App Proxy** trigger. Missing input, a different name or parameter location, or a runtime override can change the result. Start with the [triggers overview](https://docs.apiease.com/docs/requests/triggers/triggers-overview).
 
 ## Why does my request return 401 or 403?
 

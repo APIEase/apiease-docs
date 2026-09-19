@@ -6,7 +6,7 @@ description: Call APIEase requests from your Shopify storefront through Shopify'
 
 Run any APIEase request directly from your Shopify storefront using Shopify's app proxy. This lets you start workflows from theme code without exposing credentials or private logic in the browser.
 
-If you want a reusable storefront component, use [Widget Calls](./widget-calls.md) instead of pasting request code into theme Liquid.
+For a reusable storefront component, put the JavaScript request call in an [APIEase widget](./widget-calls.md). The widget uses the same storefront route and Storefront App Proxy trigger described below.
 
 ## Storefront access boundary
 

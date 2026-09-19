@@ -4,9 +4,9 @@ description: Configure an APIEase request call inside a widget.
 ---
 # Using Requests in Widgets
 
-Widgets can call APIEase requests. The widget runs in the browser, but the request runs on the server. This separation keeps integrations secure by keeping credentials and private logic off the storefront.
+Widgets can call APIEase requests through JavaScript. The widget's JavaScript runs in the browser, but the request runs on the server. This separation keeps integrations secure by keeping credentials and private logic off the storefront.
 
-Before adding the call, add the **Widget Calls** trigger to the request. The widget, request, and theme placement are separate: the widget contains the storefront UI, the request performs the server-side work, and an [App Block or App Embed](./widget-app-extensions.md) determines where the widget loads.
+For the JavaScript call below, add the **Storefront App Proxy** trigger to the directly called request and save it. The JavaScript sends a [storefront call](../requests/triggers/storefont-calls.md) through Shopify's app proxy. The widget contains the storefront UI, the request performs the server-side work, and an [App Block or App Embed](./widget-app-extensions.md) determines where the widget loads.
 
 ## Configure a request call
 1. Get the handle for the request you want to run.

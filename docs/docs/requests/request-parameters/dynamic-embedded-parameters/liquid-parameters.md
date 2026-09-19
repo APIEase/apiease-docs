@@ -4,13 +4,13 @@ description: Pass per-call values into Liquid requests with liquidParamsEmbedded
 ---
 # Dynamic embedded Liquid parameters
 
-Use `liquidParamsEmbedded` when a storefront call or widget call needs to pass per-call values into a Liquid request.
+Use `liquidParamsEmbedded` when calling a Liquid request from theme or widget JavaScript to pass per-call values.
 
 `requestId` and `liquidParamsEmbedded` are APIEase runtime query parameters. Set `requestId` to the request handle that should run. Set `liquidParamsEmbedded` to a JSON-stringified object. Inside the Liquid request, APIEase exposes that object at `apiEaseParameters.liquidParams`.
 
 The keys inside `liquidParamsEmbedded` are user-defined. For example, if the caller sends `{ "visitorName": "Alex" }`, the Liquid request reads `apiEaseParameters.liquidParams.visitorName`.
 
-JavaScript storefront/widget call:
+Calling a request from theme or widget JavaScript:
 
 ```javascript
 const liquidParams = {

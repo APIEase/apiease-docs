@@ -7,7 +7,7 @@ description: Quick answers about manual runs, remote calls, proxy endpoints, web
 
 ## How should I run a request?
 
-Choose the entry point that matches the caller: use a manual call in APIEase admin, a webhook for a Shopify event, cron for a recurring schedule, a remote call from a trusted external system, a proxy endpoint for a purpose-built HTTP route, a storefront call from theme code, or a Widget Call from an APIEase widget. The [triggers overview](../../requests/triggers/triggers-overview.md) compares prerequisites for each option.
+Choose the entry point that matches the caller: use a manual call in APIEase admin, a webhook for a Shopify event, cron for a recurring schedule, a remote call from a trusted external system, a proxy endpoint for a purpose-built HTTP route, or a storefront call from theme code or an APIEase widget's JavaScript. The [triggers overview](../../requests/triggers/triggers-overview.md) compares prerequisites for each option.
 
 ## How do I test or run a request once from APIEase admin?
 
@@ -33,9 +33,9 @@ Use a **Storefront App Proxy** trigger on the request that theme code calls dire
 
 For a storefront call, add `validateCustomer=true` as a System parameter to require any logged-in customer. To allow selected customers, add one `customerId` System parameter for each allowed Shopify customer ID--not a JSON array in one value. Customer validation relies on the identity Shopify supplies through its app proxy; it is not authentication for remote calls or proxy endpoints. See [Customer-authenticated requests](../../requests/customer-authenticated-requests.md).
 
-## What is the difference between a widget, a Widget Call, an App Block, and an App Embed?
+## What is the difference between a widget, an App Block, and an App Embed?
 
-A **widget** is reusable storefront Liquid, CSS, and JavaScript; **Widget Calls** lets its browser code run a separate APIEase request on the server. An **App Block** places a widget in a specific theme section or template, while an **App Embed** loads selected widgets across the storefront. See [Widget calls](../../requests/triggers/widget-calls.md) and [Widget App Extensions](../../widgets/widget-app-extensions.md).
+A **widget** is reusable storefront Liquid, CSS, and JavaScript. An **App Block** places a widget in a specific theme section or template, while an **App Embed** loads selected widgets across the storefront. See [Widgets overview](../../widgets/widgets-overview.md) and [Widget App Extensions](../../widgets/widget-app-extensions.md).
 
 ## How do I send APIEase data into Shopify Flow?
 

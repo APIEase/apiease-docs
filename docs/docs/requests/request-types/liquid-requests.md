@@ -55,9 +55,9 @@ If your request includes confidential values such as API keys or credentials, ch
 
 **Runtime embedded Liquid parameters**
 
-Use `liquidParamsEmbedded` for per-call values supplied at runtime by a storefront call, widget call, or another request. For storefront and widget calls, `liquidParamsEmbedded` is an APIEase runtime query parameter. Its value must be a JSON object string. Inside the Liquid request, APIEase exposes those values at `apiEaseParameters.liquidParams`.
+Use `liquidParamsEmbedded` for per-call values supplied at runtime by storefront JavaScript, widget JavaScript, or another request. For storefront calls from theme or widget JavaScript, `liquidParamsEmbedded` is an APIEase runtime query parameter. Its value must be a JSON object string. Inside the Liquid request, APIEase exposes those values at `apiEaseParameters.liquidParams`.
 
-JavaScript storefront/widget call:
+Calling a request from theme or widget JavaScript:
 
 ```javascript
 const liquidParams = {

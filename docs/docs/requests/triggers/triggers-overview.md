@@ -14,7 +14,7 @@ Choose the execution mechanism that matches where the run starts and what the ca
 | Call a saved request from a server or external automation | [Remote call](./calling-requests-remotely.md) | The request handle, shop domain, and an APIEase API key |
 | Publish a purpose-built HTTP route | [Proxy endpoint](./proxy-endpoint.md) | A unique path and method; choose whether authentication is required |
 | Call from Shopify theme code | [Storefront call](./storefont-calls.md) | A Storefront App Proxy trigger on the directly called request |
-| Call from reusable storefront UI | [Widget call](./widget-calls.md) | A saved widget and a request configured for Widget Calls |
+| Call from reusable storefront UI | [Widget request call](./widget-calls.md) | A saved widget with JavaScript that makes a storefront call, and a Storefront App Proxy trigger on the directly called request |
 
 Customer-authenticated calls are a restricted form of storefront call, not a separate general-purpose API. Use [customer validation](../customer-authenticated-requests.md) when a storefront request must require a logged-in customer or allow only selected customer IDs.
 
