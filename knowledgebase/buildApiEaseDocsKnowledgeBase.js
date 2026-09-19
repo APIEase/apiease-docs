@@ -1,6 +1,7 @@
 const fs = require('fs/promises');
 const path = require('path');
 const vm = require('vm');
+const {pathToFileURL} = require('url');
 
 const REPO_ROOT = path.resolve(__dirname, '..');
 const DOCS_PROJECT_ROOT = path.join(REPO_ROOT, 'docs');
@@ -226,6 +227,49 @@ async function loadSidebars(sidebarPath) {
   return context.module.exports;
 }
 
+function buildSourceUrl(doc, config) {
+  const route = buildDocRoute({
+    docId: doc.docId,
+    slug: doc.slug,
+    baseUrl: config.baseUrl,
+    routeBasePath: config.routeBasePath,
+  });
+  return new URL(route, config.siteUrl).toString();
+}
+
+function collectMarkdownNodes(node) {
+  return [node, ...(node.children ?? []).flatMap(collectMarkdownNodes)];
+}
+
+async function canonicalizeDocumentationLinks({body, filePath, sourceUrlsByFilePath}) {
+  const parserPath = require.resolve('mdast-util-from-markdown', {paths: [DOCS_PROJECT_ROOT]});
+  const {fromMarkdown} = await import(pathToFileURL(parserPath).href);
+  const nodes = collectMarkdownNodes(fromMarkdown(body));
+  const references = new Set(nodes.filter((node) => node.type === 'linkReference').map((node) => node.identifier));
+  const links = nodes.filter((node) => node.type === 'link'
+    || (node.type === 'definition' && references.has(node.identifier)));
+  const replacements = links.map((node) => buildDocumentationLinkReplacement({
+    node, body, filePath, sourceUrlsByFilePath,
+  })).filter(Boolean).sort((left, right) => right.start - left.start);
+  for (const {start, end, url} of replacements) body = body.slice(0, start) + url + body.slice(end);
+  return body;
+}
+
+function buildDocumentationLinkReplacement({node, body, filePath, sourceUrlsByFilePath}) {
+  const target = node.url.match(/^(?![a-z][a-z0-9+.-]*:|\/)([^?#]+\.mdx?)(?:[?#].*)?$/i);
+  if (!target) return null;
+  const targetPath = path.resolve(path.dirname(filePath), decodeURIComponent(target[1]));
+  const url = sourceUrlsByFilePath.get(targetPath);
+  if (!url) throw new Error(`Documentation link has no SOURCE URL: ${node.url} in ${filePath}`);
+  const raw = body.slice(node.position.start.offset, node.position.end.offset);
+  const labelEnd = node.children?.at(-1)?.position.end.offset - node.position.start.offset || 0;
+  const marker = node.type === 'definition' ? raw.indexOf(']:') : raw.indexOf('](', labelEnd);
+  const offset = raw.indexOf(node.url, marker + 2);
+  if (marker < 0 || offset < 0) throw new Error(`Cannot locate documentation link: ${node.url} in ${filePath}`);
+  const start = node.position.start.offset + offset;
+  return {start, end: start + node.url.length, url};
+}
+
 async function generateKnowledgeBaseText() {
   const config = await loadDocsConfig();
   const docsRoot = path.resolve(DOCS_PROJECT_ROOT, config.docsPath);
@@ -271,6 +315,11 @@ async function generateKnowledgeBaseText() {
     collectDocIds(sidebar, docMap, orderedDocIds);
   }
 
+  const sourceUrlsByFilePath = new Map(orderedDocIds.filter((docId) => docMap.has(docId))
+    .map((docId) => {
+      const doc = docMap.get(docId);
+      return [doc.filePath, buildSourceUrl(doc, config)];
+    }));
   const seen = new Set();
   const sections = [];
   for (const docId of orderedDocIds) {
@@ -285,16 +334,13 @@ async function generateKnowledgeBaseText() {
       continue;
     }
 
-    const route = buildDocRoute({
-      docId: doc.docId,
-      slug: doc.slug,
-      baseUrl: config.baseUrl,
-      routeBasePath: config.routeBasePath,
+    const sourceUrl = sourceUrlsByFilePath.get(doc.filePath);
+    const body = await canonicalizeDocumentationLinks({
+      body: doc.body, filePath: doc.filePath, sourceUrlsByFilePath,
     });
-    const sourceUrl = new URL(route, config.siteUrl).toString();
 
     sections.push(
-      ['SOURCE', sourceUrl, '', 'TITLE', doc.title, '', 'CONTENT', doc.body, ''].join(
+      ['SOURCE', sourceUrl, '', 'TITLE', doc.title, '', 'CONTENT', body, ''].join(
         '\n'
       )
     );
@@ -363,5 +409,6 @@ if (require.main === module) {
 module.exports = {
   OUTPUT_PATH,
   buildKnowledgeBase,
+  canonicalizeDocumentationLinks,
   generateKnowledgeBaseText,
 };
