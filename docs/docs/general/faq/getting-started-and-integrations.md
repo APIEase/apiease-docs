@@ -14,11 +14,11 @@ APIEase can connect to an external HTTP API when the provider exposes the requir
 
 ## What information do I need from an API provider?
 
-You need the endpoint and HTTP method, authentication instructions and issued credentials, required headers and parameters, request and response shapes, permissions, pagination, rate limits, and preferably a test environment. The provider's current documentation or support team must supply provider-specific details. See the complete [provider information checklist](../../requests/connect-external-api.md).
+Start with the intended operation, endpoint, authentication configuration, and any required inputs. A basic request can be proposed with clearly identified, reasonable assumptions before you have complete documentation. Response mappings, pagination, and other details become necessary when the requested behavior depends on them; creating the request does not verify that it works. Use the provider's current documentation or support team to resolve material gaps, and consult the [provider information checklist](../../requests/connect-external-api.md) as you build and verify the integration.
 
 ## Can APIEase obtain provider documentation or credentials for me?
 
-No. APIEase cannot retrieve missing provider documentation, issue another company's API key or access token, bypass permissions, or infer a safe write payload from incomplete requirements. Ask the provider for the missing contract or credential, then use [Connect to an external API](../../requests/connect-external-api.md) to map it to APIEase.
+APIEase cannot obtain another company's private documentation or credentials, bypass permissions, or infer a safe write payload from incomplete requirements. Missing documentation alone does not prevent creating a useful initial request from details already supplied. Ask the provider for specific facts that block the intended operation, and enter credentials in the secure request configuration. See [Connect to an external API](../../requests/connect-external-api.md).
 
 ## How do I create, find, edit, duplicate, or delete a request?
 

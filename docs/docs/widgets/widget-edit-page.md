@@ -1,44 +1,44 @@
 ---
-title: Widget edit page
-description: Configure Liquid, JavaScript, and handles for a widget.
+title: Widgets Edit Page
+description: Set shared widget fields, choose a widget type, and save or discard editor changes.
 ---
-# Widget edit page
+# Widgets Edit Page
 
-The widget editor is where you define how a widget renders and behaves. Use it to set the widget name, handle, Liquid template, and optional JavaScript.
+Open a widget from the [Widgets Page](./widgets-page.md), or select **Add Widget** to create one. The editor has shared identity fields and content fields determined by **Widget type**.
 
-## Widget fields
+## Shared fields
 
-### Widget name
+### Name
 
-The display name used in the Widgets list. When you create a new widget, the handle is auto generated from the name until you manually edit the handle.
+The display name used in the Widgets list and Admin widget picker. Choose a name that describes what the widget does.
 
-### Widget handle
+### Handle
 
-The identifier used by the storefront block to load the widget. Keep this stable if the widget is already used in a theme, and update the theme block if you change it.
+The stable identifier used to reference the widget in integrations. Storefront blocks and embeds also use it to load the widget. When creating a widget, leave **Handle** blank to generate it from the name; a number is added if needed.
 
-### Liquid template
+If you change an existing handle, update theme settings and integrations that reference the old value. See [Resource handles](../developers/resource-handles.md).
 
-The Liquid markup that renders inside the widget container. Use it to output HTML and Liquid variables needed by the storefront.
+### Description
 
-### External JavaScript URLs
+Explain the widget's purpose, intended location, and request dependencies. The description travels with the widget through the public API, CLI, and project review, but does not appear as rendered widget content.
 
-One URL per line. APIEase loads these scripts when the widget renders.
+### Widget type
 
-### JavaScript
+Choose **Storefront** for a Shopify theme or **Admin** for Shopify admin. The editor shows the content fields for that type:
 
-Inline JavaScript that runs after the widget HTML is inserted on the page. Use it for widget specific behavior.
+- [Edit Storefront Widgets](./edit-storefront-widgets.md) covers Liquid, inline JavaScript, external scripts, and disabling JavaScript.
+- [Edit Admin Widgets](./admin-widget-authoring.md) covers surface and location controls, Variables, Render JSX, and supported Shopify components.
 
-### Disable JavaScript
+Switching types preserves the other type's authored fields. Saving as **Storefront** releases an Admin location assignment; saving as **Admin** checks that the selected location is available.
 
-When checked, the widget renders its Liquid template but does not load any JavaScript from the inline or external fields.
+## Save and discard
 
-## Save and delete
+The save bar appears when you make changes. **Save** validates and applies the edits. Resolve any field errors before saving again. **Discard** returns an existing widget to its last saved version.
 
-- The save bar appears when you make changes.
-- **Save** applies your edits.
-- **Discard** reverts to the last saved version.
-- Delete widgets from the Widgets page (deletions are staged and saved there).
+After saving, reload the storefront page or Shopify admin page, or reopen the admin action, to see the updated widget.
+
+To duplicate or delete a widget, return to the [Widgets Page](./widgets-page.md).
 
 ## AI widget builder
 
-Use the assistant panel to generate or refine a widget draft. When you accept a draft, the editor updates the Liquid and JavaScript fields so you can review and save.
+Use the assistant panel to generate or refine a widget draft. Review the widget type, content, request handles, and any Admin location assignment before saving.

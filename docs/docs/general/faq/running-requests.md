@@ -35,7 +35,11 @@ For a storefront call, add `validateCustomer=true` as a System parameter to requ
 
 ## What is the difference between a widget, an App Block, and an App Embed?
 
-A **widget** is reusable storefront Liquid, CSS, and JavaScript. An **App Block** places a widget in a specific theme section or template, while an **App Embed** loads selected widgets across the storefront. See [Widgets overview](../../widgets/widgets-overview.md) and [Widget App Extensions](../../widgets/widget-app-extensions.md).
+A **widget** is a reusable interface that you manage in APIEase. **Storefront** widgets use Liquid and JavaScript; a theme **App Block** places one in a specific section or template, while an **App Embed** loads selected widgets across the storefront. **Admin** widgets use Shopify components in admin blocks and action dialogs. See [Widgets Overview](../../widgets/widgets-overview.md), [Storefront Widgets](../../widgets/storefront-widgets.md), and [Admin Widgets](../../widgets/admin-widgets.md).
+
+## How do widgets call requests?
+
+Storefront widget JavaScript calls through Shopify's app proxy and needs a **Storefront App Proxy** trigger on the directly called request. Admin widget buttons call saved requests through the authenticated admin interface. Follow [Requests In Widgets](../../widgets/using-requests-in-widgets.md) for inputs, responses, and bulk-selection examples.
 
 ## How do I send APIEase data into Shopify Flow?
 

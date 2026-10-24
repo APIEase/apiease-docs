@@ -97,6 +97,44 @@ If you are working with request resources, keep these conventions in mind:
 - For `liquid` requests, include saved Liquid `parameters` only for saved values, sensitive values, or `{parameterName}` substitution.
 - Add a `storefrontAppProxy` trigger only to requests that should be called directly through Shopify's app proxy. Do not add it to Liquid helper requests that are only called by other APIEase requests.
 
+## Sensitive values
+
+To create a sensitive request parameter or variable, set `sensitive` to `true`
+and supply its `value` as a string. No separate secret instruction is required.
+For example, a request parameter can be:
+
+```json
+{
+  "type": "header",
+  "name": "Authorization",
+  "sensitive": true,
+  "value": "Bearer replace-with-your-provider-token"
+}
+```
+
+The CLI's `create` and `update` commands can submit these string values through
+the public API. The public API uses these value rules:
+
+- A supplied string replaces the saved value. An empty string explicitly clears
+  the value while keeping the field sensitive.
+- On updates, omitting `value` preserves the existing sensitive value. Omitting
+  `sensitive` retains its current setting.
+- A newly sensitive field needs a value. `null` is invalid.
+- Setting `sensitive` to `false` requires a new string value; it does not reveal
+  the existing secret.
+- Reads and write responses omit sensitive values and return
+  `protectedValueStatus` and `protectedValueSelector` metadata. Submitting the
+  redacted resource as an update preserves its secrets.
+
+For requests, omitting the entire `parameters` field preserves the current list.
+When supplying a parameter list, include every parameter you want to retain;
+entries absent from that list are removed. Existing parameters are matched by
+name, or by type for unnamed parameters.
+
+Supply real credentials only through your authenticated API workflow. Keep them
+out of committed resource files. Canonical project files used by `apiease apply`
+continue to use protected-value placeholders rather than raw credentials.
+
 ## Resource descriptions
 
 Requests, widgets, variables, and functions support a `description` string of up

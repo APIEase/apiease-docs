@@ -8,7 +8,7 @@ APIEase runs the requests and logic you define. Each request ([HTTP](../requests
 
 This page describes how requests are configured, how they are triggered, and how these elements combine to create custom functionality.
 
-APIEase also includes reusable [Functions](../functions/functions-overview.md), persisted [Variables](../variables/variables-overview.md), and storefront widgets. Widgets render Liquid and JavaScript through the Widget App Block or Widget App Embed and are managed in the same admin.
+APIEase also includes reusable [Functions](../functions/functions-overview.md), persisted [Variables](../variables/variables-overview.md), and [Widgets](../widgets/widgets-overview.md). Storefront widgets render in the theme, while Admin widgets provide tools inside Shopify admin. Both are managed in APIEase.
 
 ---
 
@@ -32,11 +32,11 @@ If you need to manage persisted values outside of a request, use [Variables Over
 
 ## Configuring Widgets
 
-Create widgets in the APIEase admin by defining a name, handle, and Liquid template. You can add optional inline or external JavaScript that loads when the widget renders. See [Widgets page](../widgets/widgets-page.md) and [Widget edit page](../widgets/widget-edit-page.md) for the full workflow.
+Create widgets from the [Widgets Page](../widgets/widgets-page.md), then set the shared fields and widget type in the [Widgets Edit Page](../widgets/widget-edit-page.md). Follow [Edit Storefront Widgets](../widgets/edit-storefront-widgets.md) for Liquid and JavaScript, or [Edit Admin Widgets](../widgets/admin-widget-authoring.md) for Variables and Shopify component JSX.
 
 ## Displaying Widgets
 
-Use the **APIEase Widget App Block** for widgets on a specific page or template, or the **APIEase Widget App Embed** for widgets that should run across the storefront. See [Widget App Extensions](../widgets/widget-app-extensions.md).
+For storefront placement, use the **APIEase Widget App Block** on a specific page or template, or the **APIEase Widget App Embed** across the storefront. See [Storefront Widgets](../widgets/storefront-widgets.md). For Shopify admin blocks, detail-page actions, and bulk-selection actions, see [Admin Widgets](../widgets/admin-widgets.md).
 
 ---
 

@@ -36,7 +36,7 @@ Functions are reusable Liquid helpers that run inside a parent Liquid Request. U
 
 ## What APIEase does not supply
 
-APIEase does not provide another company's private API documentation or credentials, bypass provider permissions, or decide how records from different systems should be matched. Before building an integration, obtain the provider's current API contract and define the workflow's business rules. See [Connect to an external API](../requests/connect-external-api.md) for the required information.
+APIEase does not provide another company's private API documentation or credentials, bypass provider permissions, or decide how records from different systems should be matched. Start with a useful request using the operation, endpoint, and authentication details you have, with reasonable assumptions made visible for review. Gather further provider details and business rules when the requested behavior requires them, and verify the request before relying on it in an integration. See [Connect to an external API](../requests/connect-external-api.md) for the setup guidance and provider information checklist.
 
 ## [Secure Parameter Storage](./why-you-need-it.md#why-secure-parameter-handling-matters)
 

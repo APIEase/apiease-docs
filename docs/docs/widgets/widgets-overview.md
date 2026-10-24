@@ -1,22 +1,34 @@
 ---
-title: Widgets overview
-description: Understand what APIEase widgets are and why they are useful.
+title: Widgets Overview
+description: Compare Storefront and Admin widgets and find the guides for managing, editing, placing, and connecting them to requests.
 ---
-# Widgets overview
+# Widgets Overview
 
-APIEase widgets are reusable storefront UI components that you build and manage in APIEase, then render in your Shopify theme through the APIEase Widget App Block or Widget App Embed. A widget can output Liquid (markup) and optionally run JavaScript, which makes it a good fit for UI that needs to stay flexible but still integrate with your backend logic.
+APIEase widgets are reusable UI components that you build and manage in **Resources > Widgets**. They connect interfaces to saved APIEase requests while keeping credentials and integration logic in the request.
 
-Add a description to explain what the widget renders, where it is intended to be
-used, and which requests or variables it relies on. The description travels with
-the widget through the public API, CLI, and project review, but it is not rendered
-on the storefront.
+## Choose a widget type
 
-## Why widgets are useful
+| Widget type | Content | Where it appears |
+| --- | --- | --- |
+| **Storefront** | Liquid markup and optional JavaScript | Your Shopify theme, through a Widget App Block or Widget App Embed |
+| **Admin** | Variables and Render (JSX) using supported Shopify components | Shopify admin detail-page blocks, detail-page action dialogs, or bulk-selection action dialogs |
 
-- **UI + secure API requests, together:** Widgets help you connect storefront UI components to secure API requests powered by APIEase, without moving secrets or request logic into the theme.
-- **Rich UI with Liquid + JavaScript:** Liquid plus inline JavaScript and external JavaScript libraries lets you build interactive, dynamic widgets while still relying on APIEase for secure request execution.
-- **Easy placement anywhere:** Widget App Extensions make it straightforward to add widgets to a specific page or template, or run selected widgets across the storefront.
+Use [Storefront Widgets](./storefront-widgets.md) for customer-facing content and site-wide storefront behavior. Use [Admin Widgets](./admin-widgets.md) for information and tools alongside the records you manage in Shopify admin.
 
-## Learn more
+## Shared concepts
 
-Learn more about the [Widgets page](./widgets-page.md) to manage and organize your widgets, the [Widget edit page](./widget-edit-page.md) to configure a widget's Liquid, JavaScript, and handle, and [Widget App Extensions](./widget-app-extensions.md) to choose between placement-specific and global widget rendering.
+Every widget has a name, handle, description, and widget type. The name identifies it to people; the handle is its stable integration identifier. The description explains its purpose and dependencies without appearing as rendered content.
+
+A widget provides the interface. A saved request performs the server-side work. Both widget types can call requests, with different calling methods and input formats. See [Requests In Widgets](./using-requests-in-widgets.md).
+
+## Find the right guide
+
+| Task | Guide |
+| --- | --- |
+| List, create, duplicate, or delete widgets | [Widgets Page](./widgets-page.md) |
+| Set shared fields, switch types, save, or discard | [Widgets Edit Page](./widget-edit-page.md) |
+| Author Liquid and JavaScript | [Edit Storefront Widgets](./edit-storefront-widgets.md) |
+| Author Variables and Shopify component JSX | [Edit Admin Widgets](./admin-widget-authoring.md) |
+| Call requests, pass inputs, and display responses | [Requests In Widgets](./using-requests-in-widgets.md) |
+| Add storefront widgets through an App Block or App Embed | [Storefront Widgets](./storefront-widgets.md) |
+| Place admin blocks and actions or manage assignments | [Admin Widgets](./admin-widgets.md) |

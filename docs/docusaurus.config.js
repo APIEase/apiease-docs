@@ -32,6 +32,24 @@ const config = {
 
   onBrokenLinks: 'throw',
 
+  plugins: [
+    [
+      '@docusaurus/plugin-client-redirects',
+      {
+        redirects: [
+          {
+            from: [
+              '/docs/widgets/widget-app-block',
+              '/docs/widgets/widget-app-embed',
+              '/docs/widgets/widget-app-extensions',
+            ],
+            to: '/docs/widgets/storefront-widgets',
+          },
+        ],
+      },
+    ],
+  ],
+
   // Even if you don't use internationalization, you can use this field to set
   // useful metadata like html lang. For example, if your site is Chinese, you
   // may want to replace "en" with "zh-Hans".
