@@ -22,7 +22,7 @@ Use **Replace with cat example** only when you want to replace the current draft
 
 ## Variables and Render
 
-**Variables** accepts named `const` declarations. Values are recalculated from the current inputs and request result when the widget renders.
+**Variables** accepts named `const` declarations. Values are recalculated from the current form state and request result when the widget renders.
 
 **Render (JSX)** accepts one `s-admin-block` root containing supported Shopify components. Keep that root even for action widgets: APIEase displays its heading and children in an action dialog and supplies **Close** automatically.
 
@@ -39,16 +39,24 @@ Variable and input names must start with a letter and contain only letters, digi
 | `shopify.data.selected` | Current Shopify selection. Read a selected resource ID with `shopify.data.selected?.[0]?.id`. |
 | `shopify.extension.target` | Exact current Shopify location, such as `admin.order-details.block.render`. Use it when content needs to distinguish locations. |
 | `apiease.selectedResourceIds` | Array of all selected resource IDs in Shopify order, or an empty array when nothing is selected. |
-| `inputs` | Local editable values set by your input handlers. Use defaults such as `inputs.reference ?? ""`. |
-| `apiease.setInput("reference", value)` | Update a local input from an `onInput` or `onChange` handler. |
-| `apiease.runRequest("request-handle", {reference})` | Run a saved request from an `onClick` handler, passing named inputs. The handle must be a literal string. |
+| `inputs` | Current Admin widget form values. Read a field with `inputs.reference` and supply an initial value with `inputs.reference ?? ""`. |
+| `apiease.setInput("reference", value)` | Remember a form value and update the widget display from an `onInput` or `onChange` handler. |
+| `apiease.runRequest("request-handle", {liquidParamsEmbedded: {reference}})` | Run a saved request from an `onClick` handler, passing embedded parameter groups. The handle must be a literal string. |
 | `apiease.response` | Most recent request response, including APIEase's status/data wrapper. Use optional chaining before the first result arrives. |
 | `apiease.loading` | Whether a request is running. Bind it to a button's `loading` property. |
 | `apiease.error` | Current widget execution error message. APIEase also displays execution errors in a banner. |
 
 The available Shopify context is the selection and target. It does not include complete order or product data or the full Shopify extension API. Pass an ID to a saved request when you need to retrieve additional information.
 
-## Example: display and edit a reference
+## Form state with inputs
+
+Form state is the information a widget remembers while someone edits its fields. The `inputs` object holds those values for the currently open Admin widget. It lets a field, a preview, and a button's enabled state all use the same current value.
+
+Calling `apiease.setInput("reference", value)` updates `inputs.reference` and refreshes the widget display. This preserves the entered value when the widget updates to show loading progress or a result. Reopening the widget or choosing another widget resets its form values.
+
+`inputs` is not a query parameter or a request parameter group. Updating it does not run a request, send the form values, or change a saved request. A widget that uses only fixed values or the Shopify selection does not need to use `inputs`.
+
+### Example: display and edit a reference
 
 This example displays the current resource ID and an editable local reference. It does not run a request.
 
@@ -77,7 +85,19 @@ const reference = inputs.reference ?? resourceId;
 
 Input handlers use `event => apiease.setInput("name", expression)`. The event exposes `currentTarget.value`. Use `onChange` in the same form where supported, such as on `s-select`.
 
-To send this reference to a saved request, use the complete example in [Requests In Widgets](./using-requests-in-widgets.md). That guide also covers button handlers, input limits, request responses, and bulk selections.
+Typing updates both the field and **Current reference** text. The example only changes the widget's display.
+
+## Send form values to a request
+
+A request call separately chooses which values to send and their parameter location. For example, a button can send the current reference as a query parameter:
+
+```jsx
+<s-button onClick={() => apiease.runRequest("lookup-reference", {queryParamsEmbedded: {reference}})}>
+  Look up
+</s-button>
+```
+
+Here, `reference` is the variable from the form example, and `queryParamsEmbedded` determines where it goes in the request. You can also pass a fixed value or a Shopify selection directly; `inputs` is optional. See [Requests In Widgets](./using-requests-in-widgets.md) for complete request setup, embedded parameter groups, responses, and bulk selections.
 
 ## Supported components and properties
 

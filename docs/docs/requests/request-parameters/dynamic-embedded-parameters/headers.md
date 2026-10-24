@@ -6,9 +6,23 @@ description: Allow callers to provide headers at execution time.
 
 You can pass dynamic values from the storefront into the headers of an APIEase request. This is useful when the external API you are calling expects information such as customer details, session context, or custom identifiers to be included in the headers.
 
-Dynamic embedded parameters are added as query parameters to calls made to APIEase from custom liquid in your storefront.
+## Call with runRequest
 
-**Example Javascript Snippet:**
+In a storefront widget, pass a `headersEmbedded` object to the automatically loaded helper:
+
+```js
+apiease.runRequest('customer-profile', {
+  headersEmbedded: {'X-Storefront-Source': 'product-page'},
+})
+  .then(function (response) { console.log(response.status, response.data); })
+  .catch(function (error) { console.error(error.message); });
+```
+
+The directly called request needs a **Storefront App Proxy** trigger. See [Requests In Widgets](../../../widgets/using-requests-in-widgets.md) for setup and response handling, and [Dynamic embedded parameters](./dynamic-embedded-parameters-overview.md) for the shared group format used by Storefront and Admin widgets.
+
+## Classic fetch call
+
+For a direct theme or widget fetch call, JSON-stringify the group and include it in `URLSearchParams`:
 
 ```javascript
 const headerParamsEmbeddedVar = JSON.stringify({

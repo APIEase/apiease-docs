@@ -25,7 +25,9 @@ Save the widget, copy its handle, and follow [Storefront Widgets](./storefront-w
 
 Inline JavaScript runs after the widget's HTML is inserted on the page. Use it for widget interactions and response handling. Keep the code appropriate for the placement: an App Embed loads the registered widget across the storefront.
 
-For calls to saved requests, use the storefront JavaScript examples in [Requests In Widgets](./using-requests-in-widgets.md).
+Call saved requests with `apiease.runRequest('request-handle', {liquidParamsEmbedded: {reference: 'example'}})`. APIEase loads this helper before your widget's inline and external scripts in both App Block and App Embed placements. It returns a Promise containing the request's status, data, and error message. Pass values from your own JavaScript variables or form elements; the Admin widget's `inputs` form state is not required or supplied on the storefront.
+
+See [Requests In Widgets](./using-requests-in-widgets.md) for setup, embedded parameters, response handling, and the classic fetch alternative. The directly called request needs a **Storefront App Proxy** trigger.
 
 ## External JavaScript URLs
 

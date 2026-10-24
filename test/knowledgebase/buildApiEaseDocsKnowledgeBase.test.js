@@ -1,6 +1,7 @@
 const assert = require('node:assert/strict');
 const {describe, it} = require('node:test');
 const path = require('node:path');
+const fs = require('node:fs/promises');
 const {
   canonicalizeDocumentationLinks,
   generateKnowledgeBaseText,
@@ -55,6 +56,19 @@ describe('buildApiEaseDocsKnowledgeBase', () => {
   });
 
   describe('generateKnowledgeBaseText', () => {
+    it('should generate embedded-parameter examples without requiring backend context', async (context) => {
+      const filePath = path.resolve(__dirname, '../../docs/docs/requests/request-parameters/dynamic-embedded-parameters/liquid-parameters.md');
+      const example = "apiease.runRequest('lookup', {liquidParamsEmbedded: {reference: 'example'}})";
+      const readFile = fs.readFile;
+      context.mock.method(fs, 'readFile', (requestedPath, ...options) => requestedPath === filePath
+        ? Promise.resolve(`---\ntitle: Liquid parameters\n---\n\n\`\`\`js\n${example}\n\`\`\`\n`)
+        : readFile(requestedPath, ...options));
+
+      const {text} = await generateKnowledgeBaseText();
+
+      assert.ok(text.includes(example));
+    });
+
     it('should emit canonical storefront links in the actual knowledge bundle', async () => {
       const {text} = await generateKnowledgeBaseText();
       assert.ok(text.includes('[Storefront calls](https://docs.apiease.com/docs/requests/triggers/storefont-calls)'));

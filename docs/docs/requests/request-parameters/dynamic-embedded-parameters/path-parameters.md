@@ -6,9 +6,25 @@ description: Inject runtime values into request paths.
 
 Unlike query, header and body embedded parameters that are always added as parameters to your request, path parameters are used exclusively for replacing path variables.
 
-Dynamic embedded parameters are added as query parameters to calls made to APIEase from custom liquid in your storefront.
+## Call with runRequest
 
-**Example Javascript Snippet:**
+In a storefront widget, pass a `pathParamsEmbedded` object to the automatically loaded helper:
+
+```js
+apiease.runRequest('product-details-proxy', {
+  pathParamsEmbedded: {productId: '1234567890'},
+})
+  .then(function (response) { console.log(response.status, response.data); })
+  .catch(function (error) { console.error(error.message); });
+```
+
+For this example, the saved request address must contain a matching `{productId}` placeholder.
+
+The directly called request needs a **Storefront App Proxy** trigger. See [Requests In Widgets](../../../widgets/using-requests-in-widgets.md) for setup and response handling, and [Dynamic embedded parameters](./dynamic-embedded-parameters-overview.md) for the shared group format used by Storefront and Admin widgets.
+
+## Classic fetch call
+
+For a direct theme or widget fetch call, JSON-stringify the group and include it in `URLSearchParams`:
 
 ```javascript
 const pathParamsEmbeddedVar = JSON.stringify({

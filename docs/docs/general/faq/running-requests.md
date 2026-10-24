@@ -39,7 +39,7 @@ A **widget** is a reusable interface that you manage in APIEase. **Storefront** 
 
 ## How do widgets call requests?
 
-Storefront widget JavaScript calls through Shopify's app proxy and needs a **Storefront App Proxy** trigger on the directly called request. Admin widget buttons call saved requests through the authenticated admin interface. Follow [Requests In Widgets](../../widgets/using-requests-in-widgets.md) for inputs, responses, and bulk-selection examples.
+Storefront widget JavaScript calls through Shopify's app proxy and needs a **Storefront App Proxy** trigger on the directly called request. Admin widget buttons call saved requests through the authenticated admin interface. Follow [Requests In Widgets](../../widgets/using-requests-in-widgets.md) for embedded parameters, responses, and bulk-selection examples.
 
 ## How do I send APIEase data into Shopify Flow?
 

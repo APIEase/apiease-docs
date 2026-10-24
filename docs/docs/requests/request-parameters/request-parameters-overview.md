@@ -23,6 +23,8 @@ Choose the parameter location from the receiving API's contract:
 For Liquid requests, distinguish saved Liquid parameters from runtime embedded Liquid parameters:
 
 - **Saved Liquid parameters** are configured on the request and can be substituted with `{parameterName}` before execution. Use saved Liquid parameters for stored defaults, sensitive values, or other server-side configured values.
-- **Runtime embedded Liquid parameters** are supplied by a caller with `liquidParamsEmbedded` and are read in Liquid through `apiEaseParameters.liquidParams.<parameterName>`. Use `liquidParamsEmbedded` for per-call values supplied at runtime.
+- **Runtime embedded Liquid parameters** are supplied by a caller with `liquidParamsEmbedded`. Use them for values that change per call; they can fill the request's `{parameterName}` placeholders without adding a matching saved parameter first.
+
+Storefront and Admin widgets pass these groups directly to `apiease.runRequest`, for example `apiease.runRequest('lookup', {liquidParamsEmbedded: {reference: 'example'}})`. Values inside a group can include nested objects and arrays as well as strings, numbers, booleans, and null. The Admin widget's `inputs` form state is optional and separate from request parameters. See [Requests In Widgets](../../widgets/using-requests-in-widgets.md) for the calling syntax on each surface.
 
 See [In-app parameters vs dynamic embedded parameters](./in-app-vs-dynamic.md) for the saved-versus-runtime decision and override behavior. For quick request-building answers, see the [Building requests FAQ](../../general/faq/building-requests.md).

@@ -44,6 +44,15 @@ Run all commands from `docs/` unless noted.
 - Write public docs from the APIEase user's point of view. APIEase is a technical product, so user-facing docs can and should use technical terms when those terms are part of using the admin UI, public API, storefront calls, other request execution options, `apiease-template`, or `apiease-cli`.
 - Distinguish user-facing technical explanations from internal implementation details. Prefer product and UI language on help pages (for example, "choose Liquid as the request type") unless the page is specifically documenting a public API field or CLI/template contract.
 - Do not expose internal APIEase runtime objects, private implementation paths, supporting-project internals, or codebase-only field names in public docs unless they are documented public API, template, or CLI surface area. Put agent-only or developer-internal guidance in `AGENTS.md` or internal docs in the APIEase implementation project instead.
+- `apiEaseParameters` is an internal backend execution-context object. Do not expose or explain it in public articles or examples. Document backend context, resolution, and transport details in `../apiease/docs/`; use verified user-facing parameter syntax in this repository.
+- Keep Admin widget form state separate from request parameters. `inputs` and `apiease.setInput` remember editable values and update the widget display. `apiease.runRequest` sends explicit embedded parameter groups. Form state is optional, is not a query parameter or request-input namespace, and must not be presented as a prerequisite for calling requests.
 - codex-dev-bot does not need to create unit tests for documentation changes in this repository.
 - codex-dev-bot should still verify documentation changes in a TDD-style workflow by using the project test runner and confirming the Docusaurus build passes.
 - For documentation-only tasks, treat running `npm run build` from `docs/` as the primary verification step rather than adding new automated tests.
+
+## Generated Knowledge Bundle
+
+- Agents must never directly edit or patch any `apiEaseDocsConsolidated.md` file, including this repository's generated bundle and imported copies in consuming repositories. Update the source articles under `docs/docs/` instead.
+- After updating public documentation, run `npm run knowledge:build` and `npm run knowledge:check` from `docs/`. Then run `npm run knowledge:pull-local` from each available sibling repository: `../apiease`, `../apiease-template`, and `../apiease-cli`. Verify each import with `npm run knowledge:pull-local -- --check`.
+- Scripted generation and imports are the preferred follow-up to documentation updates and do not require a separate user request. If a consuming repository is unavailable or a command fails, report the remaining refresh step; never compensate by editing a consolidated file directly.
+- `npm run knowledge:test` validates generation in memory without updating the bundle. Generator changes may need behavioral tests under `test/`; documentation wording changes do not need new tests. Do not make validators require public docs to explain internal execution objects.

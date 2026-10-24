@@ -6,9 +6,23 @@ description: Provide request bodies at runtime from Flow or storefront inputs.
 
 You can pass dynamic values from the storefront into the body of a request using embedded parameters. This is useful when you want to include customer-specific or page-specific data inside a JSON body sent to an external API.
 
-Dynamic embedded parameters are added as query parameters to calls made to APIEase from custom liquid in your storefront.
+## Call with runRequest
 
-**Example Javascript Snippet:**
+In a storefront widget, pass a `bodyEmbedded` object to the automatically loaded helper:
+
+```js
+apiease.runRequest('newsletter-signup', {
+  bodyEmbedded: {email: 'visitor@example.com', preferences: {newsletter: true}},
+})
+  .then(function (response) { console.log(response.status, response.data); })
+  .catch(function (error) { console.error(error.message); });
+```
+
+The directly called request needs a **Storefront App Proxy** trigger. See [Requests In Widgets](../../../widgets/using-requests-in-widgets.md) for setup and response handling, and [Dynamic embedded parameters](./dynamic-embedded-parameters-overview.md) for the shared group format used by Storefront and Admin widgets.
+
+## Classic fetch call
+
+For a direct theme or widget fetch call, JSON-stringify the group and include it in `URLSearchParams`:
 
 ```javascript
 const bodyEmbeddedVar = JSON.stringify({

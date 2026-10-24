@@ -32,7 +32,7 @@ To create a Liquid request, choose **Liquid** as the request type and enter the 
 
 Saved Liquid parameters are configured on the request. Use them for stored defaults, server-side configured values, sensitive values, or values you want APIEase to substitute with `{parameterName}` before execution. APIEase replaces `{parameterName}` with the saved value when the request runs.
 
-Saved Liquid parameters are different from runtime embedded Liquid parameters. Runtime embedded Liquid parameters are supplied by a caller with `liquidParamsEmbedded` and are read inside Liquid through `apiEaseParameters.liquidParams.<parameterName>`.
+Runtime embedded Liquid parameters are supplied by a caller with `liquidParamsEmbedded` for one execution. Saved and runtime Liquid parameters can both fill `{parameterName}` placeholders in the template.
 
 Example:
 
@@ -55,9 +55,21 @@ If your request includes confidential values such as API keys or credentials, ch
 
 **Runtime embedded Liquid parameters**
 
-Use `liquidParamsEmbedded` for per-call values supplied at runtime by storefront JavaScript, widget JavaScript, or another request. For storefront calls from theme or widget JavaScript, `liquidParamsEmbedded` is an APIEase runtime query parameter. Its value must be a JSON object string. Inside the Liquid request, APIEase exposes those values at `apiEaseParameters.liquidParams`.
+Use `liquidParamsEmbedded` for values supplied per call by storefront JavaScript, Admin widgets, or another request. You do not need to add matching parameters to the saved request first. The Admin widget's optional `inputs` form state is separate from these request parameters.
 
-Calling a request from theme or widget JavaScript:
+In storefront widget JavaScript, pass a group object directly to `runRequest`:
+
+```js
+apiease.runRequest('personalized-message', {
+  liquidParamsEmbedded: {visitorName: 'Alex', sourcePage: 'homepage'},
+})
+  .then(function (response) { console.log(response.status, response.data); })
+  .catch(function (error) { console.error(error.message); });
+```
+
+APIEase loads the helper for widget App Block and App Embed placements. Add a **Storefront App Proxy** trigger to the directly called request. Admin widget buttons accept the same grouped parameters without a storefront trigger; see [Requests In Widgets](../../widgets/using-requests-in-widgets.md).
+
+Values inside the group can include nested objects, arrays, strings, numbers, booleans, and null. For the classic fetch call from theme or widget JavaScript, JSON-stringify the group in the query string:
 
 ```javascript
 const liquidParams = {
@@ -75,28 +87,23 @@ fetch("/apps/apiease/integration/caller/call?" + queryParams.toString(), {
 });
 ```
 
-Liquid request:
+For a simple text response, save this Liquid template:
 
 ```liquid
-{% assign visitor_name = apiEaseParameters.liquidParams.visitorName | default: "there" | strip %}
-{% assign source_page = apiEaseParameters.liquidParams.sourcePage | default: "unknown" | strip %}
-
-{
-  "message": "Hello, {{ visitor_name }}.",
-  "sourcePage": {{ source_page | json }}
-}
+Hello, {visitorName}. You are visiting the {sourcePage}.
 ```
 
-In this example, the APIEase runtime fields are `requestId`, `liquidParamsEmbedded`, and `apiEaseParameters.liquidParams`. The request handle, parameter keys, and values are example-specific:
+APIEase replaces the parameter placeholders before running the template. This example returns `Hello, Alex. You are visiting the homepage.`; `runRequest` exposes the text in `response.data`. Placeholders perform text substitution and do not automatically JSON-escape strings.
 
-- `requestId` is an APIEase runtime field. It selects which request runs, and its value should be the request handle.
+Both calling methods supply the same values to the Liquid request. The request handle, parameter keys, and values are example-specific:
+
+- `requestId` selects the request in the classic URL. With `runRequest`, pass the handle as the first argument instead.
 - `liquidParamsEmbedded` is an APIEase runtime field. It passes a JSON object of values into a Liquid request.
-- `apiEaseParameters.liquidParams` is the Liquid runtime object where those embedded Liquid parameters are exposed.
 - `personalized-message` is only the example request handle.
 - `visitorName` and `sourcePage` are only example-specific parameter names. Users can choose their own keys.
 - `"Alex"` and `"homepage"` are only example values.
 
-If the caller sends `{ "visitorName": "Alex" }` inside `liquidParamsEmbedded`, the Liquid request reads that value from `apiEaseParameters.liquidParams.visitorName`.
+If the caller sends `{ "visitorName": "Alex" }` inside `liquidParamsEmbedded`, the `{visitorName}` placeholder becomes `Alex` for that execution.
 
 A Liquid request can also pass embedded Liquid parameters to another Liquid request with the `call` tag. In that case, provide `liquidParamsEmbedded` as an object in the call tag payload:
 
@@ -120,7 +127,7 @@ When you invoke a request from a Liquid template using the call tag, you can inc
 - `pathParamsEmbedded`: Object of path key/value pairs to substitute into the saved request address path.
 - `bodyEmbedded`: Object or raw string to use as the saved request body.
 - `flowParamsEmbedded`: Object of key/value pairs passed into a Flow request.
-- `liquidParamsEmbedded`: Object of key/value pairs made available to another Liquid request at `apiEaseParameters.liquidParams`.
+- `liquidParamsEmbedded`: Object of Liquid parameter values supplied to the called request.
 - `systemParamsEmbedded`: Object of key/value pairs used by APIEase for special features such as Customer Authentication.
 
 At runtime, embedded parameters take precedence over in app parameters for the matching scope.

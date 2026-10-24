@@ -20,7 +20,7 @@ See [Edit Storefront Widgets](./edit-storefront-widgets.md) for the authoring fi
 
 Widget JavaScript can call saved APIEase requests through Shopify's app proxy. The request executes on the server and returns data that the widget can use in its interface.
 
-Keep credentials and integration logic in the saved request. See [Requests In Widgets](./using-requests-in-widgets.md) for the Storefront App Proxy trigger, JavaScript call, runtime inputs, and responses.
+Keep credentials and integration logic in the saved request. See [Requests In Widgets](./using-requests-in-widgets.md) for the Storefront App Proxy trigger, JavaScript call, embedded parameters, and responses.
 
 ## Choose App Block or App Embed
 

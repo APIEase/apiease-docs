@@ -29,6 +29,6 @@ A widget provides the interface. A saved request performs the server-side work. 
 | Set shared fields, switch types, save, or discard | [Widgets Edit Page](./widget-edit-page.md) |
 | Author Liquid and JavaScript | [Edit Storefront Widgets](./edit-storefront-widgets.md) |
 | Author Variables and Shopify component JSX | [Edit Admin Widgets](./admin-widget-authoring.md) |
-| Call requests, pass inputs, and display responses | [Requests In Widgets](./using-requests-in-widgets.md) |
+| Call requests, pass parameters, and display responses | [Requests In Widgets](./using-requests-in-widgets.md) |
 | Add storefront widgets through an App Block or App Embed | [Storefront Widgets](./storefront-widgets.md) |
 | Place admin blocks and actions or manage assignments | [Admin Widgets](./admin-widgets.md) |

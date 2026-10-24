@@ -6,9 +6,23 @@ description: Send runtime Flow input from the storefront to APIEase.
 
 You can pass dynamic values from your storefront into the input of a Shopify Flow request. This lets your Flow automation receive real-time data based on customer actions, session context, or storefront activity.
 
-Dynamic embedded parameters are added as query parameters to calls made to APIEase from custom Liquid in your storefront.
+## Call with runRequest
 
-**Example JavaScript snippet**
+In a storefront widget, pass a `flowParamsEmbedded` object to the automatically loaded helper:
+
+```js
+apiease.runRequest('start-order-flow', {
+  flowParamsEmbedded: {orderId: 'gid://shopify/Order/1234567890'},
+})
+  .then(function (response) { console.log(response.status, response.data); })
+  .catch(function (error) { console.error(error.message); });
+```
+
+The directly called request needs a **Storefront App Proxy** trigger. See [Requests In Widgets](../../../widgets/using-requests-in-widgets.md) for setup and response handling, and [Dynamic embedded parameters](./dynamic-embedded-parameters-overview.md) for the shared group format used by Storefront and Admin widgets.
+
+## Classic fetch call
+
+For a direct theme or widget fetch call, JSON-stringify the group and include it in `URLSearchParams`:
 
 ```html
 <script>
