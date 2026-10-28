@@ -100,6 +100,12 @@ This matters for agent work because:
 
 Do not commit real secrets, API keys, or environment files into the repository.
 
+## Retrieve context for project design
+
+Before designing project changes in an authenticated, initialized checkout, run `apiease design-context` without arguments. It returns the verified design instructions, server resources, baseline, and local changes without applying resource changes or rewriting canonical files. Follow the returned protocol along with the task in your conversation.
+
+Requirements are optional; do not infer them from documentation or manufacture them just to retrieve context. If explicit requirements are useful, see the supported `--project-requirements <json>` structure in [Retrieve project design context](./apiease-cli.md#retrieve-project-design-context). Authentication, project identity, protocol verification, and baseline conflict checks remain required.
+
 ## Use a repository-first agent loop
 
 For most Codex-style tasks, the working loop should be:

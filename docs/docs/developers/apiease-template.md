@@ -136,3 +136,9 @@ Starting from the template keeps the human workflow and the AI-agent workflow al
 - agents can rely on bundled guidance and the local APIEase knowledge base instead of reconstructing platform behavior from scratch
 
 That is why the template is the preferred starting point even if your end goal is to automate APIEase through the CLI or the public API.
+
+## Retrieve context before project design
+
+From an authenticated, initialized project, run `apiease design-context` without arguments to retrieve the shared design instructions, server resources, baseline, and local changes. Requirements are optional and unnecessary when the coding agent already has the task in its conversation. Unsupplied requirements remain absent; do not invent them to retrieve context. Retrieval does not apply changes or rewrite canonical files.
+
+See [Retrieve project design context](./apiease-cli.md#retrieve-project-design-context) for the optional requirements structure and failure behavior.

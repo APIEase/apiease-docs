@@ -57,7 +57,7 @@ If you are working directly inside the CLI repository without linking it globall
 
 ## Configure authentication
 
-Every CRUD command needs three values:
+CRUD and project context commands need three values:
 
 - an APIEase base URL, which normally should be `https://app-admin.apiease.com`
 - an APIEase API key
@@ -110,12 +110,17 @@ Important details:
 
 ## Command shape
 
-The installed command is `apiease`, but the CLI help text still uses `apiease-cli` in usage output.
+The installed command and CLI help use `apiease`.
 
 Supported top-level commands are:
 
 - `init`
 - `upgrade`
+- `pull`
+- `design-context`
+- `validate`
+- `apply`
+- `rename`
 - `create`
 - `read`
 - `update`
@@ -155,6 +160,28 @@ Current CLI behavior:
 - existing conflicting files are preserved and reported instead of overwritten
 
 That makes `init` safe to use when you are starting a new repository or layering the template into an existing directory.
+
+## Retrieve project design context
+
+With authentication configured, run this from an initialized project checkout:
+
+```bash
+apiease design-context
+```
+
+The command returns the verified APIEase Project Design Protocol instructions and Codex execution envelope, server resources, server and local baselines, local edits, deletion intent, protected-value selectors, limits, and diagnostics. Context retrieval does not apply resource changes or rewrite canonical resource files. Authentication, project identity, protocol verification, and baseline conflict checks still apply. Initialize a new checkout with `apiease init` or `apiease init --from-existing-resources`; use `apiease pull` to establish or deliberately refresh its baseline.
+
+Requirements are optional and unnecessary when the coding agent already has the task in its conversation. When omitted, `projectRequirements` is absent from the request and returned context. The command does not infer requirements from documentation or create empty requirements. Supplied requirements are validated and returned; they do not filter the resources or instruction modules.
+
+To include explicit requirements:
+
+```bash
+apiease design-context --project-requirements '{"projectName":"Order status","customerRequirements":[{"id":"status","text":"Show order status."}],"confirmedDecisions":[]}'
+```
+
+The JSON object must contain exactly `projectName`, `customerRequirements`, and `confirmedDecisions`. Use a nonempty project name, an array of `{id, text}` objects with nonempty strings, and an array of nonempty decision strings. Both arrays may be empty. Names and requirement IDs allow up to 1,024 characters; requirement text and decisions allow up to 65,536 characters; each array allows up to 1,000 entries. Malformed JSON, invalid shapes, unknown fields, and explicit `null` fail.
+
+`design-context` emits one JSON result on stdout, including on failure. Corrective argument guidance goes to stderr. Existing exit codes distinguish usage/configuration (2), authentication/authorization (3), contract/validation (4), baseline conflicts (5), checkout integrity (6), and service/transport failures (7).
 
 ## Upgrade a project
 
