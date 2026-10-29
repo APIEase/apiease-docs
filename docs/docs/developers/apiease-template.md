@@ -137,15 +137,34 @@ Starting from the template keeps the human workflow and the AI-agent workflow al
 
 That is why the template is the preferred starting point even if your end goal is to automate APIEase through the CLI or the public API.
 
-## Retrieve context before project design
+## Read installed project and resource instructions
 
-From an authenticated, initialized project, run `apiease design-context` without arguments for a compact briefing with the current baseline, local changes, and verified local references. Read its small core and applicable family/provider modules. The full resource inventory and dependencies remain available; request detailed sources with `--resource-path`. Requirements are optional and unnecessary when the coding agent already has the task in its conversation. Unsupplied requirements remain absent; do not invent them to retrieve context. Retrieval does not apply changes or rewrite canonical files.
+Resource instructions are developer-written Markdown explaining how to create and
+edit requests, widgets, variables, and functions. `apiease init` installs a checked
+copy in `docs/resource-instructions/`; `apiease upgrade` maintains it. A script
+copies content from APIEase's authoritative instruction bundle; it does not author
+the instructions. Resource JSON under `resources/*` is the project source you edit.
 
-See [Retrieve project design context](./apiease-cli.md#retrieve-project-design-context) for optional requirements, full JSON, standalone exports, compatibility, and failure behavior.
+Project instructions in `AGENTS.md`, `README.md`, and
+`docs/shared-ongoing-ai-guidance.md` explain project structure and the CLI workflow.
+Start with `AGENTS.md` and `docs/resource-instructions/README.md`. Read the index's
+small required core and adapter envelope, then modules for the resource family,
+request type, and provider involved. Reading instructions requires neither store
+authentication nor a sibling APIEase checkout. Keep customer intent in the
+conversation and durable project decisions in `CUSTOM_*` files.
 
-The template supplies a short agent entry point and workflow navigation.
-`apiease upgrade` maintains those files. `apiease design-context` separately
-refreshes current server context and verified local authoring references. Keep
-project-specific guidance in `CUSTOM_*` files, which upgrades preserve; do not
-copy protocol text there or into the template. Retrieve context again for new
-work: cached references do not provide an offline or stale-server fallback.
+1. Initialize with `apiease init my-project --from-existing-resources` and enter it.
+   Plain `apiease init my-project` installs the template without authentication;
+   use `git init` if needed and `apiease pull` to establish synchronization before
+   project validation or apply.
+2. Read installed project instructions and applicable resource instructions.
+3. Inspect relevant resource JSON and dependencies, then edit canonical files.
+4. Run `apiease validate` for the complete project without executing resources.
+5. Run `apiease apply` when authorized, or `apiease apply --require-approval` for
+   deferred review. Git diffs present edits; they grant no mutation authority.
+6. When notified, preview `apiease upgrade --dry-run` and upgrade template files.
+
+Use `apiease design-context` when current project status is useful. See
+[project status](./apiease-cli.md#retrieve-project-design-context) for baseline
+checks and source selection, and [upgrades](./apiease-cli.md#upgrade-a-project)
+for overwrite/ignore choices. Keep project-specific guidance in `CUSTOM_*` files.

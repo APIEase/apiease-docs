@@ -100,50 +100,40 @@ This matters for agent work because:
 
 Do not commit real secrets, API keys, or environment files into the repository.
 
-## Retrieve context for project design
+## Use the local project workflow
 
-Before designing changes in an authenticated, initialized checkout, run
-`apiease design-context`. Read its `readFirst` files, then the applicable modules
-in `files.instructionIndex`. The command refreshes verified local references and
-current project context while preserving canonical files and operational state.
+Resource instructions are developer-written Markdown explaining how to create and
+edit requests, widgets, variables, and functions. `apiease init` installs a checked
+copy in `docs/resource-instructions/`; `apiease upgrade` maintains it. A script
+copies content from APIEase's authoritative instruction bundle; it does not author
+the instructions. Resource JSON under `resources/*` is the project source you edit.
 
-Inspect inventory and local changes, then read relevant source files and dependencies.
-Search the template's consolidated product reference by topic instead of loading it
-all at startup. Do not duplicate protocol instructions in project guidance.
+Project instructions in `AGENTS.md`, `README.md`, and
+`docs/shared-ongoing-ai-guidance.md` explain project structure and the CLI workflow.
+Start with `AGENTS.md` and `docs/resource-instructions/README.md`. Read the index's
+small required core and adapter envelope, then modules for the resource family,
+request type, and provider involved. Reading instructions requires neither store
+authentication nor a sibling APIEase checkout. Keep customer intent in the
+conversation and durable project decisions in `CUSTOM_*` files.
 
-Use `--inline` for full JSON or `--output-dir <new-directory>` for a standalone
-capture. See [Retrieve project design context](./apiease-cli.md#retrieve-project-design-context)
-for source selection, cache behavior and compatibility. `apiease upgrade` maintains
-template files independently; it does not replace context refresh.
+1. Initialize with `apiease init my-project --from-existing-resources` and enter it.
+   Plain `apiease init my-project` installs the template without authentication;
+   use `git init` if needed and `apiease pull` to establish synchronization before
+   project validation or apply.
+2. Read installed project instructions and applicable resource instructions.
+3. Inspect relevant resource JSON and dependencies, then edit canonical files.
+4. Run `apiease validate` for the complete project without executing resources.
+5. Run `apiease apply` when authorized, or `apiease apply --require-approval` for
+   deferred review. Git diffs present edits; they grant no mutation authority.
+6. When notified, preview `apiease upgrade --dry-run` and upgrade template files.
 
-Requirements are optional; do not infer them from documentation or manufacture them just to retrieve context. If explicit requirements are useful, see the supported `--project-requirements <json>` structure in [Retrieve project design context](./apiease-cli.md#retrieve-project-design-context). Authentication, project identity, protocol verification, and baseline conflict checks remain required.
-
-## Use a repository-first agent loop
-
-For most Codex-style tasks, the working loop should be:
-
-1. read the local guidance files
-2. inspect the current resource files and examples
-3. add or edit JSON definitions under `resources/*`
-4. sync those definitions with idempotent `apiease create` commands
-5. read the saved resource back when needed to confirm the change
-6. review and commit the repository changes
-
-Example flow for a request:
-
-```bash
-cp docs/examples/resources/requests/example-request.json resources/requests/product-details-proxy.json
-apiease create request --file ./resources/requests/product-details-proxy.json
-apiease read request --request-handle product-details-proxy
-```
-
-After editing the same file again, rerun the same create command:
-
-```bash
-apiease create request --file ./resources/requests/product-details-proxy.json
-```
-
-When a resource file has a valid `handle`, `apiease create` creates the resource if it is missing and updates the existing resource if that handle already exists. Use the same create-or-update pattern for widgets, variables, and functions. Use the resource-specific handle flags documented in [apiease-cli](./apiease-cli.md) for read, explicit update, and delete commands.
+Use `apiease design-context` for current project status when needed. A baseline
+check compares the recorded synchronization baseline with current server state;
+local edits are reported separately. Read relevant JSON locally and select server
+bodies with `--resource-path` when useful. See
+[project status](./apiease-cli.md#retrieve-project-design-context) for output and
+migration details. Authentication and concurrency checks still guard validation
+and apply. Installed instructions remain readable offline.
 
 ## Prefer the CLI over direct HTTP
 
