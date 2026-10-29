@@ -183,6 +183,38 @@ The JSON object must contain exactly `projectName`, `customerRequirements`, and 
 
 `design-context` emits one JSON result on stdout, including on failure. Corrective argument guidance goes to stderr. Existing exit codes distinguish usage/configuration (2), authentication/authorization (3), contract/validation (4), baseline conflicts (5), checkout integrity (6), and service/transport failures (7).
 
+### Save context as local reference files
+
+If `apiease --help` lists `--output-dir`, use it to keep large contexts out of the
+terminal output:
+
+```bash
+apiease design-context --output-dir /tmp/apiease-context-1
+```
+
+The destination must be new and its parent must exist. Relative paths resolve from
+the directory where you run the command. Choose a location outside `resources/`.
+The JSON briefing contains project baselines, change counts, reading guidance, and
+file paths with byte sizes and SHA-256 digests.
+
+Read `instructions.md` and `codex-envelope.md` before authoring. Inspect
+`inventory.json` and `local-changes.json`, then read the relevant entries from
+`server-resources.json`. The complete original context remains in `context.json`,
+including limits, diagnostics, resource bindings, and requirements when supplied.
+Instruction bytes are preserved exactly; authentication, verification, and conflict
+checks still run before files are written.
+
+Existing files, directories, and symlink destinations are never overwritten.
+An existing destination or write failure returns exit code 6; incomplete files
+created by this invocation are removed on write failure. Canonical resources and
+project operational state are unchanged. Without the option, output stays inline.
+
+This export is a point-in-time reference, not an automatically refreshed cache or
+approval. Retrieve fresh context for new work. `apiease upgrade` separately updates
+template-owned files; retrieving context does not upgrade the template or edit
+your custom guidance. File delivery preserves the current instruction set and
+server retrieval while reducing terminal output.
+
 ## Upgrade a project
 
 Use `upgrade` to compare your project against the current template version:
