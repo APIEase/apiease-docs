@@ -169,7 +169,49 @@ With authentication configured, run this from an initialized project checkout:
 apiease design-context
 ```
 
-The command returns the verified APIEase Project Design Protocol instructions and Codex execution envelope, server resources, server and local baselines, local edits, deletion intent, protected-value selectors, limits, and diagnostics. Context retrieval does not apply resource changes or rewrite canonical resource files. Authentication, project identity, protocol verification, and baseline conflict checks still apply. Initialize a new checkout with `apiease init` or `apiease init --from-existing-resources`; use `apiease pull` to establish or deliberately refresh its baseline.
+The default returns a compact JSON briefing with current server/local baselines,
+change counts, `readFirst` paths, and an index of verified local instruction modules.
+Read the small core and Codex envelope, then the modules applicable to the resource
+family, request type and provider involved in your task. The index states when each
+module applies. It does not infer scope from your conversation or filter resources
+based on requirements.
+
+The CLI refreshes these references automatically whenever you run this command.
+It checks the current authenticated server and verifies module digests before
+reusing unchanged bytes. References are isolated by server and project and stored
+beside checkout-local Git state, outside versioned source. Corrupt module bytes are
+retrieved again; unsafe cache paths or invalid responses fail. A failed or offline
+request never falls back to an old context. Canonical files, operational baselines,
+and customer guidance remain unchanged.
+
+`files.inventory` contains the complete resource inventory and dependency information;
+`files.localChanges` records local edits, deletions and protected-value selectors.
+Read relevant source files in your checkout. Retrieve current server source for an
+exact path when needed, repeating the option for additional distinct paths:
+
+```bash
+apiease design-context --resource-path resources/requests/read-product-page.json
+```
+
+The selected sources appear in `files.serverResources` and `files.context`.
+Selection changes only source delivery; whole-project validation, discovery and
+conflict checks remain intact. Every response includes fresh state. Module references
+and captured context are not an offline baseline, approval, or permission to apply.
+
+For the full JSON contract, including all current source bodies and instructions:
+
+```bash
+apiease design-context --inline
+```
+
+Scripts that consumed the former bare-command full JSON should add `--inline`.
+The compact default negotiates design-context contract version 2. Existing clients
+retain version 1 responses. Deploy the updated server before using the compact CLI;
+an older server returns an explicit version error, with `--inline` as the deliberate
+compatibility path. There is no automatic fallback.
+
+`apiease upgrade` separately maintains template-owned files. `design-context`
+maintains current server references; neither command replaces the other.
 
 Requirements are optional and unnecessary when the coding agent already has the task in its conversation. When omitted, `projectRequirements` is absent from the request and returned context. The command does not infer requirements from documentation or create empty requirements. Supplied requirements are validated and returned; they do not filter the resources or instruction modules.
 
@@ -185,35 +227,21 @@ The JSON object must contain exactly `projectName`, `customerRequirements`, and 
 
 ### Save context as local reference files
 
-If `apiease --help` lists `--output-dir`, use it to keep large contexts out of the
-terminal output:
+For a standalone capture, use an existing parent and a new destination outside
+managed resources:
 
 ```bash
 apiease design-context --output-dir /tmp/apiease-context-1
 ```
 
-The destination must be new and its parent must exist. Relative paths resolve from
-the directory where you run the command. Choose a location outside `resources/`.
-The JSON briefing contains project baselines, change counts, reading guidance, and
-file paths with byte sizes and SHA-256 digests.
-
-Read `instructions.md` and `codex-envelope.md` before authoring. Inspect
-`inventory.json` and `local-changes.json`, then read the relevant entries from
-`server-resources.json`. The complete original context remains in `context.json`,
-including limits, diagnostics, resource bindings, and requirements when supplied.
-Instruction bytes are preserved exactly; authentication, verification, and conflict
-checks still run before files are written.
-
-Existing files, directories, and symlink destinations are never overwritten.
-An existing destination or write failure returns exit code 6; incomplete files
-created by this invocation are removed on write failure. Canonical resources and
-project operational state are unchanged. Without the option, output stays inline.
-
-This export is a point-in-time reference, not an automatically refreshed cache or
-approval. Retrieve fresh context for new work. `apiease upgrade` separately updates
-template-owned files; retrieving context does not upgrade the template or edit
-your custom guidance. File delivery preserves the current instruction set and
-server retrieval while reducing terminal output.
+This explicit mode preserves the full export contract: `context.json`,
+`instructions.md`, `codex-envelope.md`, `inventory.json`, `server-resources.json`,
+and `local-changes.json`. It returns paths, byte sizes and digests. It retrieves the
+complete instruction set and source bodies, independently of the compact cache.
+Existing paths and symlinks are refused; incomplete bundles are removed on write
+failure. Relative paths resolve from the invocation directory. Files use private
+permissions. `--inline`, `--output-dir`, and compact-only `--resource-path` cannot
+be combined. A capture remains a point-in-time reference, not authority or approval.
 
 ## Upgrade a project
 

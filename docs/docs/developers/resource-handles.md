@@ -36,7 +36,7 @@ Use the identifier field that belongs to the resource's public JSON shape:
 | Request | `handle` | `name` | Use the handle as the request identifier in CLI and public API calls. |
 | Widget | `handle` | `name` | Use the handle as the widget identifier in CLI, public API, and theme extension settings. |
 | Variable | `handle` | `name` | Use `handle` in System Request arguments whenever possible. |
-| Function | `handle` | `name` | The saved resource has a handle; the Liquid function tag still calls Functions by `functionName` or legacy `functionId`. |
+| Function | `handle` | `name` | Pass the handle in the JSON Liquid function tag's `functionId` field. Existing immutable IDs and `functionName` calls remain supported. |
 
 APIEase responses may include both `id` and `handle`. Treat `id` as metadata returned by the server, not as a value to copy into source files.
 

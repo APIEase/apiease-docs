@@ -139,13 +139,13 @@ That is why the template is the preferred starting point even if your end goal i
 
 ## Retrieve context before project design
 
-From an authenticated, initialized project, run `apiease design-context` without arguments to retrieve the shared design instructions, server resources, baseline, and local changes. Requirements are optional and unnecessary when the coding agent already has the task in its conversation. Unsupplied requirements remain absent; do not invent them to retrieve context. Retrieval does not apply changes or rewrite canonical files.
+From an authenticated, initialized project, run `apiease design-context` without arguments for a compact briefing with the current baseline, local changes, and verified local references. Read its small core and applicable family/provider modules. The full resource inventory and dependencies remain available; request detailed sources with `--resource-path`. Requirements are optional and unnecessary when the coding agent already has the task in its conversation. Unsupplied requirements remain absent; do not invent them to retrieve context. Retrieval does not apply changes or rewrite canonical files.
 
-See [Retrieve project design context](./apiease-cli.md#retrieve-project-design-context) for the optional requirements structure and failure behavior.
+See [Retrieve project design context](./apiease-cli.md#retrieve-project-design-context) for optional requirements, full JSON, standalone exports, compatibility, and failure behavior.
 
-The template's agent entry point directs selective reading of product documentation.
-Use `apiease upgrade` to refresh template-owned files while preserving custom
-guidance. Context retrieval is separate: supporting CLI versions can
-[save reference files](./apiease-cli.md#save-context-as-local-reference-files) and
-return a compact briefing without upgrading the template. Exported context is a
-point-in-time reference; retrieve it again for new work.
+The template supplies a short agent entry point and workflow navigation.
+`apiease upgrade` maintains those files. `apiease design-context` separately
+refreshes current server context and verified local authoring references. Keep
+project-specific guidance in `CUSTOM_*` files, which upgrades preserve; do not
+copy protocol text there or into the template. Retrieve context again for new
+work: cached references do not provide an offline or stale-server fallback.

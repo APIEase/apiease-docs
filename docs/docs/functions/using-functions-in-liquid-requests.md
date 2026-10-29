@@ -78,7 +78,7 @@ Example using `functionName`:
 {{ summary.message }}
 ```
 
-Use `functionName` for new Liquid templates. `functionId` remains a legacy option when you already have a server-owned function id, but do not copy server-owned ids into repository-managed examples.
+For stable references in repository-managed templates, pass the function handle in `functionId`, for example `{"functionId":"build-summary","args":{"name":"Kevin"}}`. The handle must belong to the saved function; it is separate from its display name. Existing `functionName` calls remain supported. `functionId` also accepts a legacy server-owned ID, with ID matches taking precedence; do not copy server-owned IDs into repository-managed examples.
 
 You can also pass a variable that already contains the invocation object:
 

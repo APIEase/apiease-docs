@@ -102,14 +102,19 @@ Do not commit real secrets, API keys, or environment files into the repository.
 
 ## Retrieve context for project design
 
-Before designing project changes in an authenticated, initialized checkout, run `apiease design-context` without arguments. It returns the verified design instructions, server resources, baseline, and local changes without applying resource changes or rewriting canonical files. Follow the returned protocol along with the task in your conversation.
+Before designing changes in an authenticated, initialized checkout, run
+`apiease design-context`. Read its `readFirst` files, then the applicable modules
+in `files.instructionIndex`. The command refreshes verified local references and
+current project context while preserving canonical files and operational state.
 
-For large outputs, CLI versions listing `--output-dir` in `apiease --help` can
-export a new local reference directory and return a compact briefing. See
-[Save context as local reference files](./apiease-cli.md#save-context-as-local-reference-files).
-Read the exported instructions and Codex envelope before authoring, then inspect
-the inventory, local edits, and relevant resource bodies. Search the template's
-consolidated product documentation by topic instead of loading it all at startup.
+Inspect inventory and local changes, then read relevant source files and dependencies.
+Search the template's consolidated product reference by topic instead of loading it
+all at startup. Do not duplicate protocol instructions in project guidance.
+
+Use `--inline` for full JSON or `--output-dir <new-directory>` for a standalone
+capture. See [Retrieve project design context](./apiease-cli.md#retrieve-project-design-context)
+for source selection, cache behavior and compatibility. `apiease upgrade` maintains
+template files independently; it does not replace context refresh.
 
 Requirements are optional; do not infer them from documentation or manufacture them just to retrieve context. If explicit requirements are useful, see the supported `--project-requirements <json>` structure in [Retrieve project design context](./apiease-cli.md#retrieve-project-design-context). Authentication, project identity, protocol verification, and baseline conflict checks remain required.
 

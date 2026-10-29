@@ -200,7 +200,7 @@ Important behavior:
 
 - `as <name>` is required.
 - Inline arguments are mapped to the Function's declared parameters in order.
-- Object syntax supports `functionName` or legacy `functionId`. Prefer `functionName` in new Liquid templates.
+- Object syntax accepts a stable function handle in `functionId`. Existing immutable IDs and `functionName` calls remain supported. Prefer handles for repository-managed templates.
 - Missing arguments resolve to `null`.
 - Extra positional arguments are rejected.
 
