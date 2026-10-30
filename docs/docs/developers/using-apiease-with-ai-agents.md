@@ -100,6 +100,15 @@ This matters for agent work because:
 
 Do not commit real secrets, API keys, or environment files into the repository.
 
+To select a file for one command, use `--environment <name>`. For example, after configuring `~/.apiease/.env.staging` and synchronizing the project with the intended store:
+
+```bash
+apiease design-context --environment staging
+apiease validate --environment staging --json
+```
+
+Repeat the option on each API command that should use that file, including an authorized `apiease apply --environment staging`. It does not read or change `~/.apiease/environment` or save the selection in project metadata. Explicit connection flags take precedence over process variables, which take precedence over the selected file. The file must still exist and be readable; the CLI does not fall back to another environment if it cannot load it. See [apiease-cli](./apiease-cli.md) for the complete configuration rules.
+
 ## Use the local project workflow
 
 Resource instructions are developer-written Markdown explaining how to create and

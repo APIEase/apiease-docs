@@ -116,6 +116,14 @@ The template is designed for a repository-first workflow:
 6. use the [APIEase Public API](./apiease-public-api.md) directly only when you need a lower-level integration than the CLI
 7. run `apiease upgrade` later to adopt safe template updates without overwriting project-owned work
 
+To initialize from an existing store using a particular authentication file:
+
+```bash
+apiease init my-project --from-existing-resources --environment staging
+```
+
+This reads `~/.apiease/.env.staging` for that invocation. It does not save an environment selection or change template upgrade behavior. Pass `--environment staging` again on subsequent API commands that should use that file. The file must exist and be readable; explicit connection flags and process variables take precedence over its values. Template-only `init` and `upgrade` do not use these API connection settings. See [apiease-cli](./apiease-cli.md) for configuration details.
+
 The template does not replace the core APIEase documentation. It gives you a repository structure that makes those concepts easier to manage as code. For request behavior and request contracts, use the existing docs:
 
 - [Requests Overview](../requests/requests-overview.md)

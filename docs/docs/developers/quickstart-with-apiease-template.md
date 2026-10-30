@@ -84,7 +84,7 @@ Create the home directory:
 mkdir -p ~/.apiease
 ```
 
-Select the active environment:
+Select the default environment for commands that omit `--environment`:
 
 ```bash
 printf 'local\n' > ~/.apiease/environment
@@ -96,13 +96,21 @@ Create the matching env file:
 printf 'APIEASE_API_KEY=your-local-api-key\nAPIEASE_BASE_URL=https://app-admin.apiease.com\nAPIEASE_SHOP_DOMAIN=yourstore.myshopify.com\n' > ~/.apiease/.env.local
 ```
 
-Supported environment names are:
+Common environment names are:
 
 - `local`
 - `staging`
 - `production`
 
-You can still override any value per command with `--api-key`, `--base-url`, or `--shop-domain`, but most teams should keep the shared defaults in `~/.apiease`.
+Custom names such as `qa-us_2.1` are also supported when the matching env file exists.
+
+To select an env file for one invocation, add `--environment <name>` after the command. For example, read a saved request using the local file created above:
+
+```bash
+apiease read request --request-handle product-details-proxy --environment local
+```
+
+The flag reads `~/.apiease/.env.local` directly without reading or changing `~/.apiease/environment`. The selected file must exist and be readable even if other sources supply all connection values. Each setting uses its explicit `--api-key`, `--base-url`, or `--shop-domain` value first, then its corresponding process variable, then the selected file. See [apiease-cli](./apiease-cli.md) for supported commands, valid names, and configuration errors.
 
 ## Copy the starter resources into your project
 

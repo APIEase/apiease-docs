@@ -73,7 +73,7 @@ apiease create request \
   --api-key your-apiease-api-key
 ```
 
-If any of those values are omitted, the CLI reads your active APIEase environment from `~/.apiease`.
+For each omitted value, the CLI checks the corresponding process environment variable, then the selected env file in `~/.apiease`.
 
 Create the home directory:
 
@@ -81,7 +81,7 @@ Create the home directory:
 mkdir -p ~/.apiease
 ```
 
-Declare the active environment in `~/.apiease/environment`. Common values are:
+For commands without `--environment`, declare the default environment in `~/.apiease/environment`. Common values are:
 
 - `local`
 - `staging`
@@ -96,17 +96,45 @@ printf 'local\n' > ~/.apiease/environment
 printf 'APIEASE_API_KEY=your-local-api-key\nAPIEASE_BASE_URL=https://app-admin.apiease.com\nAPIEASE_SHOP_DOMAIN=yourstore.myshopify.com\n' > ~/.apiease/.env.local
 ```
 
-Configuration precedence is:
+### Select an environment for one command
 
-1. explicit command flags
-2. the selected `~/.apiease/.env.<environment>` file
+Use `--environment <name>` to read `~/.apiease/.env.<name>` for that invocation:
 
-Important details:
+```bash
+apiease read request --request-handle my-request --environment staging
+apiease validate --environment staging --json
+apiease init my-project --from-existing-resources --environment production
+```
 
-- if you provide all three explicit values, the CLI skips home configuration resolution
-- if you provide only some values, the CLI merges them with the active home environment
-- `APIEASE_API_KEY` is always required
-- `APIEASE_BASE_URL` and `APIEASE_SHOP_DOMAIN` must resolve either from flags or from the active env file
+Create the matching env file before using it. For example:
+
+```bash
+printf 'APIEASE_API_KEY=your-staging-api-key\nAPIEASE_BASE_URL=https://app-admin.apiease.com\nAPIEASE_SHOP_DOMAIN=your-staging-store.myshopify.com\n' > ~/.apiease/.env.staging
+```
+
+With `--environment staging`, the CLI reads `.env.staging` directly. It neither reads nor changes `~/.apiease/environment`, and that declaration file need not exist. The flag does not save an environment selection or change project metadata or template upgrade behavior. Supply it again on each command that should use that file.
+
+The name must start with a letter or digit and contain only letters, digits, dots, underscores, or hyphens, such as `staging` or `qa-us_2.1`. Empty names and paths are invalid.
+
+The selected file must exist and be readable even when flags or process variables provide all three connection values. An invalid name, missing file, or unreadable file fails the command without falling back to the default environment:
+
+| Problem | Error code |
+| --- | --- |
+| Invalid explicit environment name | `APIEASE_HOME_ENVIRONMENT_INVALID` |
+| Selected env file does not exist | `APIEASE_HOME_ENV_FILE_NOT_FOUND` |
+| Selected env file cannot be read | `APIEASE_HOME_ENV_FILE_READ_FAILED` |
+
+### Configuration precedence
+
+Each setting uses the first non-empty value in this order:
+
+1. Explicit command flags: `--api-key`, `--base-url`, and `--shop-domain`.
+2. Corresponding process variables: `APIEASE_API_KEY`, `APIEASE_BASE_URL`, and `APIEASE_SHOP_DOMAIN`.
+3. The same variables in `~/.apiease/.env.<name>`, selected by `--environment <name>` or, when omitted, by `~/.apiease/environment`.
+
+`--environment` selects the fallback file; it does not override process variables. For example, an exported `APIEASE_SHOP_DOMAIN` takes precedence over the shop domain in `.env.staging` even with `--environment staging`.
+
+Without `--environment`, complete configuration from flags and process variables bypasses home configuration. Otherwise, the CLI fills missing settings from the file selected by `~/.apiease/environment`. All three connection values must resolve for API calls.
 
 ## Command shape
 
@@ -138,6 +166,15 @@ Legacy bare command shapes such as `apiease read --request-handle product-detail
 ```bash
 apiease read request --request-handle product-details-proxy
 ```
+
+Place `--environment <name>` after the command, alongside its other options. Use the full option name; there is no `--env` alias.
+
+| Command | Environment selection |
+| --- | --- |
+| `create`, `read`, `update`, `delete` | Supports `--environment` for all four resource types |
+| `pull`, `design-context`, `validate`, `apply` | Supports `--environment` for API connection settings |
+| `init --from-existing-resources` | Supports `--environment` when initializing from saved resources |
+| Template-only `init`, `upgrade`, local `rename` | Does not use API connection settings |
 
 ## Initialize a project
 
