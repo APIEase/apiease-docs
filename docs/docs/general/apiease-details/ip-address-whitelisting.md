@@ -6,7 +6,7 @@ description: IP address details if upstream services require allowlists.
 
 APIEase makes API calls from a fixed IP address. This is useful if the external system you are calling requires IP whitelisting for security purposes.
 
-The IP address used by APIEase for all outgoing requests is **34.117.76.19**.
+The IP address used by APIEase for all outgoing requests is **34.45.199.142**.
 
 This address is static and does not change.
 
