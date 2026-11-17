@@ -145,6 +145,9 @@ const config = {
                 label: 'Documentation',
                 href: 'https://docs.apiease.com',
               },
+              {
+                html: '<a class="footer__link-item" href="/downloads/apiEaseDocsConsolidated.md" download>Download the knowledge base (Markdown)</a>',
+              },
             ],
           },
           {
